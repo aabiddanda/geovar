@@ -4,7 +4,7 @@ import pandas as pd
 import numpy as np
 from tqdm import tqdm
 
-def vcf_to_freq_table(vcf_file, pop_panel, minor_allele=True):
+def vcf_to_freq_table(vcf_file, pop_panel, outfile=None, minor_allele=True):
     """
         Converts a VCF File to a frequency table 
     """
@@ -59,6 +59,8 @@ def vcf_to_freq_table(vcf_file, pop_panel, minor_allele=True):
     af_df.insert(3, 'A2', alt_alleles)
     af_df.insert(4, 'MAC', global_ac)
     af_df.insert(5, 'MAF', global_af)
+    if outfile is not None:
+        af_df.to_csv(outfile, index=False, sep=' ')
     return(af_df)
 
 def sep_freq_mat_pops(af_df, known_cols = ['CHR','SNP','A1','A2','MAC','MAF']):
