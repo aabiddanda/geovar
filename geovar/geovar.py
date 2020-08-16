@@ -1,6 +1,6 @@
 import numpy as np 
 import pandas as pd
-from utils import sep_freq_mat_pops
+from geovar.utils import sep_freq_mat_pops
 
 class GeoVar(object):
 
