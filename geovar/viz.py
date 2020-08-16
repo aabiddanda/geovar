@@ -9,11 +9,11 @@ import matplotlib as mpl
 
 # cmap_test = mpl.colors.LinearSegmentedColormap.from_list('Custom Blues', ['#B9DFE4', '#061784', '#FFFFFF'], 3)
 
-# # define the bins and normalize
+# define the bins and normalize
 # bounds = np.linspace(0, 20, 21)
 # norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
 
-class GeoDistPlot:
+class GeoVarPlot:
 
   def __init__(self):
     """ Initializing plotting object """
@@ -74,7 +74,7 @@ class GeoDistPlot:
     assert(geodist.size == ngeodist.size)
     npops = np.array([len(x) for x in geodist])
     ncat = np.array([max(list(x)) for x in geodist], dtype=int)
-    # Testing out a filterign 
+    # Testing out a filtering operation 
     if filt_unobserved:
       unobserved_geodist = '0' * npops[0]
       idx = np.where(geodist == unobserved_geodist)[0]
@@ -126,6 +126,24 @@ class GeoDistPlot:
     self.ncat = ncats[0] + 1
     self.fgeodist = self.orig_fgeodist
 
+  def _add_data_geovar(self, geovar_obj):
+    assert(geovar_obj.geovar_codes is not None)
+    # # Count up the geovar codes
+    self.orig_npops = geovar_obj.n_populations
+    uniq_geodist, n_geodist, ncat = geovar_obj.count_geovar_codes()
+    rev_sort = np.argsort(n_geodist)[::-1]
+    self.orig_geodist = uniq_geodist[rev_sort]
+    self.orig_ngeodist = n_geodist[rev_sort]
+    self.orig_ncat = ncat + 1
+    self.orig_fgeodist = (self.orig_ngeodist / np.sum(self.orig_ngeodist))
+    # Setting all plotting variables
+    self.npops = self.orig_npops
+    self.geodist = self.orig_geodist
+    self.ngeodist = self.orig_ngeodist
+    self.ncat = ncat + 1
+    self.fgeodist = self.orig_fgeodist
+    self.poplist = geovar_obj.pops 
+  
   def _filter_data(self, max_freq=0.005, rare=False):
     """ Filter geodist data for easier plotting """
     assert(self.orig_geodist is not None)
@@ -290,6 +308,8 @@ class GeoDistPlot:
       prev = cum_frac[i]
     ax.set_ylim(0,1)
     return(ax)
+
+
 
 def plot_multiple_geodist(geodist_obj_list, subsets, xsize=1, ysize=4, hwidth=0.1, top_buff=0.5, bot_buff = 0.5, left_buff = 0.75, ylabel='Cumulative fraction of variants', superpops=None, superpop_lbls=None):
     """

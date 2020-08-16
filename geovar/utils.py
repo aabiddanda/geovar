@@ -61,4 +61,15 @@ def vcf_to_freq_table(vcf_file, pop_panel, minor_allele=True):
     af_df.insert(5, 'MAF', global_af)
     return(af_df)
 
-
+def sep_freq_mat_pops(af_df, known_cols = ['CHR','SNP','A1','A2','MAC','MAF']):
+    """
+        Convert an allele frequency data frame to a numpy array of pops 
+        and allele frequencies
+    """
+    # Get columns that are not known
+    colnames = af_df.columns
+    idx = ~np.isin(colnames, known_cols)
+    # Generate frequency matrix and the population names
+    freq_mat = af_df[af_df.columns[idx]].values
+    pop_names = af_df.columns[idx].tolist()
+    return(pop_names, freq_mat)
