@@ -223,7 +223,7 @@ class GeoVarPlot:
     assert(poplabels.size == self.npops)
     self.poplist = poplabels
 
-  def plot_geodist(self, ax, superpops=None, superpop_lbls=None):
+  def plot_geovar(self, ax, superpops=None, superpop_lbls=None):
     """ Final function to call to generate a geodist plot on a particular axis """
     # Starting assertions to make sure we can call this
     assert(self.geodist is not None)
@@ -311,13 +311,13 @@ class GeoVarPlot:
 
 
 
-def plot_multiple_geodist(geodist_obj_list, subsets, xsize=1, ysize=4, hwidth=0.1, top_buff=0.5, bot_buff = 0.5, left_buff = 0.75, ylabel='Cumulative fraction of variants', superpops=None, superpop_lbls=None):
+def plot_multiple_geovar(geovar_obj_list, subsets, xsize=1, ysize=4, hwidth=0.1, top_buff=0.5, bot_buff = 0.5, left_buff = 0.75, ylabel='Cumulative fraction of variants', superpops=None, superpop_lbls=None):
     """
       Function to plot a list of geodist objects 
       NOTE : this is a preliminary function currently 
     """
-    assert(len(geodist_obj_list) == len(subsets))
-    n = len(geodist_obj_list)
+    assert(len(geovar_obj_list) == len(subsets))
+    n = len(geovar_obj_list)
     
     fig_width = left_buff + xsize*n + hwidth*n 
     fig_height = bot_buff + ysize + top_buff
@@ -338,23 +338,23 @@ def plot_multiple_geodist(geodist_obj_list, subsets, xsize=1, ysize=4, hwidth=0.
     
     for i in range(n):
         subset = subsets[i]
-        cur_geodist = geodist_obj_list[i]
-        _, nsnps, _ = cur_geodist.plot_geodist(ax=axs[i], superpops=superpops, superpop_lbls=superpop_lbls)
-        axs[i].set_xticklabels(cur_geodist.poplist, fontsize=10, rotation=90, ha='center')
-        if cur_geodist.orig_missing is not None:
+        cur_geovar = geovar_obj_list[i]
+        _, nsnps, _ = cur_geovar.plot_geodist(ax=axs[i], superpops=superpops, superpop_lbls=superpop_lbls)
+        axs[i].set_xticklabels(cur_geovar.poplist, fontsize=10, rotation=90, ha='center')
+        if cur_geovar.orig_missing is not None:
           
-          n = np.sum(cur_geodist.orig_ngeodist) + cur_geodist.orig_missing
+          n = np.sum(cur_geovar.orig_ngeodist) + cur_geovar.orig_missing
           nstr = '{:,}'.format(n)
-          nmiss_str = '{:,}'.format(cur_geodist.orig_missing)
-          axs[i].set_title('%s\n $S$ = %s\n$S_u$ = %s (%d%%)' % (subset, nstr, nmiss_str, int(cur_geodist.orig_missing/n*100)), fontsize=10)
+          nmiss_str = '{:,}'.format(cur_geovar.orig_missing)
+          axs[i].set_title('%s\n $S$ = %s\n$S_u$ = %s (%d%%)' % (subset, nstr, nmiss_str, int(cur_geovar.orig_missing/n*100)), fontsize=10)
         else:
-          n = np.sum(cur_geodist.orig_ngeodist)
+          n = np.sum(cur_geovar.orig_ngeodist)
           nstr = '{:,}'.format(n)
           axs[i].set_title('%s\n S = %s' % (subset,nstr), fontsize=10)
     axs[0].set_ylabel(ylabel, fontsize=14)
     return(fig, axs)    
 
-def plot_geodist_w_percentages(geodist_obj, subset="", ylabel='Cumulative fraction of variants', xsize=1, ysize=4, hwidth=0.1, top_buff=0.5, bot_buff = 0.5, left_buff = 0.75, superpops=None, superpop_lbls=None):
+def plot_geodist_w_percentages(geovar_obj, subset="", ylabel='Cumulative fraction of variants', xsize=1, ysize=4, hwidth=0.1, top_buff=0.5, bot_buff = 0.5, left_buff = 0.75, superpops=None, superpop_lbls=None):
     """
       Function to plot a list of geodist objects 
       NOTE : this is a preliminary function currently 
@@ -379,16 +379,16 @@ def plot_geodist_w_percentages(geodist_obj, subset="", ylabel='Cumulative fracti
     [a.set_yticks([]) for a in axs[1:]];
     
 
-    geodist_obj.fontsize = 14
-    _, nsnps, _ = geodist_obj.plot_geodist(ax=axs[0], superpops=superpops, superpop_lbls=superpop_lbls)
-    axs[0].set_xticklabels(geodist_obj.poplist, fontsize=10, rotation=90, ha='center')
-    n = np.sum(geodist_obj.orig_ngeodist)
+    geovar_obj.fontsize = 14
+    _, nsnps, _ = geovar_obj.plot_geodist(ax=axs[0], superpops=superpops, superpop_lbls=superpop_lbls)
+    axs[0].set_xticklabels(geovar_obj.poplist, fontsize=10, rotation=90, ha='center')
+    n = np.sum(geovar_obj.orig_ngeodist)
     nstr = '{:,}'.format(n)
     #  Setting the title figures
     axs[0].text(1.0 + (hwidth/fig_width), 1.01, '%s\n (S = %s)' % (subset,nstr), 
                 va='bottom', ha='center', fontsize=14)
-    geodist_obj.fontsize=12
-    geodist_obj.plot_percentages(axs[1])
+    geovar_obj.fontsize=12
+    geovar_obj.plot_percentages(axs[1])
     axs[1].set_xticks([]);
     axs[0].set_ylabel(ylabel, fontsize=14)
     return(fig, axs)  
