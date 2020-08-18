@@ -27,7 +27,7 @@ Welcome to geovar's documentation!
    :maxdepth: 3
    :caption: API Documentation
 
-   feems
+   geovar
 
 Indices and tables
 ==================
