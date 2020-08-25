@@ -227,14 +227,20 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">lbl_colors</span> <span class="o">=</span> <span class="n">lbl_colors</span>
 
   <span class="k">def</span> <span class="nf">_set_colors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colors</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Method to add custom hex colors during plotting &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Add custom hex colors for GeoVar plot </span>
+<span class="sd">       Args:</span>
+<span class="sd">           colors (:obj:`list`): list of hexcodes for defining colors</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ncat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
     <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">colors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
     <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">))</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">colors</span> <span class="o">=</span> <span class="n">colors</span>
 
   <span class="k">def</span> <span class="nf">_add_poplabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">popfile</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Adding population labels here &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Add population labels from a file for GeoVar plot </span>
+<span class="sd">       Args:</span>
+<span class="sd">           popfile (:obj:`string`): path to population list file with one file per line</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
     <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
     <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">npops</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
@@ -245,7 +251,10 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="o">=</span> <span class="n">pops</span>
   
   <span class="k">def</span> <span class="nf">_reorder_pops</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_poplist</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Reordering populations within a geodist instance &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Reordering populations within a GeoVar instance </span>
+<span class="sd">      Args:</span>
+<span class="sd">        new_poplist (:obj:`list`): list of population names but reordered</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span><span class="p">(</span><span class="n">new_poplist</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">poplist</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
     <span class="n">new_pop_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="o">==</span> <span class="n">i</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">new_poplist</span><span class="p">])</span>
     <span class="n">acc</span> <span class="o">=</span> <span class="p">[]</span>
@@ -255,19 +264,24 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">orig_geodist</span> <span class="o">=</span> <span class="n">new_geodist</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="o">=</span> <span class="n">new_poplist</span>
     
-  <span class="k">def</span> <span class="nf">_add_poplabels_manual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">poplabels</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Add list of population labels &quot;&quot;&quot;</span>
+  <span class="k">def</span> <span class="nf">_add_poplabels_manual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">poplist</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Add list of population labels manually </span>
+<span class="sd">      Args:</span>
+<span class="sd">        poplist (:obj:`list`): list of population names for the GeoVar plot</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
     <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
     <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">npops</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
     <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ncat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="c1"># TODO : check if its a list and then add it?</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">poplabels</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">npops</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="o">=</span> <span class="n">poplabels</span>
+    <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">poplist</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">npops</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="o">=</span> <span class="n">poplist</span>
 
-  <span class="k">def</span> <span class="nf">plot_geovar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">superpops</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">superpop_lbls</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Final function to call to generate a geodist plot on a particular axis &quot;&quot;&quot;</span>
-    <span class="c1"># Starting assertions to make sure we can call this</span>
+  <span class="k">def</span> <span class="nf">plot_geovar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generate a GeoVar plot on a matplotlib axis </span>
+<span class="sd">       Args:</span>
+<span class="sd">        ax (:obj:`matplotlib.axes`): plotting axis from matplotlib</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Starting assertions to make sure input is alright</span>
     <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
     <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
     <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">npops</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
@@ -285,10 +299,6 @@
     <span class="c1"># setting up the vertical lines</span>
     <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xbar_pts</span><span class="p">:</span>
       <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bar_color</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">line_weight</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">);</span>
-    
-    <span class="k">if</span> <span class="n">superpops</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-      <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">superpops</span><span class="p">:</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">xbar_pts</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
     
     <span class="c1"># changing the border color</span>
     <span class="k">for</span> <span class="n">spine</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
@@ -332,7 +342,10 @@
     <span class="k">return</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">nsnps</span><span class="p">,</span> <span class="n">y_pts</span><span class="p">)</span>
   
   <span class="k">def</span> <span class="nf">plot_percentages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Generates a plot with the percentages  &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Generate a cumulative percentage plot   </span>
+<span class="sd">       Args:</span>
+<span class="sd">        ax (:obj:`matplotlib.axes`): plotting axis from matplotlib</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span>
     <span class="n">fracs</span> <span class="o">=</span> <span class="n">ns</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">ns</span><span class="p">)</span>
     <span class="n">cum_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span><span class="p">)</span>
@@ -346,7 +359,7 @@
       <span class="n">ydist</span> <span class="o">=</span> <span class="p">(</span><span class="n">cum_frac</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">prev</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span>
       <span class="n">fontscale</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span><span class="o">*</span><span class="n">fracs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
       <span class="n">nstr</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:,}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ns</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-      <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">prev</span><span class="o">+</span><span class="n">ydist</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1"> (</span><span class="si">%d%%</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">nstr</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist_alt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="p">)),</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span><span class="o">*</span><span class="n">fontscale</span><span class="p">)</span>
+      <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">prev</span><span class="o">+</span><span class="n">ydist</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39; </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%d%%</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">nstr</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist_alt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="p">)),</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span><span class="o">*</span><span class="n">fontscale</span><span class="p">)</span>
       <span class="n">prev</span> <span class="o">=</span> <span class="n">cum_frac</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
     <span class="k">return</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span></div>

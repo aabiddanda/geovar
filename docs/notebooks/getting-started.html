@@ -472,7 +472,7 @@ HG00100 EUR
 </div>
 <div class="section" id="Generating-a-GeoVar-Object">
 <h2>Generating a GeoVar Object<a class="headerlink" href="#Generating-a-GeoVar-Object" title="Permalink to this headline">¶</a></h2>
-<p>Here we now are aiming to actually calculate the binned allele frequency categories (or geovar codes) for each variant across each population. The default binning scheme is to have a binning with (0,0.05], [0.05,0.5]. In theory one could have as many categories as one needs in order to</p>
+<p>Here we now are aiming to actually calculate the binned allele frequency categories (or geovar codes) for each variant across each population. The default binning scheme is to have a binning with (0,0.05], (0.05,0.5]. In theory one could have as many categories as one needs in order to</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -481,11 +481,11 @@ HG00100 EUR
 <span></span><span class="c1"># Creating the GeoVar Object</span>
 <span class="n">geovar_test</span> <span class="o">=</span> <span class="n">GeoVar</span><span class="p">()</span>
 
-<span class="c1"># Adding in the frequency file</span>
+<span class="c1"># Adding in the frequency file (all of it)</span>
 <span class="n">geovar_test</span><span class="o">.</span><span class="n">add_freq_mat</span><span class="p">(</span><span class="n">freq_mat_file</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/test.freq.csv&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data_path</span><span class="p">))</span>
 
 <span class="c1"># Generate a geovar binning with the binning we used in our paper</span>
-<span class="n">geovar_test</span><span class="o">.</span><span class="n">gen_geodist_binning</span><span class="p">()</span>
+<span class="n">geovar_test</span><span class="o">.</span><span class="n">geovar_binning</span><span class="p">()</span>
 
 <span class="c1"># Printing details about the GeoVar object</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">geovar_test</span><span class="p">)</span>
@@ -545,7 +545,7 @@ allele freq bins: (0, 0),(0, 0.05),(0.05, 1.0)
 <div class="output_area docutils container">
 <img alt="../_images/notebooks_getting-started_12_0.svg" src="../_images/notebooks_getting-started_12_0.svg" /></div>
 </div>
-<p>If we want the percentages next to each value, we can simply run the following:</p>
+<p>If we want the percentages next to each value, we can run the following:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
@@ -583,7 +583,7 @@ allele freq bins: (0, 0),(0, 0.05),(0.05, 1.0)
 <span class="n">geovar_test</span><span class="o">.</span><span class="n">generate_bins</span><span class="p">([</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">])</span>
 
 <span class="c1"># Generating new geovar codes</span>
-<span class="n">geovar_test</span><span class="o">.</span><span class="n">gen_geodist_binning</span><span class="p">()</span>
+<span class="n">geovar_test</span><span class="o">.</span><span class="n">geovar_binning</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>

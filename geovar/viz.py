@@ -187,14 +187,20 @@ class GeoVarPlot:
     self.lbl_colors = lbl_colors
 
   def _set_colors(self, colors):
-    """ Method to add custom hex colors during plotting """
+    """Add custom hex colors for GeoVar plot 
+       Args:
+           colors (:obj:`list`): list of hexcodes for defining colors
+    """
     assert(self.ncat is not None)
     assert(self.colors is not None)
     assert(len(colors) == len(self.colors))
     self.colors = colors
 
   def _add_poplabels(self, popfile):
-    """ Adding population labels here """
+    """Add population labels from a file for GeoVar plot 
+       Args:
+           popfile (:obj:`string`): path to population list file with one file per line
+    """
     assert(self.geodist is not None)
     assert(self.ngeodist is not None)
     assert(self.npops is not None)
@@ -205,7 +211,10 @@ class GeoVarPlot:
     self.poplist = pops
   
   def _reorder_pops(self, new_poplist):
-    """ Reordering populations within a geodist instance """
+    """Reordering populations within a GeoVar instance 
+      Args:
+        new_poplist (:obj:`list`): list of population names but reordered
+    """
     assert(new_poplist.size == self.poplist.size)
     new_pop_idx = np.hstack([np.where(self.poplist == i)[0] for i in new_poplist])
     acc = []
@@ -215,19 +224,24 @@ class GeoVarPlot:
     self.orig_geodist = new_geodist
     self.poplist = new_poplist
     
-  def _add_poplabels_manual(self, poplabels):
-    """ Add list of population labels """
+  def _add_poplabels_manual(self, poplist):
+    """Add list of population labels manually 
+      Args:
+        poplist (:obj:`list`): list of population names for the GeoVar plot
+    """
     assert(self.geodist is not None)
     assert(self.ngeodist is not None)
     assert(self.npops is not None)
     assert(self.ncat is not None)
-    # TODO : check if its a list and then add it?
-    assert(poplabels.size == self.npops)
-    self.poplist = poplabels
+    assert(len(poplist) == self.npops)
+    self.poplist = poplist
 
-  def plot_geovar(self, ax, superpops=None, superpop_lbls=None):
-    """ Final function to call to generate a geodist plot on a particular axis """
-    # Starting assertions to make sure we can call this
+  def plot_geovar(self, ax):
+    """Generate a GeoVar plot on a matplotlib axis 
+       Args:
+        ax (:obj:`matplotlib.axes`): plotting axis from matplotlib
+    """
+    # Starting assertions to make sure input is alright
     assert(self.geodist is not None)
     assert(self.ngeodist is not None)
     assert(self.npops is not None)
@@ -245,10 +259,6 @@ class GeoVarPlot:
     # setting up the vertical lines
     for x in xbar_pts:
       ax.axvline(x=x, color=self.bar_color, lw=self.line_weight, alpha=self.alpha);
-    
-    if superpops is not None:
-      for i in superpops:
-        ax.axvline(x = xbar_pts[i], color='gray', lw=1.0)
     
     # changing the border color
     for spine in ax.spines.values():
@@ -292,7 +302,10 @@ class GeoVarPlot:
     return(ax, nsnps, y_pts)
   
   def plot_percentages(self, ax):
-    """ Generates a plot with the percentages  """
+    """Generate a cumulative percentage plot   
+       Args:
+        ax (:obj:`matplotlib.axes`): plotting axis from matplotlib
+    """
     ns = self.ngeodist
     fracs = ns / np.sum(ns)
     cum_frac = np.cumsum(self.fgeodist)
@@ -306,7 +319,7 @@ class GeoVarPlot:
       ydist = (cum_frac[i] - prev)/2.
       fontscale = min(1., self.fontsize*fracs[i])
       nstr = '{:,}'.format(ns[i])
-      ax.text(x=0.01, y=prev+ydist, s = '%s (%d%%)' % (nstr,round(self.orig_fgeodist_alt[i]*100)), va='center', fontsize=self.fontsize*fontscale)
+      ax.text(x=0.01, y=prev+ydist, s = ' %s (%d%%)' % (nstr,round(self.orig_fgeodist_alt[i]*100)), va='center', fontsize=self.fontsize*fontscale)
       prev = cum_frac[i]
     ax.set_ylim(0,1)
     return(ax)
