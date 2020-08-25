@@ -16,6 +16,7 @@
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Public API: geovar package" href="../geovar.html" />
     <link rel="prev" title="Citing geovar" href="../cite.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -24,6 +25,12 @@
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../geovar.html" title="Public API: geovar package"
+             accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="../cite.html" title="Citing geovar"
              accesskey="P">previous</a> |</li>
@@ -472,7 +479,10 @@ HG00100 EUR
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="c1"># Creating the GeoVar Object</span>
-<span class="n">geovar_test</span> <span class="o">=</span> <span class="n">GeoVar</span><span class="p">(</span><span class="n">freq_mat_file</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/test.freq.csv&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data_path</span><span class="p">))</span>
+<span class="n">geovar_test</span> <span class="o">=</span> <span class="n">GeoVar</span><span class="p">()</span>
+
+<span class="c1"># Adding in the frequency file</span>
+<span class="n">geovar_test</span><span class="o">.</span><span class="n">add_freq_mat</span><span class="p">(</span><span class="n">freq_mat_file</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/test.freq.csv&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data_path</span><span class="p">))</span>
 
 <span class="c1"># Generate a geovar binning with the binning we used in our paper</span>
 <span class="n">geovar_test</span><span class="o">.</span><span class="n">gen_geodist_binning</span><span class="p">()</span>
@@ -726,6 +736,9 @@ gzcat <span class="nv">$1</span> <span class="p">|</span> head -n5
   <h4>Previous topic</h4>
   <p class="topless"><a href="../cite.html"
                         title="previous chapter">Citing <code class="docutils literal notranslate"><span class="pre">geovar</span></code></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../geovar.html"
+                        title="next chapter">Public API: <code class="docutils literal notranslate"><span class="pre">geovar</span></code> package</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -753,6 +766,12 @@ gzcat <span class="nv">$1</span> <span class="p">|</span> head -n5
         <li class="right" style="margin-right: 10px">
           <a href="../genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../geovar.html" title="Public API: geovar package"
+             >next</a> |</li>
         <li class="right" >
           <a href="../cite.html" title="Citing geovar"
              >previous</a> |</li>

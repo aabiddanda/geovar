@@ -4,12 +4,12 @@ from geovar.utils import sep_freq_mat_pops
 
 class GeoVar(object):
 
-    def __init__(self, freq_mat_file, bins=[(0, 0), (0, 0.05), (0.05, 1.0)]):
-        """Represents the object to perform binning across the frequency spectrum
-        across multiple populations.  
+    def __init__(self, bins=[(0, 0), (0, 0.05), (0.05, 1.0)]):
+        """Object to perform binning 
+
         Args:
-            freq_mat_file (:str:): filepath to  
-            bins (:list:): list of tuples specifying bins of allele frequency 
+            freq_mat_file (:obj:`string`): 
+            bins (:obj:`list`): XXX
         """
         af_df = pd.read_table(freq_mat_file, sep='\s')
         pops, freq_mat = sep_freq_mat_pops(af_df) 
@@ -32,11 +32,21 @@ class GeoVar(object):
         # NOTE : need to print the bins here
         test_str += 'allele freq bins: ' + ','.join([str(i) for i in self.bins]) 
         return(test_str)
-    
+
+    def add_freq_mat(self, freq_mat_file):
+        """TODO 
+        """
+        af_df = pd.read_table(freq_mat_file, sep='\s')
+        pops, freq_mat = sep_freq_mat_pops(af_df)
+        self.pops = pops 
+        self.freq_mat = freq_mat
+        self.n_variants = freq_mat.shape[0]
+        self.n_populations = freq_mat.shape[1]
+
     def generate_bins(self, endpts):
         """ Define new bins for each allele frequency categorization  
         Args:
-            bins (:list:): list of tuples specifying bins of allele frequency 
+            bins (:obj:`list`): list of tuples specifying bins of allele frequency 
         """
         assert(np.all(np.array(endpts) < 1.0))
         b = 0.0
@@ -50,7 +60,7 @@ class GeoVar(object):
 
     def gen_geodist_binning(self):
         """Compute the ``geovar``-codes based on the binning scheme for each variant
-           across multiple populations.  
+           across multiple populations.
         """
         geovar_codes = np.zeros(shape=self.freq_mat.shape, dtype=np.uint16)
         i = 1
@@ -63,9 +73,16 @@ class GeoVar(object):
 
     def count_geovar_codes(self):
         """Compute the unique geovar-codes within the dataset and their counts
-           returns a tuple of numpy arrays (TODO)
+           returns a tuple of numpy arrays
         """
         assert(self.geovar_codes is not None)
         uniq_geodist, n_geodist = np.unique(self.geovar_codes, return_counts=True)
         ncat = np.max(np.vstack([list(x) for x in uniq_geodist]).astype(np.uint32))
         return(uniq_geodist, n_geodist, ncat)
+    
+    def count_geovar_codes_streaming(self, freq_mat_file):
+        """TODO: a streaming version of the unique geodist algorithm 
+           avoiding the  
+        """
+        assert(self.bins is not None)
+        pass

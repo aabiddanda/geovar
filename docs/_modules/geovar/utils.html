@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>geovar.utils &#8212; geovar  documentation</title>
+    <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">geovar  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">geovar.utils</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for geovar.utils</h1><div class="highlight"><pre>
+<span></span>
+<span class="kn">import</span> <span class="nn">allel</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+<div class="viewcode-block" id="vcf_to_freq_table"><a class="viewcode-back" href="../../geovar.html#geovar.utils.vcf_to_freq_table">[docs]</a><span class="k">def</span> <span class="nf">vcf_to_freq_table</span><span class="p">(</span><span class="n">vcf_file</span><span class="p">,</span> <span class="n">pop_panel</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">minor_allele</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Converts a VCF File to a frequency table </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># NOTE: we only assume that we have two columns in hte </span>
+    <span class="n">pop_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="n">pop_panel</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;\s&#39;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sample&#39;</span><span class="p">,</span><span class="s1">&#39;pop&#39;</span><span class="p">])</span>
+    <span class="n">pop_dict</span> <span class="o">=</span> <span class="n">pop_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;sample&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()[</span><span class="s1">&#39;pop&#39;</span><span class="p">]</span>     
+    <span class="c1"># NOTE: we are assuming that we have only biallelic markers</span>
+    <span class="n">vcf_data</span> <span class="o">=</span> <span class="n">allel</span><span class="o">.</span><span class="n">read_vcf</span><span class="p">(</span><span class="n">vcf_file</span><span class="p">,</span> <span class="n">alt_number</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">vcf_data</span><span class="p">[</span><span class="s1">&#39;samples&#39;</span><span class="p">]</span>
+    <span class="n">chrom</span> <span class="o">=</span> <span class="n">vcf_data</span><span class="p">[</span><span class="s1">&#39;variants/CHROM&#39;</span><span class="p">]</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">vcf_data</span><span class="p">[</span><span class="s1">&#39;variants/POS&#39;</span><span class="p">]</span>
+    <span class="n">ref_alleles</span> <span class="o">=</span> <span class="n">vcf_data</span><span class="p">[</span><span class="s1">&#39;variants/REF&#39;</span><span class="p">]</span>
+    <span class="n">alt_alleles</span> <span class="o">=</span> <span class="n">vcf_data</span><span class="p">[</span><span class="s1">&#39;variants/ALT&#39;</span><span class="p">]</span>
+    <span class="c1"># Generating the population dictionary </span>
+    <span class="n">unique_pops</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">([</span><span class="n">pop_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pop_dict</span><span class="p">])</span>
+    <span class="n">pop_vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">pop_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">])</span>
+    <span class="n">pop_idx_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">unique_pops</span><span class="p">:</span>
+        <span class="n">pop_idx_dict</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">pop_vector</span> <span class="o">==</span> <span class="n">p</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># Calculating the Alternative Allele Frequency</span>
+    <span class="n">gt</span> <span class="o">=</span> <span class="n">allel</span><span class="o">.</span><span class="n">GenotypeArray</span><span class="p">(</span><span class="n">vcf_data</span><span class="p">[</span><span class="s1">&#39;calldata/GT&#39;</span><span class="p">])</span>
+    <span class="c1"># Calculating the total allele frequency </span>
+    <span class="n">tot_ac_cnt</span> <span class="o">=</span> <span class="n">gt</span><span class="o">.</span><span class="n">count_alleles</span><span class="p">()</span>
+    <span class="n">alt_freq</span> <span class="o">=</span> <span class="n">tot_ac_cnt</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">tot_ac_cnt</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">global_ac</span> <span class="o">=</span> <span class="n">tot_ac_cnt</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">global_af</span> <span class="o">=</span> <span class="n">alt_freq</span>
+    <span class="n">flip_af</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alt_freq</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">minor_allele</span><span class="p">:</span>
+        <span class="n">flip_af</span> <span class="o">=</span> <span class="p">(</span><span class="n">alt_freq</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">)</span>
+    <span class="c1"># Generate the allele freqquency and allele count vectors </span>
+    <span class="n">flip_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">flip_af</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">flip_idx</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">flip_idx</span><span class="p">:</span>
+            <span class="n">global_ac</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tot_ac_cnt</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">global_af</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">-</span> <span class="n">global_af</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="c1"># Swap the alleles here ... </span>
+            <span class="n">cur_ref</span> <span class="o">=</span> <span class="n">ref_alleles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">ref_alleles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">alt_alleles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> 
+            <span class="n">alt_alleles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cur_ref</span>
+    <span class="c1"># Generate ALT AF per subpopulation </span>
+    <span class="n">allel_cnt_subpops</span> <span class="o">=</span> <span class="n">gt</span><span class="o">.</span><span class="n">count_alleles_subpops</span><span class="p">(</span><span class="n">pop_idx_dict</span><span class="p">)</span>
+    <span class="n">flip_allele</span> <span class="o">=</span> <span class="o">~</span><span class="n">flip_af</span>
+    <span class="n">flip_allele</span> <span class="o">=</span> <span class="n">flip_allele</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span> 
+    <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">acnt</span><span class="p">,</span> <span class="n">flip</span><span class="p">:</span> <span class="p">(</span><span class="n">acnt</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">acnt</span><span class="p">)),</span><span class="n">flip</span><span class="p">]</span><span class="o">/</span><span class="n">acnt</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="c1"># Setting up the final data frame</span>
+    <span class="n">af_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">allel_cnt_subpops</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">flip_allele</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">allel_cnt_subpops</span><span class="p">}</span>
+    <span class="n">af_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">af_dict</span><span class="p">)</span>
+    <span class="c1"># Inserting all of the columns that are needed for the allele frequency </span>
+    <span class="n">af_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;CHR&#39;</span><span class="p">,</span> <span class="n">chrom</span><span class="p">)</span>
+    <span class="n">af_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;SNP&#39;</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+    <span class="n">af_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;A1&#39;</span><span class="p">,</span> <span class="n">ref_alleles</span><span class="p">)</span>
+    <span class="n">af_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;A2&#39;</span><span class="p">,</span> <span class="n">alt_alleles</span><span class="p">)</span>
+    <span class="n">af_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;MAC&#39;</span><span class="p">,</span> <span class="n">global_ac</span><span class="p">)</span>
+    <span class="n">af_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;MAF&#39;</span><span class="p">,</span> <span class="n">global_af</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">outfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">af_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">af_df</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="sep_freq_mat_pops"><a class="viewcode-back" href="../../geovar.html#geovar.utils.sep_freq_mat_pops">[docs]</a><span class="k">def</span> <span class="nf">sep_freq_mat_pops</span><span class="p">(</span><span class="n">af_df</span><span class="p">,</span> <span class="n">known_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CHR&#39;</span><span class="p">,</span><span class="s1">&#39;SNP&#39;</span><span class="p">,</span><span class="s1">&#39;A1&#39;</span><span class="p">,</span><span class="s1">&#39;A2&#39;</span><span class="p">,</span><span class="s1">&#39;MAC&#39;</span><span class="p">,</span><span class="s1">&#39;MAF&#39;</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert an allele frequency data frame to a numpy array of pops </span>
+<span class="sd">        and allele frequencies</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get columns that are not known</span>
+    <span class="n">colnames</span> <span class="o">=</span> <span class="n">af_df</span><span class="o">.</span><span class="n">columns</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">colnames</span><span class="p">,</span> <span class="n">known_cols</span><span class="p">)</span>
+    <span class="c1"># Generate frequency matrix and the population names</span>
+    <span class="n">freq_mat</span> <span class="o">=</span> <span class="n">af_df</span><span class="p">[</span><span class="n">af_df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">idx</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">pop_names</span> <span class="o">=</span> <span class="n">af_df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="k">return</span><span class="p">(</span><span class="n">pop_names</span><span class="p">,</span> <span class="n">freq_mat</span><span class="p">)</span></div>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../../index.html">geovar  documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">geovar.utils</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Arjun Biddanda, Daniel P. Rice, John Novembre.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

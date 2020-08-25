@@ -157,7 +157,10 @@
    ],
    "source": [
     "# Creating the GeoVar Object \n",
-    "geovar_test = GeoVar(freq_mat_file=\"{}/test.freq.csv\".format(data_path))\n",
+    "geovar_test = GeoVar()\n",
+    "\n",
+    "# Adding in the frequency file\n",
+    "geovar_test.add_freq_mat(freq_mat_file=\"{}/test.freq.csv\".format(data_path))\n",
     "\n",
     "# Generate a geovar binning with the binning we used in our paper\n",
     "geovar_test.gen_geodist_binning()\n",

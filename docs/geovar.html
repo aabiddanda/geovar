@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Public API: geovar package &#8212; geovar  documentation</title>
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="geovar.geovar.GeoVar" href="stubs/geovar.geovar.GeoVar.html" />
+    <link rel="prev" title="Getting started with geovar" href="notebooks/getting-started.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="stubs/geovar.geovar.GeoVar.html" title="geovar.geovar.GeoVar"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="notebooks/getting-started.html" title="Getting started with geovar"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">geovar  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Public API: <code class="docutils literal notranslate"><span class="pre">geovar</span></code> package</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="public-api-geovar-package">
+<h1>Public API: <code class="docutils literal notranslate"><span class="pre">geovar</span></code> package<a class="headerlink" href="#public-api-geovar-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<p>Classes used to prepare the graph inputs and run the <code class="docutils literal notranslate"><span class="pre">feems</span></code> method.</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="stubs/geovar.geovar.GeoVar.html#geovar.geovar.GeoVar" title="geovar.geovar.GeoVar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geovar.geovar.GeoVar</span></code></a>([bins])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="stubs/geovar.viz.GeoVarPlot.html#geovar.viz.GeoVarPlot" title="geovar.viz.GeoVarPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geovar.viz.GeoVarPlot</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="stubs/geovar.utils.html#module-geovar.utils" title="geovar.utils"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geovar.utils</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<span class="target" id="module-geovar.utils"></span><dl class="py function">
+<dt id="geovar.utils.sep_freq_mat_pops">
+<code class="sig-prename descclassname">geovar.utils.</code><code class="sig-name descname">sep_freq_mat_pops</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">af_df</span></em>, <em class="sig-param"><span class="n">known_cols</span><span class="o">=</span><span class="default_value">['CHR', 'SNP', 'A1', 'A2', 'MAC', 'MAF']</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/geovar/utils.html#sep_freq_mat_pops"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#geovar.utils.sep_freq_mat_pops" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert an allele frequency data frame to a numpy array of pops
+and allele frequencies</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="geovar.utils.vcf_to_freq_table">
+<code class="sig-prename descclassname">geovar.utils.</code><code class="sig-name descname">vcf_to_freq_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vcf_file</span></em>, <em class="sig-param"><span class="n">pop_panel</span></em>, <em class="sig-param"><span class="n">outfile</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">minor_allele</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/geovar/utils.html#vcf_to_freq_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#geovar.utils.vcf_to_freq_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a VCF File to a frequency table</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Public API: <code class="docutils literal notranslate"><span class="pre">geovar</span></code> package</a><ul>
+<li><a class="reference internal" href="#classes">Classes</a></li>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="notebooks/getting-started.html"
+                        title="previous chapter">Getting started with <code class="docutils literal notranslate"><span class="pre">geovar</span></code></a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="stubs/geovar.geovar.GeoVar.html"
+                        title="next chapter">geovar.geovar.GeoVar</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/geovar.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="stubs/geovar.geovar.GeoVar.html" title="geovar.geovar.GeoVar"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="notebooks/getting-started.html" title="Getting started with geovar"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">geovar  documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Public API: <code class="docutils literal notranslate"><span class="pre">geovar</span></code> package</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2020, Arjun Biddanda, Daniel P. Rice, John Novembre.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 3.2.1.
+    </div>
+  </body>
+</html>

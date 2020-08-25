@@ -28,14 +28,14 @@ class GeoVarPlot:
     self.alpha = 0.5
     self.x_lbl_fontsize = 16
     self.y_lbl_fontsize = 12
-    # Original Data for GeoDist
+    # Original Data for GeoVar
     self.orig_missing = None
     self.orig_geodist = None
     self.orig_ngeodist = None
     self.orig_fgeodist = None
     self.orig_npops = None
     self.orig_ncat = None
-    # Actual plotting data for GeoDist
+    # Actual plotting data for GeoVar
     self.geodist = None
     self.ngeodist = None
     self.fgeodist = None
@@ -48,7 +48,7 @@ class GeoVarPlot:
     self.lbl_colors = None
 
   def __str__(self):
-    """ print all active parameters for plotting """
+    """ Print all active parameters for plotting """
     test_str = 'Fontsize : %d\n' % self.fontsize
     test_str += 'Bar Color : %s\n' % self.bar_color
     test_str += 'Border Color : %s\n' % self.border_color
@@ -127,6 +127,7 @@ class GeoVarPlot:
     self.fgeodist = self.orig_fgeodist
 
   def _add_data_geovar(self, geovar_obj):
+    """ Add in data directly from a GeoVar   """
     assert(geovar_obj.geovar_codes is not None)
     # # Count up the geovar codes
     self.orig_npops = geovar_obj.n_populations
@@ -215,11 +216,12 @@ class GeoVarPlot:
     self.poplist = new_poplist
     
   def _add_poplabels_manual(self, poplabels):
-    """ Adding population labels here """
+    """ Add list of population labels """
     assert(self.geodist is not None)
     assert(self.ngeodist is not None)
     assert(self.npops is not None)
     assert(self.ncat is not None)
+    # TODO : check if its a list and then add it?
     assert(poplabels.size == self.npops)
     self.poplist = poplabels
 
