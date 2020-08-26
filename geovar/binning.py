@@ -1,7 +1,7 @@
 import numpy as np 
 import pandas as pd
 from tqdm import tqdm
-from geovar.utils import sep_freq_mat_pops
+from .utils import sep_freq_mat_pops
 
 class GeoVar(object):
 
@@ -9,7 +9,7 @@ class GeoVar(object):
         """Object to perform binning of allele frequencies
 
         Args:
-            bins (:obj:`list`): list of tuples containing allele frequency  
+            bins (:obj:`list`): list of tuples containing allele frequency categories 
         """
         assert(np.all(np.array(bins) <= 1.0))
         assert(np.all(np.array(bins) >= 0.0))
@@ -30,10 +30,10 @@ class GeoVar(object):
         return(test_str)
 
     def add_freq_mat(self, freq_mat_file):
-        """ Adding an allele frequency table (see example notebook for format)
+        """Adding an allele frequency table (see example notebook for format)
+        
         Args:
-            freq_mat_file (:obj:`string`): filepath to 
-            frequency table file (see example notebook for formatting) 
+            freq_mat_file (:obj:`string`): filepath to frequency table file (see example notebook for formatting) XXXXX
         """
         af_df = pd.read_table(freq_mat_file, sep='\s')
         pops, freq_mat = sep_freq_mat_pops(af_df)
@@ -42,8 +42,9 @@ class GeoVar(object):
         self.n_variants = freq_mat.shape[0]
         self.n_populations = freq_mat.shape[1]
 
-    def generate_bins(self, bins):
-        """ Define new bins for each allele frequency categorization  
+    def generate_bins(self, bins=[(0, 0), (0, 0.05), (0.05, 1.0)]):
+        """Define new bins for each allele frequency categorization  
+        
         Args:
             bins (:obj:`list`): list of tuples specifying bins of allele frequency 
         """
@@ -85,7 +86,7 @@ class GeoVar(object):
         """A streaming version of the geovar code generation algorithm 
            to avoid reading in the entire frequency file
            
-           Args:
+        Args:
             freq_mat_file (:obj:`string`): filepath to 
             frequency table file (see example notebook for formatting)   
         """

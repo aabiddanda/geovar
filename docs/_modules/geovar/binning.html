@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>geovar.geovar &#8212; geovar  documentation</title>
+    <title>geovar.binning &#8212; geovar  documentation</title>
     <link rel="stylesheet" href="../../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -28,7 +28,7 @@
              >modules</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">geovar  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">geovar.geovar</a></li> 
+        <li class="nav-item nav-item-this"><a href="">geovar.binning</a></li> 
       </ul>
     </div>  
 
@@ -37,19 +37,19 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <h1>Source code for geovar.geovar</h1><div class="highlight"><pre>
+  <h1>Source code for geovar.binning</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
-<span class="kn">from</span> <span class="nn">geovar.utils</span> <span class="kn">import</span> <span class="n">sep_freq_mat_pops</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="kn">import</span> <span class="n">sep_freq_mat_pops</span>
 
-<div class="viewcode-block" id="GeoVar"><a class="viewcode-back" href="../../stubs/geovar.geovar.GeoVar.html#geovar.geovar.GeoVar">[docs]</a><span class="k">class</span> <span class="nc">GeoVar</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="GeoVar"><a class="viewcode-back" href="../../stubs/geovar.binning.GeoVar.html#geovar.binning.GeoVar">[docs]</a><span class="k">class</span> <span class="nc">GeoVar</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
-<div class="viewcode-block" id="GeoVar.__init__"><a class="viewcode-back" href="../../stubs/geovar.geovar.GeoVar.html#geovar.geovar.GeoVar.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)]):</span>
+<div class="viewcode-block" id="GeoVar.__init__"><a class="viewcode-back" href="../../stubs/geovar.binning.GeoVar.html#geovar.binning.GeoVar.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)]):</span>
         <span class="sd">&quot;&quot;&quot;Object to perform binning of allele frequencies</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            bins (:obj:`list`): list of tuples containing allele frequency  </span>
+<span class="sd">            bins (:obj:`list`): list of tuples containing allele frequency categories </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">))</span>
         <span class="k">assert</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">))</span>
@@ -70,10 +70,10 @@
         <span class="k">return</span><span class="p">(</span><span class="n">test_str</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">add_freq_mat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">freq_mat_file</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Adding an allele frequency table (see example notebook for format)</span>
+        <span class="sd">&quot;&quot;&quot;Adding an allele frequency table (see example notebook for format)</span>
+<span class="sd">        </span>
 <span class="sd">        Args:</span>
-<span class="sd">            freq_mat_file (:obj:`string`): filepath to </span>
-<span class="sd">            frequency table file (see example notebook for formatting) </span>
+<span class="sd">            freq_mat_file (:obj:`string`): filepath to frequency table file (see example notebook for formatting) XXXXX</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">af_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="n">freq_mat_file</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;\s&#39;</span><span class="p">)</span>
         <span class="n">pops</span><span class="p">,</span> <span class="n">freq_mat</span> <span class="o">=</span> <span class="n">sep_freq_mat_pops</span><span class="p">(</span><span class="n">af_df</span><span class="p">)</span>
@@ -82,8 +82,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">n_variants</span> <span class="o">=</span> <span class="n">freq_mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_populations</span> <span class="o">=</span> <span class="n">freq_mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">generate_bins</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bins</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Define new bins for each allele frequency categorization  </span>
+    <span class="k">def</span> <span class="nf">generate_bins</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)]):</span>
+        <span class="sd">&quot;&quot;&quot;Define new bins for each allele frequency categorization  </span>
+<span class="sd">        </span>
 <span class="sd">        Args:</span>
 <span class="sd">            bins (:obj:`list`): list of tuples specifying bins of allele frequency </span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -125,7 +126,7 @@
         <span class="sd">&quot;&quot;&quot;A streaming version of the geovar code generation algorithm </span>
 <span class="sd">           to avoid reading in the entire frequency file</span>
 <span class="sd">           </span>
-<span class="sd">           Args:</span>
+<span class="sd">        Args:</span>
 <span class="sd">            freq_mat_file (:obj:`string`): filepath to </span>
 <span class="sd">            frequency table file (see example notebook for formatting)   </span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -181,7 +182,7 @@
              >modules</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">geovar  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">geovar.geovar</a></li> 
+        <li class="nav-item nav-item-this"><a href="">geovar.binning</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

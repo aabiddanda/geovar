@@ -1,18 +1,18 @@
 .. currentmodule:: geovar
 
 Public API: ``geovar`` package
-=============================
+===============================
 
 Classes
 -------
 
-Classes used to prepare the graph inputs and run the ``feems`` method.
+Classes used to prepare the graph inputs and run the ``geovar`` method.
 
 .. autosummary::
     :toctree: stubs
 
-    geovar.geovar.GeoVar
-    geovar.viz.GeoVarPlot
+    binning.GeoVar
+    viz.GeoVarPlot
 
 
 Submodules

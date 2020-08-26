@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>geovar.geovar.GeoVar &#8212; geovar  documentation</title>
+    <title>geovar.binning.GeoVar &#8212; geovar  documentation</title>
     <link rel="stylesheet" href="../_static/sphinxdoc.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -36,7 +36,7 @@
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">geovar  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../geovar.html" accesskey="U">Public API: <code class="docutils literal notranslate"><span class="pre">geovar</span></code> package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">geovar.geovar.GeoVar</a></li> 
+        <li class="nav-item nav-item-this"><a href="">geovar.binning.GeoVar</a></li> 
       </ul>
     </div>  
 
@@ -45,18 +45,18 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="geovar-geovar-geovar">
-<h1>geovar.geovar.GeoVar<a class="headerlink" href="#geovar-geovar-geovar" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="geovar-binning-geovar">
+<h1>geovar.binning.GeoVar<a class="headerlink" href="#geovar-binning-geovar" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="geovar.geovar.GeoVar">
-<em class="property">class </em><code class="sig-prename descclassname">geovar.geovar.</code><code class="sig-name descname">GeoVar</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bins</span><span class="o">=</span><span class="default_value">[0, 0, 0, 0.05, 0.05, 1.0]</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geovar/geovar.html#GeoVar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#geovar.geovar.GeoVar" title="Permalink to this definition">¶</a></dt>
+<dt id="geovar.binning.GeoVar">
+<em class="property">class </em><code class="sig-prename descclassname">geovar.binning.</code><code class="sig-name descname">GeoVar</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bins</span><span class="o">=</span><span class="default_value">[0, 0, 0, 0.05, 0.05, 1.0]</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geovar/binning.html#GeoVar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#geovar.binning.GeoVar" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py method">
-<dt id="geovar.geovar.GeoVar.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bins</span><span class="o">=</span><span class="default_value">[0, 0, 0, 0.05, 0.05, 1.0]</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geovar/geovar.html#GeoVar.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#geovar.geovar.GeoVar.__init__" title="Permalink to this definition">¶</a></dt>
+<dt id="geovar.binning.GeoVar.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bins</span><span class="o">=</span><span class="default_value">[0, 0, 0, 0.05, 0.05, 1.0]</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geovar/binning.html#GeoVar.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#geovar.binning.GeoVar.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Object to perform binning of allele frequencies</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>bins</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>) – list of tuples containing allele frequency</p>
+<dd class="field-odd"><p><strong>bins</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>) – list of tuples containing allele frequency categories</p>
 </dd>
 </dl>
 </dd></dl>
@@ -68,23 +68,23 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#geovar.geovar.GeoVar.__init__" title="geovar.geovar.GeoVar.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([bins])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#geovar.binning.GeoVar.__init__" title="geovar.binning.GeoVar.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([bins])</p></td>
 <td><p>Object to perform binning of allele frequencies</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_freq_mat</span></code>(freq_mat_file)</p></td>
-<td><p>Adding an allele frequency table (see example notebook for format) :param freq_mat_file: filepath to :type freq_mat_file: <a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">string</span></code></a> :param frequency table file: :type frequency table file: see example notebook for formatting</p></td>
+<td><p>Adding an allele frequency table (see example notebook for format)</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">count_geovar_codes</span></code>()</p></td>
 <td><p>Compute the unique geovar-codes within the dataset and their counts and returns numpy arrays with unique geo</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_bins</span></code>(bins)</p></td>
-<td><p>Define new bins for each allele frequency categorization :param bins: list of tuples specifying bins of allele frequency :type bins: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_bins</span></code>([bins])</p></td>
+<td><p>Define new bins for each allele frequency categorization</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">geovar_binning</span></code>()</p></td>
 <td><p>Compute the <code class="docutils literal notranslate"><span class="pre">geovar</span></code>-codes based on the binning scheme for each variant across each populations.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">geovar_codes_streaming</span></code>(freq_mat_file)</p></td>
-<td><p>A streaming version of the geovar code generation algorithm to avoid reading in the entire frequency file</p></td>
+<td><p>A streaming version of the geovar code generation algorithm</p></td>
 </tr>
 </tbody>
 </table>
@@ -108,7 +108,7 @@
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="../_sources/stubs/geovar.geovar.GeoVar.rst.txt"
+      <li><a href="../_sources/stubs/geovar.binning.GeoVar.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -143,7 +143,7 @@
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="../index.html">geovar  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../geovar.html" >Public API: <code class="docutils literal notranslate"><span class="pre">geovar</span></code> package</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">geovar.geovar.GeoVar</a></li> 
+        <li class="nav-item nav-item-this"><a href="">geovar.binning.GeoVar</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

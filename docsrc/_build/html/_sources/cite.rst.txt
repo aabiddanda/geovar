@@ -1,5 +1,5 @@
 Citing ``geovar``
-################
+########################################
 
 If you use ``geovar`` in a publication or analysis please cite our manuscript below
 

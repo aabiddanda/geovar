@@ -291,8 +291,8 @@ div.rendered_html tbody tr:hover {
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">pkg_resources</span>
 
-<span class="kn">from</span> <span class="nn">geovar.utils</span> <span class="kn">import</span> <span class="n">vcf_to_freq_table</span>
-<span class="kn">from</span> <span class="nn">geovar.geovar</span> <span class="kn">import</span> <span class="n">GeoVar</span>
+<span class="c1"># from geovar.utils import vcf_to_freq_table</span>
+<span class="kn">from</span> <span class="nn">geovar.binning</span> <span class="kn">import</span> <span class="n">GeoVar</span>
 <span class="kn">from</span> <span class="nn">geovar.viz</span> <span class="kn">import</span> <span class="n">GeoVarPlot</span>
 
 <span class="c1">#visualization tools</span>
@@ -359,115 +359,21 @@ HG00100 EUR
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
-</pre></div>
+<div class="prompt empty docutils container">
 </div>
-<div class="output_area rendered_html docutils container">
-<div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+<span class="ansi-green-fg">&lt;ipython-input-4-9120e1c8ad48&gt;</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-red-fg"># Writing out VCF to a Frequency Table</span>
+<span class="ansi-green-fg">----&gt; 2</span><span class="ansi-red-fg"> </span>af_df <span class="ansi-blue-fg">=</span> vcf_to_freq_table<span class="ansi-blue-fg">(</span>vcf_file<span class="ansi-blue-fg">,</span> pop_panel<span class="ansi-blue-fg">=</span>population_panel<span class="ansi-blue-fg">,</span> outfile<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">&#34;{}/test.freq.csv&#34;</span><span class="ansi-blue-fg">.</span>format<span class="ansi-blue-fg">(</span>data_path<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> minor_allele<span class="ansi-blue-fg">=</span><span class="ansi-green-fg">True</span><span class="ansi-blue-fg">)</span>
+<span class="ansi-green-intense-fg ansi-bold">      3</span>
+<span class="ansi-green-intense-fg ansi-bold">      4</span> <span class="ansi-red-fg"># Print the beginning of the allele frequency table</span>
+<span class="ansi-green-intense-fg ansi-bold">      5</span> af_df<span class="ansi-blue-fg">.</span>head<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>CHR</th>
-      <th>SNP</th>
-      <th>A1</th>
-      <th>A2</th>
-      <th>MAC</th>
-      <th>MAF</th>
-      <th>AFR</th>
-      <th>AMR</th>
-      <th>EAS</th>
-      <th>EUR</th>
-      <th>SAS</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>22</td>
-      <td>10662593</td>
-      <td>C</td>
-      <td>T</td>
-      <td>1</td>
-      <td>0.000201</td>
-      <td>0.000759</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>22</td>
-      <td>10664208</td>
-      <td>G</td>
-      <td>A</td>
-      <td>38</td>
-      <td>0.008137</td>
-      <td>0.028963</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>22</td>
-      <td>10666881</td>
-      <td>C</td>
-      <td>A</td>
-      <td>1</td>
-      <td>0.000218</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.001104</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>22</td>
-      <td>10670699</td>
-      <td>T</td>
-      <td>A</td>
-      <td>1633</td>
-      <td>0.354538</td>
-      <td>0.228395</td>
-      <td>0.379538</td>
-      <td>0.501029</td>
-      <td>0.259709</td>
-      <td>0.447137</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>22</td>
-      <td>10679257</td>
-      <td>A</td>
-      <td>T</td>
-      <td>35</td>
-      <td>0.007008</td>
-      <td>0.025797</td>
-      <td>0.001449</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-    </tr>
-  </tbody>
-</table>
-</div></div>
+<span class="ansi-red-fg">NameError</span>: name &#39;vcf_to_freq_table&#39; is not defined
+</pre></div></div>
 </div>
 </div>
 <div class="section" id="Generating-a-GeoVar-Object">

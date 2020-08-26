@@ -24,10 +24,10 @@ Welcome to geovar's documentation!
   notebooks/getting-started
 
 .. toctree::
-   :maxdepth: 3
-   :caption: API Documentation
+  :maxdepth: 3
+  :caption: API Documentation
 
-   geovar
+  geovar
 
 Indices and tables
 ==================
