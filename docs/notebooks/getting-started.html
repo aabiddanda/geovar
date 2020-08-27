@@ -300,7 +300,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="section" id="Data">
 <h2>Data<a class="headerlink" href="#Data" title="Permalink to this headline">¶</a></h2>
-<p>We have packaged both frequency tables as well as a gzipped vcf dataset within the <code class="docutils literal notranslate"><span class="pre">geovar</span></code> pacakge to illustrate how to move from a <a class="reference external" href="https://samtools.github.io/hts-specs/VCFv4.2.pdf">VCF</a> file and a population specification file to a full <code class="docutils literal notranslate"><span class="pre">geovar</span></code>-style stacked barplot.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">geovar</span></code> package contains example frequency tables as well as a gzipped vcf dataset to illustrate how to move from a <a class="reference external" href="https://samtools.github.io/hts-specs/VCFv4.2.pdf">VCF</a> file and a population panel file to a full “GeoVar”-plot.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -316,7 +316,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<p>While we may know what the specifications for the VCF format are, the format of the population panel (or cluster file) is defined as a two column file with the columns labeled <code class="docutils literal notranslate"><span class="pre">sample</span></code> and <code class="docutils literal notranslate"><span class="pre">pop</span></code> that are separated by whitespace.</p>
+<p>The population panel file is a two column file with the columns <code class="docutils literal notranslate"><span class="pre">sample</span></code> and <code class="docutils literal notranslate"><span class="pre">pop</span></code> separated by whitespace. The sample column must match the <code class="docutils literal notranslate"><span class="pre">sample</span></code> IDs in the VCF file. the <code class="docutils literal notranslate"><span class="pre">pop</span></code> column contains population labels</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -467,7 +467,7 @@ HG00100 EUR
 </div>
 <div class="section" id="Generating-a-GeoVar-Object">
 <h2>Generating a GeoVar Object<a class="headerlink" href="#Generating-a-GeoVar-Object" title="Permalink to this headline">¶</a></h2>
-<p>Here we now are aiming to actually calculate the binned allele frequency categories (or geovar codes) for each variant across each population. The default binning scheme is to have a binning with (0,0.05], (0.05,0.5]. In theory one could have as many categories as one needs in order to</p>
+<p>Once we have a frequency table, the next step is to categorize each variant by its frequency in each population. The default binning scheme is to label mutations with population allele frequencies in the interval of (0,0.05] as Rare, and those with frequency above 0.05 as common. Below we will show how to change the frequency cutoff and how to add categories.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
