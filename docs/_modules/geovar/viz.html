@@ -42,6 +42,8 @@
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="nn">patches</span>
 <span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;font.family&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Arial&quot;</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s2">&quot;font.sans-serif&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Arial&quot;</span>
 
 <span class="c1"># Hex-Colors for GeoDist Mappings</span>
 <span class="c1"># Blues_HSL = [188,45,81]</span>
@@ -106,7 +108,7 @@
 
     <span class="k">return</span><span class="p">(</span><span class="n">test_str</span><span class="p">)</span>
 
-  <span class="k">def</span> <span class="nf">_add_text_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputfile</span><span class="p">,</span> <span class="n">filt_unobserved</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">add_text_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputfile</span><span class="p">,</span> <span class="n">filt_unobserved</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Add/replace data for a GeoDistPlot object &quot;&quot;&quot;</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">inputfile</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
     <span class="n">geodist</span> <span class="o">=</span> <span class="n">df</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
@@ -137,7 +139,7 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">ncat</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ncat</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span>
 
-  <span class="k">def</span> <span class="nf">_add_data_jsfs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jsfs</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">add_data_jsfs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jsfs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Add data from a joint SFS via numpy   &quot;&quot;&quot;</span>
     <span class="n">npops</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">jsfs</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
     <span class="n">ncats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">jsfs</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
@@ -166,8 +168,8 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">ncat</span> <span class="o">=</span> <span class="n">ncats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span>
 
-  <span class="k">def</span> <span class="nf">_add_data_geovar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geovar_obj</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Add in data directly from a GeoVar   &quot;&quot;&quot;</span>
+  <span class="k">def</span> <span class="nf">add_data_geovar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geovar_obj</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Add in data directly from a GeoVar object &quot;&quot;&quot;</span>
     <span class="k">assert</span><span class="p">(</span><span class="n">geovar_obj</span><span class="o">.</span><span class="n">geovar_codes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
     <span class="c1"># # Count up the geovar codes</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">orig_npops</span> <span class="o">=</span> <span class="n">geovar_obj</span><span class="o">.</span><span class="n">n_populations</span>
@@ -185,8 +187,10 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="o">=</span> <span class="n">geovar_obj</span><span class="o">.</span><span class="n">pops</span> 
   
-  <span class="k">def</span> <span class="nf">_filter_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_freq</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span> <span class="n">rare</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Filter geodist data for easier plotting &quot;&quot;&quot;</span>
+  <span class="k">def</span> <span class="nf">filter_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_freq</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span> <span class="n">rare</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Filter geovar data for easier plotting by removing</span>
+<span class="sd">       some lower-frequency categories</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_geodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
     <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
     <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
@@ -207,7 +211,7 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span><span class="p">[</span><span class="n">sorted_idx</span><span class="p">]</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist_alt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist_alt</span><span class="p">[</span><span class="n">sorted_idx</span><span class="p">]</span>
     
-  <span class="k">def</span> <span class="nf">_add_cmap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">,</span>
+  <span class="k">def</span> <span class="nf">add_cmap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">,</span>
                 <span class="n">str_labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">],</span>
                 <span class="n">lbl_colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;white&#39;</span><span class="p">]):</span>
     <span class="sd">&quot;&quot;&quot; Create a colormap object to use &quot;&quot;&quot;</span>
@@ -226,7 +230,7 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">str_labels</span> <span class="o">=</span> <span class="n">str_labels</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">lbl_colors</span> <span class="o">=</span> <span class="n">lbl_colors</span>
 
-  <span class="k">def</span> <span class="nf">_set_colors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colors</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">set_colors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colors</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Add custom hex colors for GeoVar plot </span>
 <span class="sd">       Args:</span>
 <span class="sd">           colors (:obj:`list`): list of hexcodes for defining colors</span>
@@ -236,7 +240,7 @@
     <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">))</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">colors</span> <span class="o">=</span> <span class="n">colors</span>
 
-  <span class="k">def</span> <span class="nf">_add_poplabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">popfile</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">add_poplabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">popfile</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Add population labels from a file for GeoVar plot </span>
 <span class="sd">       Args:</span>
 <span class="sd">           popfile (:obj:`string`): path to population list file with one file per line</span>
@@ -250,7 +254,7 @@
     <span class="k">assert</span><span class="p">(</span><span class="n">pops</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">npops</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="o">=</span> <span class="n">pops</span>
   
-  <span class="k">def</span> <span class="nf">_reorder_pops</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_poplist</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">reorder_pops</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_poplist</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Reordering populations within a GeoVar instance </span>
 <span class="sd">      Args:</span>
 <span class="sd">        new_poplist (:obj:`list`): list of population names but reordered</span>
@@ -264,7 +268,7 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">orig_geodist</span> <span class="o">=</span> <span class="n">new_geodist</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="o">=</span> <span class="n">new_poplist</span>
     
-  <span class="k">def</span> <span class="nf">_add_poplabels_manual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">poplist</span><span class="p">):</span>
+  <span class="k">def</span> <span class="nf">add_poplabels_manual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">poplist</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Add list of population labels manually </span>
 <span class="sd">      Args:</span>
 <span class="sd">        poplist (:obj:`list`): list of population names for the GeoVar plot</span>
@@ -339,6 +343,8 @@
                 <span class="n">fontsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span><span class="o">*</span><span class="n">fontscale</span><span class="p">);</span>
       <span class="n">cur_y</span> <span class="o">=</span> <span class="n">y</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ylims</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">poplist</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Cumulative fraction of variants&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">);</span>
     <span class="k">return</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">nsnps</span><span class="p">,</span> <span class="n">y_pts</span><span class="p">)</span>
   
   <span class="k">def</span> <span class="nf">plot_percentages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
@@ -362,6 +368,7 @@
       <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">prev</span><span class="o">+</span><span class="n">ydist</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39; </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%d%%</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">nstr</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist_alt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="p">)),</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span><span class="o">*</span><span class="n">fontscale</span><span class="p">)</span>
       <span class="n">prev</span> <span class="o">=</span> <span class="n">cum_frac</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
     <span class="k">return</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span></div>
 
 

@@ -2,6 +2,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import matplotlib as mpl
+plt.rcParams["font.family"] = "Arial"
+plt.rcParams["font.sans-serif"] = "Arial"
 
 # Hex-Colors for GeoDist Mappings
 # Blues_HSL = [188,45,81]
@@ -66,7 +68,7 @@ class GeoVarPlot(object):
 
     return(test_str)
 
-  def _add_text_data(self, inputfile, filt_unobserved = True):
+  def add_text_data(self, inputfile, filt_unobserved = True):
     """ Add/replace data for a GeoDistPlot object """
     df = np.loadtxt(inputfile, dtype=str)
     geodist = df[:,0]
@@ -97,7 +99,7 @@ class GeoVarPlot(object):
     self.ncat = max(ncat) + 1
     self.fgeodist = self.orig_fgeodist
 
-  def _add_data_jsfs(self, jsfs):
+  def add_data_jsfs(self, jsfs):
     """ Add data from a joint SFS via numpy   """
     npops = len(jsfs.shape)
     ncats = np.array(jsfs.shape)
@@ -126,8 +128,8 @@ class GeoVarPlot(object):
     self.ncat = ncats[0] + 1
     self.fgeodist = self.orig_fgeodist
 
-  def _add_data_geovar(self, geovar_obj):
-    """ Add in data directly from a GeoVar   """
+  def add_data_geovar(self, geovar_obj):
+    """Add in data directly from a GeoVar object """
     assert(geovar_obj.geovar_codes is not None)
     # # Count up the geovar codes
     self.orig_npops = geovar_obj.n_populations
@@ -145,8 +147,10 @@ class GeoVarPlot(object):
     self.fgeodist = self.orig_fgeodist
     self.poplist = geovar_obj.pops 
   
-  def _filter_data(self, max_freq=0.005, rare=False):
-    """ Filter geodist data for easier plotting """
+  def filter_data(self, max_freq=0.005, rare=False):
+    """Filter geovar data for easier plotting by removing
+       some lower-frequency categories
+    """
     assert(self.orig_geodist is not None)
     assert(self.orig_ngeodist is not None)
     assert(self.orig_fgeodist is not None)
@@ -167,7 +171,7 @@ class GeoVarPlot(object):
     self.fgeodist = self.fgeodist[sorted_idx]
     self.orig_fgeodist_alt = self.orig_fgeodist_alt[sorted_idx]
     
-  def _add_cmap(self, base_cmap='Blues',
+  def add_cmap(self, base_cmap='Blues',
                 str_labels=['U', 'R', 'C'],
                 lbl_colors=['black', 'black', 'white']):
     """ Create a colormap object to use """
@@ -186,7 +190,7 @@ class GeoVarPlot(object):
     self.str_labels = str_labels
     self.lbl_colors = lbl_colors
 
-  def _set_colors(self, colors):
+  def set_colors(self, colors):
     """Add custom hex colors for GeoVar plot 
        Args:
            colors (:obj:`list`): list of hexcodes for defining colors
@@ -196,7 +200,7 @@ class GeoVarPlot(object):
     assert(len(colors) == len(self.colors))
     self.colors = colors
 
-  def _add_poplabels(self, popfile):
+  def add_poplabels(self, popfile):
     """Add population labels from a file for GeoVar plot 
        Args:
            popfile (:obj:`string`): path to population list file with one file per line
@@ -210,7 +214,7 @@ class GeoVarPlot(object):
     assert(pops.size == self.npops)
     self.poplist = pops
   
-  def _reorder_pops(self, new_poplist):
+  def reorder_pops(self, new_poplist):
     """Reordering populations within a GeoVar instance 
       Args:
         new_poplist (:obj:`list`): list of population names but reordered
@@ -224,7 +228,7 @@ class GeoVarPlot(object):
     self.orig_geodist = new_geodist
     self.poplist = new_poplist
     
-  def _add_poplabels_manual(self, poplist):
+  def add_poplabels_manual(self, poplist):
     """Add list of population labels manually 
       Args:
         poplist (:obj:`list`): list of population names for the GeoVar plot
@@ -299,6 +303,8 @@ class GeoVarPlot(object):
                 fontsize=self.fontsize*fontscale);
       cur_y = y
     ax.set_ylim(ylims)
+    ax.set_xticklabels(self.poplist, rotation=90)
+    ax.set_ylabel('Cumulative fraction of variants', fontsize=14);
     return(ax, nsnps, y_pts)
   
   def plot_percentages(self, ax):
@@ -322,6 +328,7 @@ class GeoVarPlot(object):
       ax.text(x=0.01, y=prev+ydist, s = ' %s (%d%%)' % (nstr,round(self.orig_fgeodist_alt[i]*100)), va='center', fontsize=self.fontsize*fontscale)
       prev = cum_frac[i]
     ax.set_ylim(0,1)
+    ax.set_xticks([])
     return(ax)
 
 
