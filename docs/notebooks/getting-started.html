@@ -528,8 +528,6 @@ allele freq bins: (0, 0),(0, 0.05),(0.05, 1.0)
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
 <span class="n">geovar_plot</span><span class="o">.</span><span class="n">plot_geovar</span><span class="p">(</span><span class="n">ax</span><span class="p">);</span>
-<span class="c1"># ax.set_xticklabels(geovar_plot.poplist, rotation=90)</span>
-<span class="c1"># ax.set_ylabel(&#39;Cumulative fraction of variants&#39;, fontsize=14);</span>
 </pre></div>
 </div>
 </div>
@@ -638,6 +636,8 @@ allele freq bins: (0, 0),(0, 0.05),(0.05, 1.0)
 <div class="input_area highlight-bash notranslate"><div class="highlight"><pre>
 <span></span>%%bash -s <span class="s2">&quot;</span><span class="nv">$geovar_counts_file</span><span class="s2">&quot;</span>
 
+<span class="c1"># NOTE: the counts file is gzipped in this case!</span>
+<span class="c1"># NOTE: you may have to change gzcat -&gt; zcat on linux!</span>
 gzcat <span class="nv">$1</span> <span class="p">|</span> head -n5
 </pre></div>
 </div>
@@ -681,7 +681,7 @@ gzcat <span class="nv">$1</span> <span class="p">|</span> head -n5
 <span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">),</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">geovar_plot3</span><span class="o">.</span><span class="n">plot_geovar</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
 
-<span class="c1"># NOTE:  you can change the default fontsize parameter here</span>
+<span class="c1"># NOTE:  you can change the default fontsize parameter to alter</span>
 <span class="n">geovar_plot3</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">12</span>
 <span class="n">geovar_plot3</span><span class="o">.</span><span class="n">plot_percentages</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
