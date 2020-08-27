@@ -18,7 +18,7 @@ setup(
     packages=['geovar'],
     install_requires=required,
     long_description=long_description,
-    long_description_content_type='text/markdown'
+    long_description_content_type='text/markdown',
     include_package_data=True,
     package_data={"": ["data/integrated_call_samples_v3.20130502.1kg_pops.panel",
                        "data/integrated_call_samples_v3.20130502.1kg_superpops.panel"
