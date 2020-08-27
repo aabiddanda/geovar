@@ -1,7 +1,7 @@
-﻿geovar.binning.GeoVar
-=====================
+﻿geovar.GeoVar
+=============
 
-.. currentmodule:: geovar.binning
+.. currentmodule:: geovar
 
 .. autoclass:: GeoVar
 

@@ -11,8 +11,8 @@ Classes used to prepare the graph inputs and run the ``geovar`` method.
 .. autosummary::
     :toctree: stubs
 
-    binning.GeoVar
-    viz.GeoVarPlot
+    GeoVar
+    GeoVarPlot
 
 
 Submodules

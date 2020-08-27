@@ -13,7 +13,7 @@ import matplotlib as mpl
 # bounds = np.linspace(0, 20, 21)
 # norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
 
-class GeoVarPlot:
+class GeoVarPlot(object):
 
   def __init__(self):
     """ Initializing plotting object """
