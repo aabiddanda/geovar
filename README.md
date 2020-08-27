@@ -1,6 +1,6 @@
 # geovar
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/aabiddanda/geovar/master)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/aabiddanda/geovar/master?filepath=docsrc%2Fnotebooks%2Fgetting-started.ipynb)
 
 `geovar` is a python package to visualize joint allele frequency spectrum data.
 
