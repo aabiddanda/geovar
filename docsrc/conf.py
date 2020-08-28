@@ -153,7 +153,16 @@ nbsphinx_prolog = r"""
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinxdoc'
+html_theme = 'alabaster'
+
+html_theme_options = {
+    'show_powered_by': False,
+    'github_user': 'aabiddanda',
+    'github_repo': 'geovar',
+    'github_banner': True,
+    'show_related': False,
+    'note_bg': '#FFF59C'
+}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,

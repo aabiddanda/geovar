@@ -22,6 +22,11 @@ cd geovar
 pip install .
 ```
 
+## Tutorial
+
+If you are interested in a working tutorial of the `geovar` library, please either look at the static version under the "Tutorial" section of our documetation. For a more engaging and interactive experience, please take a look at the `mybinder` link at the top of this README.
+
+
 ## Questions / Bugs
 
-If you find a bug in the code - please submit an issue. If you have feature requests / questions please email `aabiddanda[at]gmail.com`.
+If you find a bug in the code - please submit an issue. If you have feature requests or questions please post an issue or email `aabiddanda[at]gmail.com`.

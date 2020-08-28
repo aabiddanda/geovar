@@ -5,7 +5,7 @@ Visualization of geographic variation in (``geovar``) is a python package to rea
 
 The ``geovar`` method and software was developed by Arjun Biddanda, with contributions from Daniel P. Rice and John Novembre.
 
-The package design and template for this website was inspired/adapted from the wonderful `mushi <https://harrispopgen.github.io/mushi/>`_ package.
+The package design and template for this website was inspired by the wonderful `mushi <https://harrispopgen.github.io/mushi/>`_ package.
 
 Welcome to geovar's documentation!
 ==================================
@@ -19,7 +19,7 @@ Welcome to geovar's documentation!
 
 .. toctree::
   :maxdepth: 1
-  :caption: Notebooks
+  :caption: Tutorials
 
   notebooks/getting-started
 
