@@ -33,9 +33,9 @@ class GeoVar(object):
         """Adding an allele frequency table (see example notebook for format)
         
         Args:
-            freq_mat_file (:obj:`string`): filepath to frequency table file (see example notebook for formatting) XXXXX
+         freq_mat_file (:obj:`string`): filepath to frequency table file (see example notebook for formatting)
         """
-        af_df = pd.read_table(freq_mat_file, sep='\s')
+        af_df = pd.read_table(freq_mat_file, sep='\s', engine='python')
         pops, freq_mat = sep_freq_mat_pops(af_df)
         self.pops = pops 
         self.freq_mat = freq_mat
@@ -46,7 +46,7 @@ class GeoVar(object):
         """Define new bins for each allele frequency categorization  
         
         Args:
-            bins (:obj:`list`): list of tuples specifying bins of allele frequency 
+         bins (:obj:`list`): list of tuples specifying bins of allele frequency 
         """
         assert(np.all(np.array(bins) < 1.0))
         b = 0.0
@@ -87,7 +87,7 @@ class GeoVar(object):
            to avoid reading in the entire frequency file
            
         Args:
-            freq_mat_file (:obj:`string`): filepath to 
+         freq_mat_file (:obj:`string`): filepath to 
             frequency table file (see example notebook for formatting)   
         """
         assert(self.bins is not None)
