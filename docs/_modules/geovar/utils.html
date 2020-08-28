@@ -45,11 +45,17 @@
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 
 <div class="viewcode-block" id="vcf_to_freq_table"><a class="viewcode-back" href="../../geovar.html#geovar.utils.vcf_to_freq_table">[docs]</a><span class="k">def</span> <span class="nf">vcf_to_freq_table</span><span class="p">(</span><span class="n">vcf_file</span><span class="p">,</span> <span class="n">pop_panel</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">minor_allele</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Converts a VCF File to a frequency table </span>
+    <span class="sd">&quot;&quot;&quot;Converts a VCF File to a frequency table to be used as input to a GeoVar object</span>
+
+<span class="sd">       Args:</span>
+<span class="sd">        vcf_file (:obj:`string`): filepath to VCF file (can be bgzipped)</span>
+<span class="sd">        pop_panel (:obj:`string`): filepath to population panel file. </span>
+<span class="sd">            (Not all individuals from the VCF need to be defined in population panel)</span>
+<span class="sd">        outfile (:obj:`string`): file to write output allele frequency table to</span>
+<span class="sd">        minor_allele (:obj:`bool`): flag to indicate if we want to polarize to the minor allele</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># NOTE: we only assume that we have two columns in hte </span>
-    <span class="n">pop_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="n">pop_panel</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;\s&#39;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sample&#39;</span><span class="p">,</span><span class="s1">&#39;pop&#39;</span><span class="p">])</span>
+    <span class="c1"># NOTE: we only assume that we have two columns in the file </span>
+    <span class="n">pop_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="n">pop_panel</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;\s&#39;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sample&#39;</span><span class="p">,</span><span class="s1">&#39;pop&#39;</span><span class="p">],</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;python&#39;</span><span class="p">)</span>
     <span class="n">pop_dict</span> <span class="o">=</span> <span class="n">pop_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;sample&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()[</span><span class="s1">&#39;pop&#39;</span><span class="p">]</span>     
     <span class="c1"># NOTE: we are assuming that we have only biallelic markers</span>
     <span class="n">vcf_data</span> <span class="o">=</span> <span class="n">allel</span><span class="o">.</span><span class="n">read_vcf</span><span class="p">(</span><span class="n">vcf_file</span><span class="p">,</span> <span class="n">alt_number</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -104,9 +110,12 @@
     <span class="k">return</span><span class="p">(</span><span class="n">af_df</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="sep_freq_mat_pops"><a class="viewcode-back" href="../../geovar.html#geovar.utils.sep_freq_mat_pops">[docs]</a><span class="k">def</span> <span class="nf">sep_freq_mat_pops</span><span class="p">(</span><span class="n">af_df</span><span class="p">,</span> <span class="n">known_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CHR&#39;</span><span class="p">,</span><span class="s1">&#39;SNP&#39;</span><span class="p">,</span><span class="s1">&#39;A1&#39;</span><span class="p">,</span><span class="s1">&#39;A2&#39;</span><span class="p">,</span><span class="s1">&#39;MAC&#39;</span><span class="p">,</span><span class="s1">&#39;MAF&#39;</span><span class="p">]):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Convert an allele frequency data frame to a numpy array of pops </span>
-<span class="sd">        and allele frequencies</span>
+    <span class="sd">&quot;&quot;&quot;Convert an allele frequency data frame to a frequency array</span>
+<span class="sd">       </span>
+<span class="sd">       Args:</span>
+<span class="sd">        af_df (:obj:`pandas.DataFrame`): allele frequency data frame</span>
+<span class="sd">        known_cols (:obj:`list`): list of columns to exclude from being a population</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Get columns that are not known</span>
     <span class="n">colnames</span> <span class="o">=</span> <span class="n">af_df</span><span class="o">.</span><span class="n">columns</span>

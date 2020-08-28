@@ -5,11 +5,17 @@ import numpy as np
 from tqdm import tqdm
 
 def vcf_to_freq_table(vcf_file, pop_panel, outfile=None, minor_allele=True):
+    """Converts a VCF File to a frequency table to be used as input to a GeoVar object
+
+       Args:
+        vcf_file (:obj:`string`): filepath to VCF file (can be bgzipped)
+        pop_panel (:obj:`string`): filepath to population panel file. 
+            (Not all individuals from the VCF need to be defined in population panel)
+        outfile (:obj:`string`): file to write output allele frequency table to
+        minor_allele (:obj:`bool`): flag to indicate if we want to polarize to the minor allele
     """
-        Converts a VCF File to a frequency table 
-    """
-    # NOTE: we only assume that we have two columns in hte 
-    pop_df = pd.read_table(pop_panel, sep='\s', usecols=['sample','pop'])
+    # NOTE: we only assume that we have two columns in the file 
+    pop_df = pd.read_table(pop_panel, sep='\s', usecols=['sample','pop'], engine='python')
     pop_dict = pop_df.set_index(['sample']).to_dict()['pop']     
     # NOTE: we are assuming that we have only biallelic markers
     vcf_data = allel.read_vcf(vcf_file, alt_number=1)
@@ -64,9 +70,12 @@ def vcf_to_freq_table(vcf_file, pop_panel, outfile=None, minor_allele=True):
     return(af_df)
 
 def sep_freq_mat_pops(af_df, known_cols = ['CHR','SNP','A1','A2','MAC','MAF']):
-    """
-        Convert an allele frequency data frame to a numpy array of pops 
-        and allele frequencies
+    """Convert an allele frequency data frame to a frequency array
+       
+       Args:
+        af_df (:obj:`pandas.DataFrame`): allele frequency data frame
+        known_cols (:obj:`list`): list of columns to exclude from being a population
+
     """
     # Get columns that are not known
     colnames = af_df.columns

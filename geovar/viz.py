@@ -2,18 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 import matplotlib as mpl
-plt.rcParams["font.family"] = "Arial"
-plt.rcParams["font.sans-serif"] = "Arial"
-
-# Hex-Colors for GeoDist Mappings
-# Blues_HSL = [188,45,81]
-# Blues_Hex [#B9DFE4, #061784, #FFFFFF]
-
-# cmap_test = mpl.colors.LinearSegmentedColormap.from_list('Custom Blues', ['#B9DFE4', '#061784', '#FFFFFF'], 3)
-
-# define the bins and normalize
-# bounds = np.linspace(0, 20, 21)
-# norm = mpl.colors.BoundaryNorm(bounds, cmap.N)
 
 class GeoVarPlot(object):
 
