@@ -14,8 +14,10 @@ def vcf_to_freq_table(vcf_file, pop_panel, outfile=None, minor_allele=True):
         outfile (:obj:`string`): file to write output allele frequency table to
         minor_allele (:obj:`bool`): flag to indicate if we want to polarize to the minor allele
     """
-    # NOTE: we only assume that we have two columns in the file 
-    pop_df = pd.read_table(pop_panel, sep='\s', usecols=['sample','pop'], engine='python')
+    # NOTE: we only care about the first two columns in the file 
+    pop_df = pd.read_table(pop_panel, sep='\s', usecols=[0,1], header=None, engine='python')
+    print(pop_df.columns)
+    pop_df.columns = ['sample','pop']
     pop_dict = pop_df.set_index(['sample']).to_dict()['pop']     
     # NOTE: we are assuming that we have only biallelic markers
     vcf_data = allel.read_vcf(vcf_file, alt_number=1)

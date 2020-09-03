@@ -302,7 +302,7 @@ div.rendered_html tbody tr:hover {
 <span class="n">vcf_file</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/new_1kg_nygc.chr22.biallelic_snps.filt.n5000.vcf.gz&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
 
 <span class="c1"># Filepath to the population panel file</span>
-<span class="n">population_panel</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/integrated_call_samples_v3.20130502.1kg_superpops.panel&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
+<span class="n">population_panel</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/integrated_call_samples_v3.20130502.1kg_superpops.indiv_label&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data_path</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -323,11 +323,11 @@ head -n5 <span class="nv">$1</span>
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-sample pop
 HG00096 EUR
 HG00097 EUR
 HG00099 EUR
 HG00100 EUR
+HG00101 EUR
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -342,6 +342,14 @@ HG00100 EUR
 <span class="n">af_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Int64Index([0, 1], dtype=&#39;int64&#39;)
+</pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -458,6 +466,15 @@ HG00100 EUR
 <div class="section" id="Generating-a-GeoVar-Object">
 <h2>Generating a GeoVar Object<a class="headerlink" href="#Generating-a-GeoVar-Object" title="Permalink to this headline">¶</a></h2>
 <p>Once we have a frequency table, the next step is to categorize each variant by its frequency in each population. The default binning scheme is to label mutations with population allele frequencies in the interval of (0,0.05] as Rare, and those with frequency above 0.05 as common. Below we will show how to change the frequency cutoff and how to add categories.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span>
+</pre></div>
+</div>
+</div>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
@@ -525,7 +542,7 @@ allele freq bins: (0, 0),(0, 0.05),(0.05, 1.0)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_getting-started_12_0.svg" src="../_images/notebooks_getting-started_12_0.svg" /></div>
+<img alt="../_images/notebooks_getting-started_13_0.svg" src="../_images/notebooks_getting-started_13_0.svg" /></div>
 </div>
 <p>If we want the percentages next to each value, we can run the following:</p>
 <div class="nbinput docutils container">
@@ -546,7 +563,7 @@ allele freq bins: (0, 0),(0, 0.05),(0.05, 1.0)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_getting-started_14_0.svg" src="../_images/notebooks_getting-started_14_0.svg" /></div>
+<img alt="../_images/notebooks_getting-started_15_0.svg" src="../_images/notebooks_getting-started_15_0.svg" /></div>
 </div>
 </div>
 <div class="section" id="Changing-the-Binning">
@@ -602,7 +619,7 @@ allele freq bins: (0, 0),(0, 0.05),(0.05, 1.0)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_getting-started_18_0.svg" src="../_images/notebooks_getting-started_18_0.svg" /></div>
+<img alt="../_images/notebooks_getting-started_19_0.svg" src="../_images/notebooks_getting-started_19_0.svg" /></div>
 </div>
 <p>As you can see the “L” category does not appear till the 7th category here, but it does allow for other ways to break down the frequency categories and further exploration.</p>
 </div>
@@ -682,7 +699,7 @@ gzcat <span class="nv">$1</span> <span class="p">|</span> head -n5
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_getting-started_24_0.svg" src="../_images/notebooks_getting-started_24_0.svg" /></div>
+<img alt="../_images/notebooks_getting-started_25_0.svg" src="../_images/notebooks_getting-started_25_0.svg" /></div>
 </div>
 </div>
 </div>

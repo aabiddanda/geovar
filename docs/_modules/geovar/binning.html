@@ -68,9 +68,9 @@
         <span class="sd">&quot;&quot;&quot;Adding an allele frequency table (see example notebook for format)</span>
 <span class="sd">        </span>
 <span class="sd">        Args:</span>
-<span class="sd">            freq_mat_file (:obj:`string`): filepath to frequency table file (see example notebook for formatting) XXXXX</span>
+<span class="sd">         freq_mat_file (:obj:`string`): filepath to frequency table file (see example notebook for formatting)</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">af_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="n">freq_mat_file</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;\s&#39;</span><span class="p">)</span>
+        <span class="n">af_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="n">freq_mat_file</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;\s&#39;</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;python&#39;</span><span class="p">)</span>
         <span class="n">pops</span><span class="p">,</span> <span class="n">freq_mat</span> <span class="o">=</span> <span class="n">sep_freq_mat_pops</span><span class="p">(</span><span class="n">af_df</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pops</span> <span class="o">=</span> <span class="n">pops</span> 
         <span class="bp">self</span><span class="o">.</span><span class="n">freq_mat</span> <span class="o">=</span> <span class="n">freq_mat</span>
@@ -81,7 +81,7 @@
         <span class="sd">&quot;&quot;&quot;Define new bins for each allele frequency categorization  </span>
 <span class="sd">        </span>
 <span class="sd">        Args:</span>
-<span class="sd">            bins (:obj:`list`): list of tuples specifying bins of allele frequency </span>
+<span class="sd">         bins (:obj:`list`): list of tuples specifying bins of allele frequency </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">))</span>
         <span class="n">b</span> <span class="o">=</span> <span class="mf">0.0</span>
@@ -122,7 +122,7 @@
 <span class="sd">           to avoid reading in the entire frequency file</span>
 <span class="sd">           </span>
 <span class="sd">        Args:</span>
-<span class="sd">            freq_mat_file (:obj:`string`): filepath to </span>
+<span class="sd">         freq_mat_file (:obj:`string`): filepath to </span>
 <span class="sd">            frequency table file (see example notebook for formatting)   </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
