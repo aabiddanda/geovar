@@ -23,6 +23,6 @@ Submodules
 
     geovar.utils
 
-    
+
 .. automodule:: geovar.utils
     :members:

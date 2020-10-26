@@ -16,22 +16,22 @@
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-   
+
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
-  
-  
+
+
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head><body>
-  
+
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
+
 
           <div class="body" role="main">
-            
+
   <h1>Source code for geovar.utils</h1><div class="highlight"><pre>
 <span></span>
 <span class="kn">import</span> <span class="nn">allel</span>
@@ -51,7 +51,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># NOTE: we only assume that we have two columns in the file </span>
     <span class="n">pop_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="n">pop_panel</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;\s&#39;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sample&#39;</span><span class="p">,</span><span class="s1">&#39;pop&#39;</span><span class="p">],</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;python&#39;</span><span class="p">)</span>
-    <span class="n">pop_dict</span> <span class="o">=</span> <span class="n">pop_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;sample&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()[</span><span class="s1">&#39;pop&#39;</span><span class="p">]</span>     
+    <span class="n">pop_dict</span> <span class="o">=</span> <span class="n">pop_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;sample&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()[</span><span class="s1">&#39;pop&#39;</span><span class="p">]</span>
     <span class="c1"># NOTE: we are assuming that we have only biallelic markers</span>
     <span class="n">vcf_data</span> <span class="o">=</span> <span class="n">allel</span><span class="o">.</span><span class="n">read_vcf</span><span class="p">(</span><span class="n">vcf_file</span><span class="p">,</span> <span class="n">alt_number</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">samples</span> <span class="o">=</span> <span class="n">vcf_data</span><span class="p">[</span><span class="s1">&#39;samples&#39;</span><span class="p">]</span>
@@ -83,12 +83,12 @@
             <span class="n">global_af</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">-</span> <span class="n">global_af</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="c1"># Swap the alleles here ... </span>
             <span class="n">cur_ref</span> <span class="o">=</span> <span class="n">ref_alleles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="n">ref_alleles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">alt_alleles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> 
+            <span class="n">ref_alleles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">alt_alleles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="n">alt_alleles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cur_ref</span>
     <span class="c1"># Generate ALT AF per subpopulation </span>
     <span class="n">allel_cnt_subpops</span> <span class="o">=</span> <span class="n">gt</span><span class="o">.</span><span class="n">count_alleles_subpops</span><span class="p">(</span><span class="n">pop_idx_dict</span><span class="p">)</span>
     <span class="n">flip_allele</span> <span class="o">=</span> <span class="o">~</span><span class="n">flip_af</span>
-    <span class="n">flip_allele</span> <span class="o">=</span> <span class="n">flip_allele</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span> 
+    <span class="n">flip_allele</span> <span class="o">=</span> <span class="n">flip_allele</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
     <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">acnt</span><span class="p">,</span> <span class="n">flip</span><span class="p">:</span> <span class="p">(</span><span class="n">acnt</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">acnt</span><span class="p">)),</span><span class="n">flip</span><span class="p">]</span><span class="o">/</span><span class="n">acnt</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
     <span class="c1"># Setting up the final data frame</span>
     <span class="n">af_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">allel_cnt_subpops</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">flip_allele</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">allel_cnt_subpops</span><span class="p">}</span>
@@ -122,7 +122,7 @@
 </pre></div>
 
           </div>
-          
+
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -191,15 +191,15 @@
     </div>
     <div class="footer">
       &copy;2020, Arjun Biddanda, Daniel P. Rice, John Novembre.
-      
+
     </div>
 
-    
+
     <a href="https://github.com/aabiddanda/geovar" class="github">
         <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
     </a>
-    
 
-    
+
+
   </body>
 </html>

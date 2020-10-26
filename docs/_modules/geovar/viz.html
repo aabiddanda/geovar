@@ -16,22 +16,22 @@
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-   
+
   <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
-  
-  
+
+
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
 
   </head><body>
-  
+
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          
+
 
           <div class="body" role="main">
-            
+
   <h1>Source code for geovar.viz</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -168,8 +168,8 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">ncat</span> <span class="o">=</span> <span class="n">ncat</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="o">=</span> <span class="n">geovar_obj</span><span class="o">.</span><span class="n">pops</span> 
-  
+    <span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="o">=</span> <span class="n">geovar_obj</span><span class="o">.</span><span class="n">pops</span>
+
   <span class="k">def</span> <span class="nf">filter_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_freq</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span> <span class="n">rare</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Filter geovar data for easier plotting by removing</span>
 <span class="sd">       some lower-frequency categories</span>
@@ -193,7 +193,7 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">geodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geodist</span><span class="p">[</span><span class="n">sorted_idx</span><span class="p">]</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span><span class="p">[</span><span class="n">sorted_idx</span><span class="p">]</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist_alt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist_alt</span><span class="p">[</span><span class="n">sorted_idx</span><span class="p">]</span>
-    
+
   <span class="k">def</span> <span class="nf">add_cmap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">,</span>
                 <span class="n">str_labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">],</span>
                 <span class="n">lbl_colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;white&#39;</span><span class="p">]):</span>
@@ -236,7 +236,7 @@
     <span class="n">pops</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">popfile</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
     <span class="k">assert</span><span class="p">(</span><span class="n">pops</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">npops</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="o">=</span> <span class="n">pops</span>
-  
+
   <span class="k">def</span> <span class="nf">reorder_pops</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_poplist</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Reordering populations within a GeoVar instance </span>
 <span class="sd">      Args:</span>
@@ -250,7 +250,7 @@
     <span class="n">new_geodist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">acc</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">orig_geodist</span> <span class="o">=</span> <span class="n">new_geodist</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="o">=</span> <span class="n">new_poplist</span>
-    
+
   <span class="k">def</span> <span class="nf">add_poplabels_manual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">poplist</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Add list of population labels manually </span>
 <span class="sd">      Args:</span>
@@ -286,7 +286,7 @@
     <span class="c1"># setting up the vertical lines</span>
     <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xbar_pts</span><span class="p">:</span>
       <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bar_color</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">line_weight</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">);</span>
-    
+
     <span class="c1"># changing the border color</span>
     <span class="k">for</span> <span class="n">spine</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
       <span class="n">spine</span><span class="o">.</span><span class="n">set_edgecolor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">border_color</span><span class="p">);</span>
@@ -329,7 +329,7 @@
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">poplist</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Cumulative fraction of variants&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">);</span>
     <span class="k">return</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">nsnps</span><span class="p">,</span> <span class="n">y_pts</span><span class="p">)</span>
-  
+
   <span class="k">def</span> <span class="nf">plot_percentages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Generate a cumulative percentage plot   </span>
 <span class="sd">       Args:</span>
@@ -363,31 +363,31 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">geovar_obj_list</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">subsets</span><span class="p">))</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">geovar_obj_list</span><span class="p">)</span>
-    
-    <span class="n">fig_width</span> <span class="o">=</span> <span class="n">left_buff</span> <span class="o">+</span> <span class="n">xsize</span><span class="o">*</span><span class="n">n</span> <span class="o">+</span> <span class="n">hwidth</span><span class="o">*</span><span class="n">n</span> 
+
+    <span class="n">fig_width</span> <span class="o">=</span> <span class="n">left_buff</span> <span class="o">+</span> <span class="n">xsize</span><span class="o">*</span><span class="n">n</span> <span class="o">+</span> <span class="n">hwidth</span><span class="o">*</span><span class="n">n</span>
     <span class="n">fig_height</span> <span class="o">=</span> <span class="n">bot_buff</span> <span class="o">+</span> <span class="n">ysize</span> <span class="o">+</span> <span class="n">top_buff</span>
-    
+
     <span class="c1"># start the figure</span>
     <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">fig_width</span><span class="p">,</span><span class="n">fig_height</span><span class="p">))</span>
-    
+
     <span class="c1"># Setting the proportional arguments</span>
     <span class="n">left_start</span> <span class="o">=</span> <span class="n">left_buff</span> <span class="o">/</span> <span class="n">fig_width</span>
     <span class="n">left_increment</span> <span class="o">=</span> <span class="p">(</span><span class="n">fig_width</span> <span class="o">-</span> <span class="n">left_buff</span><span class="p">)</span><span class="o">/</span><span class="n">fig_width</span> <span class="o">/</span> <span class="n">n</span>
     <span class="n">bot_prop</span> <span class="o">=</span> <span class="n">bot_buff</span><span class="o">/</span><span class="n">fig_height</span>
     <span class="n">w_prop</span> <span class="o">=</span> <span class="n">left_increment</span><span class="o">-</span><span class="p">(</span><span class="n">hwidth</span><span class="o">/</span><span class="n">fig_width</span><span class="p">)</span>
     <span class="n">top_prop</span> <span class="o">=</span> <span class="n">ysize</span><span class="o">/</span><span class="n">fig_height</span>
-    
+
     <span class="c1"># Setting all the </span>
     <span class="n">axs</span> <span class="o">=</span> <span class="p">[</span><span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="n">left_start</span> <span class="o">+</span> <span class="n">i</span><span class="o">*</span><span class="n">left_increment</span><span class="p">,</span> <span class="n">bot_prop</span><span class="p">,</span> <span class="n">w_prop</span><span class="p">,</span> <span class="n">top_prop</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
     <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]];</span>
-    
+
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
         <span class="n">subset</span> <span class="o">=</span> <span class="n">subsets</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
         <span class="n">cur_geovar</span> <span class="o">=</span> <span class="n">geovar_obj_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">nsnps</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">cur_geovar</span><span class="o">.</span><span class="n">plot_geodist</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">superpops</span><span class="o">=</span><span class="n">superpops</span><span class="p">,</span> <span class="n">superpop_lbls</span><span class="o">=</span><span class="n">superpop_lbls</span><span class="p">)</span>
         <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">cur_geovar</span><span class="o">.</span><span class="n">poplist</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">cur_geovar</span><span class="o">.</span><span class="n">orig_missing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-          
+
           <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">cur_geovar</span><span class="o">.</span><span class="n">orig_ngeodist</span><span class="p">)</span> <span class="o">+</span> <span class="n">cur_geovar</span><span class="o">.</span><span class="n">orig_missing</span>
           <span class="n">nstr</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:,}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
           <span class="n">nmiss_str</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:,}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cur_geovar</span><span class="o">.</span><span class="n">orig_missing</span><span class="p">)</span>
@@ -397,7 +397,7 @@
           <span class="n">nstr</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:,}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
           <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="se">\n</span><span class="s1"> S = </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">subset</span><span class="p">,</span><span class="n">nstr</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
     <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span><span class="p">)</span>    
+    <span class="k">return</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span><span class="p">)</span>
 
 <span class="k">def</span> <span class="nf">plot_geodist_w_percentages</span><span class="p">(</span><span class="n">geovar_obj</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Cumulative fraction of variants&#39;</span><span class="p">,</span> <span class="n">xsize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ysize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">hwidth</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">top_buff</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">bot_buff</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">left_buff</span> <span class="o">=</span> <span class="mf">0.75</span><span class="p">,</span> <span class="n">superpops</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">superpop_lbls</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -405,24 +405,24 @@
 <span class="sd">      NOTE : this is a preliminary function currently </span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">n</span> <span class="o">=</span> <span class="mi">2</span>
-    
-    <span class="n">fig_width</span> <span class="o">=</span> <span class="n">left_buff</span> <span class="o">+</span> <span class="n">xsize</span><span class="o">*</span><span class="n">n</span> <span class="o">+</span> <span class="n">hwidth</span><span class="o">*</span><span class="n">n</span> 
+
+    <span class="n">fig_width</span> <span class="o">=</span> <span class="n">left_buff</span> <span class="o">+</span> <span class="n">xsize</span><span class="o">*</span><span class="n">n</span> <span class="o">+</span> <span class="n">hwidth</span><span class="o">*</span><span class="n">n</span>
     <span class="n">fig_height</span> <span class="o">=</span> <span class="n">bot_buff</span> <span class="o">+</span> <span class="n">ysize</span> <span class="o">+</span> <span class="n">top_buff</span>
-    
+
     <span class="c1"># start the figure</span>
     <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">fig_width</span><span class="p">,</span><span class="n">fig_height</span><span class="p">))</span>
-    
+
     <span class="c1"># Setting the proportional arguments</span>
     <span class="n">left_start</span> <span class="o">=</span> <span class="n">left_buff</span> <span class="o">/</span> <span class="n">fig_width</span>
     <span class="n">left_increment</span> <span class="o">=</span> <span class="p">(</span><span class="n">fig_width</span> <span class="o">-</span> <span class="n">left_buff</span><span class="p">)</span><span class="o">/</span><span class="n">fig_width</span> <span class="o">/</span> <span class="n">n</span>
     <span class="n">bot_prop</span> <span class="o">=</span> <span class="n">bot_buff</span><span class="o">/</span><span class="n">fig_height</span>
     <span class="n">w_prop</span> <span class="o">=</span> <span class="n">left_increment</span><span class="o">-</span><span class="p">(</span><span class="n">hwidth</span><span class="o">/</span><span class="n">fig_width</span><span class="p">)</span>
     <span class="n">top_prop</span> <span class="o">=</span> <span class="n">ysize</span><span class="o">/</span><span class="n">fig_height</span>
-    
+
     <span class="c1"># Setting all the </span>
     <span class="n">axs</span> <span class="o">=</span> <span class="p">[</span><span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="n">left_start</span> <span class="o">+</span> <span class="n">i</span><span class="o">*</span><span class="n">left_increment</span><span class="p">,</span> <span class="n">bot_prop</span><span class="p">,</span> <span class="n">w_prop</span><span class="p">,</span> <span class="n">top_prop</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
     <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]];</span>
-    
+
 
     <span class="n">geovar_obj</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">nsnps</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">geovar_obj</span><span class="o">.</span><span class="n">plot_geodist</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">superpops</span><span class="o">=</span><span class="n">superpops</span><span class="p">,</span> <span class="n">superpop_lbls</span><span class="o">=</span><span class="n">superpop_lbls</span><span class="p">)</span>
@@ -430,18 +430,18 @@
     <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">geovar_obj</span><span class="o">.</span><span class="n">orig_ngeodist</span><span class="p">)</span>
     <span class="n">nstr</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:,}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
     <span class="c1">#  Setting the title figures</span>
-    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="p">(</span><span class="n">hwidth</span><span class="o">/</span><span class="n">fig_width</span><span class="p">),</span> <span class="mf">1.01</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="se">\n</span><span class="s1"> (S = </span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">subset</span><span class="p">,</span><span class="n">nstr</span><span class="p">),</span> 
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="p">(</span><span class="n">hwidth</span><span class="o">/</span><span class="n">fig_width</span><span class="p">),</span> <span class="mf">1.01</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="se">\n</span><span class="s1"> (S = </span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">subset</span><span class="p">,</span><span class="n">nstr</span><span class="p">),</span>
                 <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
     <span class="n">geovar_obj</span><span class="o">.</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span>
     <span class="n">geovar_obj</span><span class="o">.</span><span class="n">plot_percentages</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
     <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([]);</span>
     <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span><span class="p">)</span>  
-  
+    <span class="k">return</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span><span class="p">)</span>
+
 </pre></div>
 
           </div>
-          
+
         </div>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
@@ -510,15 +510,15 @@
     </div>
     <div class="footer">
       &copy;2020, Arjun Biddanda, Daniel P. Rice, John Novembre.
-      
+
     </div>
 
-    
+
     <a href="https://github.com/aabiddanda/geovar" class="github">
         <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
     </a>
-    
 
-    
+
+
   </body>
 </html>

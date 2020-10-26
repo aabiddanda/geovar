@@ -15,7 +15,7 @@
     <script src="../../_static/language_data.js"></script>
     <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
+    <link rel="search" title="Search" href="../../search.html" />
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -28,17 +28,17 @@
              >modules</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">geovar  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" accesskey="U">Module code</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">geovar.geovar</a></li> 
+        <li class="nav-item nav-item-this"><a href="">geovar.geovar</a></li>
       </ul>
-    </div>  
+    </div>
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
           <div class="body" role="main">
-            
+
   <h1>Source code for geovar.geovar</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 <span class="kn">from</span> <span class="nn">geovar.utils</span> <span class="kn">import</span> <span class="n">sep_freq_mat_pops</span>
@@ -54,19 +54,19 @@
         <span class="k">assert</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mf">1.0</span><span class="p">))</span>
         <span class="k">assert</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mf">0.0</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">bins</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">freq_mat</span> <span class="o">=</span> <span class="kc">None</span> 
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_variants</span> <span class="o">=</span> <span class="kc">None</span> 
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_populations</span> <span class="o">=</span> <span class="kc">None</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">freq_mat</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_variants</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_populations</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pops</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">geovar_codes</span> <span class="o">=</span> <span class="kc">None</span></div>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">test_str</span> <span class="o">=</span> <span class="s1">&#39;GeoVar</span><span class="se">\n</span><span class="s1">&#39;</span> 
+        <span class="n">test_str</span> <span class="o">=</span> <span class="s1">&#39;GeoVar</span><span class="se">\n</span><span class="s1">&#39;</span>
         <span class="n">test_str</span> <span class="o">+=</span> <span class="s1">&#39;number of variants: </span><span class="si">%d</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_variants</span>
         <span class="n">test_str</span> <span class="o">+=</span> <span class="s1">&#39;number of pops: </span><span class="si">%d</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_populations</span>
         <span class="n">test_str</span> <span class="o">+=</span> <span class="s1">&#39;pops: &#39;</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pops</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
         <span class="c1"># NOTE : need to print the bins here</span>
-        <span class="n">test_str</span> <span class="o">+=</span> <span class="s1">&#39;allele freq bins: &#39;</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">])</span> 
+        <span class="n">test_str</span> <span class="o">+=</span> <span class="s1">&#39;allele freq bins: &#39;</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">])</span>
         <span class="k">return</span><span class="p">(</span><span class="n">test_str</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">add_freq_mat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">freq_mat_file</span><span class="p">):</span>
@@ -77,7 +77,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">af_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="n">freq_mat_file</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;\s&#39;</span><span class="p">)</span>
         <span class="n">pops</span><span class="p">,</span> <span class="n">freq_mat</span> <span class="o">=</span> <span class="n">sep_freq_mat_pops</span><span class="p">(</span><span class="n">af_df</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">pops</span> <span class="o">=</span> <span class="n">pops</span> 
+        <span class="bp">self</span><span class="o">.</span><span class="n">pops</span> <span class="o">=</span> <span class="n">pops</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">freq_mat</span> <span class="o">=</span> <span class="n">freq_mat</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_variants</span> <span class="o">=</span> <span class="n">freq_mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n_populations</span> <span class="o">=</span> <span class="n">freq_mat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
@@ -120,7 +120,7 @@
         <span class="n">uniq_geovar</span><span class="p">,</span> <span class="n">n_geovar</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geovar_codes</span><span class="p">,</span> <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">ncat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">uniq_geovar</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint32</span><span class="p">))</span>
         <span class="k">return</span><span class="p">(</span><span class="n">uniq_geovar</span><span class="p">,</span> <span class="n">n_geovar</span><span class="p">,</span> <span class="n">ncat</span><span class="p">)</span>
-    
+
     <span class="k">def</span> <span class="nf">geovar_codes_streaming</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">freq_mat_file</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;A streaming version of the geovar code generation algorithm </span>
 <span class="sd">           to avoid reading in the entire frequency file</span>
@@ -181,7 +181,7 @@
              >modules</a> |</li>
         <li class="nav-item nav-item-0"><a href="../../index.html">geovar  documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="../index.html" >Module code</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">geovar.geovar</a></li> 
+        <li class="nav-item nav-item-this"><a href="">geovar.geovar</a></li>
       </ul>
     </div>
     <div class="footer" role="contentinfo">

@@ -1,7 +1,7 @@
 Installation
 ############
 
-The easiest way to install geovar is via ``pip`` or ``pip3`` 
+The easiest way to install geovar is via ``pip`` or ``pip3``
 
 .. code-block:: bash
 

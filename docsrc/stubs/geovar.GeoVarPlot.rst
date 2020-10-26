@@ -5,14 +5,14 @@
 
 .. autoclass:: GeoVarPlot
 
-   
+
    .. automethod:: __init__
 
-   
+
    .. rubric:: Methods
 
    .. autosummary::
-   
+
       ~GeoVarPlot.__init__
       ~GeoVarPlot.add_cmap
       ~GeoVarPlot.add_data_geovar
@@ -25,9 +25,3 @@
       ~GeoVarPlot.plot_percentages
       ~GeoVarPlot.reorder_pops
       ~GeoVarPlot.set_colors
-   
-   
-
-   
-   
-   
