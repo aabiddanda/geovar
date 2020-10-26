@@ -1,3 +1,4 @@
+"""Configuration for documentation."""
 # Configuration file for the Sphinx documentation builder.
 #
 # This file only contains a selection of the most common options. For a full
@@ -12,20 +13,21 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..'))
+
+sys.path.insert(0, os.path.abspath(".."))
 
 
 # -- Project information -----------------------------------------------------
 
-project = 'geovar'
-copyright = '2020, Arjun Biddanda, Daniel P. Rice, John Novembre'
-author = 'Arjun Biddanda, Daniel P Rice, John Novembre'
+project = "geovar"
+copyright = "2020, Arjun Biddanda, Daniel P. Rice, John Novembre"
+author = "Arjun Biddanda, Daniel P Rice, John Novembre"
 
 # No version in docs, doesn't play nice with versioneer
 # The short X.Y version
-version = ''
+version = ""
 # The full version, including alpha/beta/rc tags
-release = ''
+release = ""
 
 # -- General configuration ---------------------------------------------------
 
@@ -42,32 +44,32 @@ extensions = [
     "sphinx.ext.viewcode",
     "nbsphinx",
     "sphinx_autodoc_typehints",
-    "sphinx.ext.todo"
+    "sphinx.ext.todo",
 ]
 
 todo_include_todos = True
 
 intersphinx_mapping = {
-    'python': ('https://docs.python.org/3/', None),
-    'numpy': ('https://docs.scipy.org/doc/numpy/', None),
-    'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
+    "python": ("https://docs.python.org/3/", None),
+    "numpy": ("https://docs.scipy.org/doc/numpy/", None),
+    "scipy": ("https://docs.scipy.org/doc/scipy/reference/", None),
 }
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['_templates']
+templates_path = ["_templates"]
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 #
-source_suffix = '.rst'
+source_suffix = ".rst"
 
 # The master toctree document.
-master_doc = 'index'
+master_doc = "index"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
+exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
 
 # The name of the Pygments (syntax highlighting) style to use.
@@ -81,7 +83,7 @@ napolean_use_rtype = False
 
 # Execute notebooks before conversion: 'always', 'never', 'auto' (default)
 # We execute all notebooks, exclude the slow ones using 'exclude_patterns'
-nbsphinx_execute = 'auto'
+nbsphinx_execute = "auto"
 
 # Use this kernel instead of the one stored in the notebook metadata:
 # nbsphinx_kernel_name = 'python3'
@@ -153,26 +155,26 @@ nbsphinx_prolog = r"""
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = "alabaster"
 
 html_theme_options = {
-    'show_powered_by': False,
-    'github_user': 'aabiddanda',
-    'github_repo': 'geovar',
-    'github_banner': True,
-    'show_related': False,
-    'note_bg': '#FFF59C'
+    "show_powered_by": False,
+    "github_user": "aabiddanda",
+    "github_repo": "geovar",
+    "github_banner": True,
+    "show_related": False,
+    "note_bg": "#FFF59C",
 }
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['_static']
+html_static_path = ["_static"]
 
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'geovardoc'
+htmlhelp_basename = "geovardoc"
 
 # -- Options for LaTeX output ------------------------------------------------
 
@@ -180,15 +182,12 @@ latex_elements = {
     # The paper size ('letterpaper' or 'a4paper').
     #
     # 'papersize': 'letterpaper',
-
     # The font size ('10pt', '11pt' or '12pt').
     #
     # 'pointsize': '10pt',
-
     # Additional stuff for the LaTeX preamble.
     #
     # 'preamble': '',
-
     # Latex figure (float) alignment
     #
     # 'figure_align': 'htbp',
@@ -230,4 +229,4 @@ epub_title = project
 # epub_uid = ''
 
 # A list of files that should not be packed into the epub file.
-epub_exclude_files = ['search.html']
+epub_exclude_files = ["search.html"]

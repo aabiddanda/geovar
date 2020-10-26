@@ -8,7 +8,7 @@ The geovar software was developed by Arjun Biddanda, with contributions from Dan
 
 ## Setup & Installation
 
-We highly recommend installing the package via `pip`. 
+We highly recommend installing the package via `pip`.
 
 ```
 pip install git+https://github.com/aabiddanda/geovar
