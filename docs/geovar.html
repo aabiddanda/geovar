@@ -46,10 +46,10 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="stubs/geovar.GeoVar.html#geovar.GeoVar" title="geovar.GeoVar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeoVar</span></code></a>([bins])</p></td>
-<td><p></p></td>
+<td><p>GeoVar object that performs binning of allele frequencies.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="stubs/geovar.GeoVarPlot.html#geovar.GeoVarPlot" title="geovar.GeoVarPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GeoVarPlot</span></code></a>()</p></td>
-<td><p></p></td>
+<td><p>Class for a GeoVar plot.</p></td>
 </tr>
 </tbody>
 </table>
@@ -63,19 +63,26 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="stubs/geovar.utils.html#module-geovar.utils" title="geovar.utils"><code class="xref py py-obj docutils literal notranslate"><span class="pre">geovar.utils</span></code></a></p></td>
-<td><p></p></td>
+<td><p>Utilities for file conversions for GeoVar.</p></td>
 </tr>
 </tbody>
 </table>
-<span class="target" id="module-geovar.utils"></span><dl class="py function">
+<span class="target" id="module-geovar.utils"></span><p>Utilities for file conversions for GeoVar.</p>
+<dl class="py function">
+<dt id="geovar.utils.flip_alleles">
+<code class="sig-prename descclassname">geovar.utils.</code><code class="sig-name descname">flip_alleles</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">acnt</span></em>, <em class="sig-param"><span class="n">flip</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/geovar/utils.html#flip_alleles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#geovar.utils.flip_alleles" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flip alleles if based on being the minor allele.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt id="geovar.utils.sep_freq_mat_pops">
 <code class="sig-prename descclassname">geovar.utils.</code><code class="sig-name descname">sep_freq_mat_pops</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">af_df</span></em>, <em class="sig-param"><span class="n">known_cols</span><span class="o">=</span><span class="default_value">['CHR', 'SNP', 'A1', 'A2', 'MAC', 'MAF']</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/geovar/utils.html#sep_freq_mat_pops"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#geovar.utils.sep_freq_mat_pops" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert an allele frequency data frame to a frequency array</p>
+<dd><p>Convert an allele frequency data frame to a frequency array.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>af_df</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>) – allele frequency data frame</p></li>
-<li><p><strong>known_cols</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>) – list of columns to exclude from being a population</p></li>
+<li><p><strong>af_df</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>) – allele frequency data frame.</p></li>
+<li><p><strong>known_cols</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>) – list of columns to exclude from being a population.</p></li>
 </ul>
 </dd>
 </dl>
@@ -84,15 +91,14 @@
 <dl class="py function">
 <dt id="geovar.utils.vcf_to_freq_table">
 <code class="sig-prename descclassname">geovar.utils.</code><code class="sig-name descname">vcf_to_freq_table</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vcf_file</span></em>, <em class="sig-param"><span class="n">pop_panel</span></em>, <em class="sig-param"><span class="n">outfile</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">minor_allele</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/geovar/utils.html#vcf_to_freq_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#geovar.utils.vcf_to_freq_table" title="Permalink to this definition">¶</a></dt>
-<dd><p>Converts a VCF File to a frequency table to be used as input to a GeoVar object</p>
+<dd><p>Convert a VCF File to a frequency table to be used as input to a GeoVar object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>vcf_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">string</span></code></a>) – filepath to VCF file (can be bgzipped)</p></li>
-<li><p><strong>pop_panel</strong> (<a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">string</span></code></a>) – filepath to population panel file.
-(Not all individuals from the VCF need to be defined in population panel)</p></li>
-<li><p><strong>outfile</strong> (<a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">string</span></code></a>) – file to write output allele frequency table to</p></li>
-<li><p><strong>minor_allele</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>) – flag to indicate if we want to polarize to the minor allele</p></li>
+<li><p><strong>vcf_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">string</span></code></a>) – filepath to VCF file (can be bgzipped).</p></li>
+<li><p><strong>pop_panel</strong> (<a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">string</span></code></a>) – filepath to population panel file.</p></li>
+<li><p><strong>outfile</strong> (<a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">string</span></code></a>) – file to write output allele frequency table to.</p></li>
+<li><p><strong>minor_allele</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code></a>) – flag to indicate if we want to polarize to the minor allele.</p></li>
 </ul>
 </dd>
 </dl>

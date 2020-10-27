@@ -35,6 +35,7 @@
 
   <div class="section" id="module-geovar.utils">
 <span id="geovar-utils"></span><h1>geovar.utils<a class="headerlink" href="#module-geovar.utils" title="Permalink to this headline">¶</a></h1>
+<p>Utilities for file conversions for GeoVar.</p>
 <p class="rubric">Functions</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -42,11 +43,14 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../geovar.html#geovar.utils.sep_freq_mat_pops" title="geovar.utils.sep_freq_mat_pops"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sep_freq_mat_pops</span></code></a>(af_df[, known_cols])</p></td>
-<td><p>Convert an allele frequency data frame to a frequency array</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../geovar.html#geovar.utils.flip_alleles" title="geovar.utils.flip_alleles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flip_alleles</span></code></a>(acnt[, flip])</p></td>
+<td><p>Flip alleles if based on being the minor allele.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="../geovar.html#geovar.utils.vcf_to_freq_table" title="geovar.utils.vcf_to_freq_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vcf_to_freq_table</span></code></a>(vcf_file, pop_panel[, …])</p></td>
-<td><p>Converts a VCF File to a frequency table to be used as input to a GeoVar object</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="../geovar.html#geovar.utils.sep_freq_mat_pops" title="geovar.utils.sep_freq_mat_pops"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sep_freq_mat_pops</span></code></a>(af_df[, known_cols])</p></td>
+<td><p>Convert an allele frequency data frame to a frequency array.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="../geovar.html#geovar.utils.vcf_to_freq_table" title="geovar.utils.vcf_to_freq_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vcf_to_freq_table</span></code></a>(vcf_file, pop_panel[, …])</p></td>
+<td><p>Convert a VCF File to a frequency table to be used as input to a GeoVar object.</p></td>
 </tr>
 </tbody>
 </table>

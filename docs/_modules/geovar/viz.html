@@ -33,411 +33,592 @@
           <div class="body" role="main">
 
   <h1>Source code for geovar.viz</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="sd">&quot;&quot;&quot;Module for generating GeoVar plots for a given dataset.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">matplotlib.patches</span> <span class="k">as</span> <span class="nn">patches</span>
 <span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
 
+
 <div class="viewcode-block" id="GeoVarPlot"><a class="viewcode-back" href="../../stubs/geovar.GeoVarPlot.html#geovar.GeoVarPlot">[docs]</a><span class="k">class</span> <span class="nc">GeoVarPlot</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class for a GeoVar plot.&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="GeoVarPlot.__init__"><a class="viewcode-back" href="../../stubs/geovar.GeoVarPlot.html#geovar.GeoVarPlot.__init__">[docs]</a>  <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Initializing plotting object &quot;&quot;&quot;</span>
-    <span class="c1"># Defining general parameters</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">title_fontsize</span> <span class="o">=</span> <span class="mi">12</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">h_orient</span> <span class="o">=</span><span class="s1">&#39;center&#39;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">v_orient</span> <span class="o">=</span> <span class="s1">&#39;center&#39;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">bar_color</span> <span class="o">=</span> <span class="s1">&#39;gray&#39;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">border_color</span> <span class="o">=</span> <span class="s1">&#39;gray&#39;</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">line_weight</span> <span class="o">=</span> <span class="mf">0.5</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">x_lbl_fontsize</span> <span class="o">=</span> <span class="mi">16</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">y_lbl_fontsize</span> <span class="o">=</span> <span class="mi">12</span>
-    <span class="c1"># Original Data for GeoVar</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">orig_missing</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">orig_geodist</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">orig_npops</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">orig_ncat</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="c1"># Actual plotting data for GeoVar</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">geodist</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">npops</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">ncat</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="c1"># Colormap parameters</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">colors</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">str_labels</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">lbl_colors</span> <span class="o">=</span> <span class="kc">None</span></div>
+<div class="viewcode-block" id="GeoVarPlot.__init__"><a class="viewcode-back" href="../../stubs/geovar.GeoVarPlot.html#geovar.GeoVarPlot.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize plotting object with default fields.&quot;&quot;&quot;</span>
+        <span class="c1"># Defining general parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title_fontsize</span> <span class="o">=</span> <span class="mi">12</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">h_orient</span> <span class="o">=</span> <span class="s2">&quot;center&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v_orient</span> <span class="o">=</span> <span class="s2">&quot;center&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bar_color</span> <span class="o">=</span> <span class="s2">&quot;gray&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">border_color</span> <span class="o">=</span> <span class="s2">&quot;gray&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">line_weight</span> <span class="o">=</span> <span class="mf">0.5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="mf">0.5</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x_lbl_fontsize</span> <span class="o">=</span> <span class="mi">16</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y_lbl_fontsize</span> <span class="o">=</span> <span class="mi">12</span>
+        <span class="c1"># Original Data for GeoVar</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_missing</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_geodist</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_npops</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_ncat</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Actual plotting data for GeoVar</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geodist</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">npops</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ncat</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># Colormap parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">colors</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">str_labels</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lbl_colors</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-  <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Print all active parameters for plotting &quot;&quot;&quot;</span>
-    <span class="n">test_str</span> <span class="o">=</span> <span class="s1">&#39;Fontsize : </span><span class="si">%d</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span>
-    <span class="n">test_str</span> <span class="o">+=</span> <span class="s1">&#39;Bar Color : </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">bar_color</span>
-    <span class="n">test_str</span> <span class="o">+=</span> <span class="s1">&#39;Border Color : </span><span class="si">%s</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_color</span>
-    <span class="n">test_str</span> <span class="o">+=</span> <span class="s1">&#39;Line Weight : </span><span class="si">%0.2f</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">line_weight</span>
-    <span class="n">test_str</span> <span class="o">+=</span> <span class="s1">&#39;Alpha : </span><span class="si">%0.2f</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span>
-    <span class="c1"># Printing data level parameters</span>
-    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-      <span class="n">test_str</span> <span class="o">+=</span> <span class="s1">&#39;Number of SNPS : </span><span class="si">%d</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span><span class="p">)</span>
-      <span class="n">test_str</span> <span class="o">+=</span> <span class="s1">&#39;Number of Populations : </span><span class="si">%d</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">npops</span>
-      <span class="n">test_str</span> <span class="o">+=</span> <span class="s1">&#39;Number of Categories : </span><span class="si">%d</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">ncat</span>
-    <span class="k">else</span><span class="p">:</span>
-      <span class="n">test_str</span> <span class="o">+=</span> <span class="s1">&#39;Number of SNPS : 0</span><span class="se">\n</span><span class="s1">&#39;</span>
-      <span class="n">test_str</span> <span class="o">+=</span> <span class="s1">&#39;Number of Populations : NA</span><span class="se">\n</span><span class="s1">&#39;</span>
-      <span class="n">test_str</span> <span class="o">+=</span> <span class="s1">&#39;Number of Categories : NA</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print all active parameters for plotting.&quot;&quot;&quot;</span>
+        <span class="n">test_str</span> <span class="o">=</span> <span class="s2">&quot;Fontsize : </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span>
+        <span class="n">test_str</span> <span class="o">+=</span> <span class="s2">&quot;Bar Color : </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">bar_color</span>
+        <span class="n">test_str</span> <span class="o">+=</span> <span class="s2">&quot;Border Color : </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">border_color</span>
+        <span class="n">test_str</span> <span class="o">+=</span> <span class="s2">&quot;Line Weight : </span><span class="si">%0.2f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">line_weight</span>
+        <span class="n">test_str</span> <span class="o">+=</span> <span class="s2">&quot;Alpha : </span><span class="si">%0.2f</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span>
+        <span class="c1"># Printing data level parameters</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">test_str</span> <span class="o">+=</span> <span class="s2">&quot;Number of SNPS : </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span><span class="p">)</span>
+            <span class="n">test_str</span> <span class="o">+=</span> <span class="s2">&quot;Number of Populations : </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">npops</span>
+            <span class="n">test_str</span> <span class="o">+=</span> <span class="s2">&quot;Number of Categories : </span><span class="si">%d</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">ncat</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">test_str</span> <span class="o">+=</span> <span class="s2">&quot;Number of SNPS : 0</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">test_str</span> <span class="o">+=</span> <span class="s2">&quot;Number of Populations : NA</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">test_str</span> <span class="o">+=</span> <span class="s2">&quot;Number of Categories : NA</span><span class="se">\n</span><span class="s2">&quot;</span>
 
-    <span class="k">return</span><span class="p">(</span><span class="n">test_str</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">test_str</span>
 
-  <span class="k">def</span> <span class="nf">add_text_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputfile</span><span class="p">,</span> <span class="n">filt_unobserved</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Add/replace data for a GeoDistPlot object &quot;&quot;&quot;</span>
-    <span class="n">df</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">inputfile</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
-    <span class="n">geodist</span> <span class="o">=</span> <span class="n">df</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">ngeodist</span> <span class="o">=</span> <span class="n">df</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">geodist</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">ngeodist</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
-    <span class="n">npops</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">geodist</span><span class="p">])</span>
-    <span class="n">ncat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">max</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">geodist</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
-    <span class="c1"># Testing out a filtering operation </span>
-    <span class="k">if</span> <span class="n">filt_unobserved</span><span class="p">:</span>
-      <span class="n">unobserved_geodist</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span> <span class="o">*</span> <span class="n">npops</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-      <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">geodist</span> <span class="o">==</span> <span class="n">unobserved_geodist</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-      <span class="k">if</span> <span class="n">idx</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">orig_missing</span> <span class="o">=</span> <span class="n">ngeodist</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">geodist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">geodist</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
-        <span class="n">ngeodist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">ngeodist</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
-      <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">npops</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">orig_npops</span> <span class="o">=</span> <span class="n">npops</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">orig_geodist</span> <span class="o">=</span> <span class="n">geodist</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span> <span class="o">=</span> <span class="n">ngeodist</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">orig_ncat</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ncat</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span><span class="p">))</span>
-    <span class="c1"># Setting all the plotting variables</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">npops</span> <span class="o">=</span> <span class="n">npops</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">geodist</span> <span class="o">=</span> <span class="n">geodist</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span> <span class="o">=</span> <span class="n">ngeodist</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">ncat</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ncat</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span>
+    <span class="k">def</span> <span class="nf">add_text_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputfile</span><span class="p">,</span> <span class="n">filt_unobserved</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add/replace data for a GeoDistPlot object.&quot;&quot;&quot;</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">inputfile</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">geodist</span> <span class="o">=</span> <span class="n">df</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="n">ngeodist</span> <span class="o">=</span> <span class="n">df</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">geodist</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">ngeodist</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">npops</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">geodist</span><span class="p">])</span>
+        <span class="n">ncat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="nb">max</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">geodist</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+        <span class="c1"># Testing out a filtering operation</span>
+        <span class="k">if</span> <span class="n">filt_unobserved</span><span class="p">:</span>
+            <span class="n">unobserved_geodist</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span> <span class="o">*</span> <span class="n">npops</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">geodist</span> <span class="o">==</span> <span class="n">unobserved_geodist</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">idx</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">orig_missing</span> <span class="o">=</span> <span class="n">ngeodist</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">geodist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">geodist</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+                <span class="n">ngeodist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">ngeodist</span><span class="p">,</span> <span class="n">idx</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">npops</span><span class="p">))</span> <span class="o">&lt;=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_npops</span> <span class="o">=</span> <span class="n">npops</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_geodist</span> <span class="o">=</span> <span class="n">geodist</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span> <span class="o">=</span> <span class="n">ngeodist</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_ncat</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ncat</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span><span class="p">)</span>
+        <span class="c1"># Setting all the plotting variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">npops</span> <span class="o">=</span> <span class="n">npops</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geodist</span> <span class="o">=</span> <span class="n">geodist</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span> <span class="o">=</span> <span class="n">ngeodist</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ncat</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">ncat</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span>
 
-  <span class="k">def</span> <span class="nf">add_data_jsfs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jsfs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Add data from a joint SFS via numpy   &quot;&quot;&quot;</span>
-    <span class="n">npops</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">jsfs</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-    <span class="n">ncats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">jsfs</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-    <span class="c1"># Assert that all of the populations have the same categories</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">ncats</span> <span class="o">==</span> <span class="n">ncats</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
-    <span class="c1"># iterate through them all...</span>
-    <span class="n">geo_codes</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="n">ngeo_codes</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">ndenumerate</span><span class="p">(</span><span class="n">jsfs</span><span class="p">):</span>
-      <span class="c1"># generate category</span>
-      <span class="n">cat</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">i</span><span class="p">)])</span>
-      <span class="n">geo_codes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cat</span><span class="p">)</span>
-      <span class="n">ngeo_codes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">geodist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">geo_codes</span><span class="p">)</span>
-    <span class="n">ngeodist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ngeo_codes</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">geodist</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">ngeodist</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">orig_npops</span> <span class="o">=</span> <span class="n">npops</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">orig_geodist</span> <span class="o">=</span> <span class="n">geodist</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span> <span class="o">=</span> <span class="n">ngeodist</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">orig_ncat</span> <span class="o">=</span> <span class="n">ncats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span><span class="p">))</span>
-    <span class="c1"># Setting all the plotting variables</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">npops</span> <span class="o">=</span> <span class="n">npops</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">geodist</span> <span class="o">=</span> <span class="n">geodist</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span> <span class="o">=</span> <span class="n">ngeodist</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">ncat</span> <span class="o">=</span> <span class="n">ncats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span>
+    <span class="k">def</span> <span class="nf">add_data_jsfs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">jsfs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add data from a joint SFS via numpy.&quot;&quot;&quot;</span>
+        <span class="n">npops</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">jsfs</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">ncats</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">jsfs</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="c1"># Assert that all of the populations have the same categories</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">ncats</span> <span class="o">==</span> <span class="n">ncats</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="c1"># iterate through them all...</span>
+        <span class="n">geo_codes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">ngeo_codes</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">ndenumerate</span><span class="p">(</span><span class="n">jsfs</span><span class="p">):</span>
+            <span class="c1"># generate category</span>
+            <span class="n">cat</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">i</span><span class="p">)])</span>
+            <span class="n">geo_codes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cat</span><span class="p">)</span>
+            <span class="n">ngeo_codes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">geodist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">geo_codes</span><span class="p">)</span>
+        <span class="n">ngeodist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ngeo_codes</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">geodist</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="n">ngeodist</span><span class="o">.</span><span class="n">size</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_npops</span> <span class="o">=</span> <span class="n">npops</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_geodist</span> <span class="o">=</span> <span class="n">geodist</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span> <span class="o">=</span> <span class="n">ngeodist</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_ncat</span> <span class="o">=</span> <span class="n">ncats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span><span class="p">)</span>
+        <span class="c1"># Setting all the plotting variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">npops</span> <span class="o">=</span> <span class="n">npops</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geodist</span> <span class="o">=</span> <span class="n">geodist</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span> <span class="o">=</span> <span class="n">ngeodist</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ncat</span> <span class="o">=</span> <span class="n">ncats</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span>
 
-  <span class="k">def</span> <span class="nf">add_data_geovar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geovar_obj</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Add in data directly from a GeoVar object &quot;&quot;&quot;</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">geovar_obj</span><span class="o">.</span><span class="n">geovar_codes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="c1"># # Count up the geovar codes</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">orig_npops</span> <span class="o">=</span> <span class="n">geovar_obj</span><span class="o">.</span><span class="n">n_populations</span>
-    <span class="n">uniq_geodist</span><span class="p">,</span> <span class="n">n_geodist</span><span class="p">,</span> <span class="n">ncat</span> <span class="o">=</span> <span class="n">geovar_obj</span><span class="o">.</span><span class="n">count_geovar_codes</span><span class="p">()</span>
-    <span class="n">rev_sort</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">n_geodist</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">orig_geodist</span> <span class="o">=</span> <span class="n">uniq_geodist</span><span class="p">[</span><span class="n">rev_sort</span><span class="p">]</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span> <span class="o">=</span> <span class="n">n_geodist</span><span class="p">[</span><span class="n">rev_sort</span><span class="p">]</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">orig_ncat</span> <span class="o">=</span> <span class="n">ncat</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span><span class="p">))</span>
-    <span class="c1"># Setting all plotting variables</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">npops</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_npops</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">geodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_geodist</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">ncat</span> <span class="o">=</span> <span class="n">ncat</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="o">=</span> <span class="n">geovar_obj</span><span class="o">.</span><span class="n">pops</span>
+    <span class="k">def</span> <span class="nf">add_data_geovar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">geovar_obj</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add in data directly from a GeoVar object.&quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">geovar_obj</span><span class="o">.</span><span class="n">geovar_codes</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="c1"># # Count up the geovar codes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_npops</span> <span class="o">=</span> <span class="n">geovar_obj</span><span class="o">.</span><span class="n">n_populations</span>
+        <span class="n">uniq_geodist</span><span class="p">,</span> <span class="n">n_geodist</span><span class="p">,</span> <span class="n">ncat</span> <span class="o">=</span> <span class="n">geovar_obj</span><span class="o">.</span><span class="n">count_geovar_codes</span><span class="p">()</span>
+        <span class="n">rev_sort</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">n_geodist</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_geodist</span> <span class="o">=</span> <span class="n">uniq_geodist</span><span class="p">[</span><span class="n">rev_sort</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span> <span class="o">=</span> <span class="n">n_geodist</span><span class="p">[</span><span class="n">rev_sort</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_ncat</span> <span class="o">=</span> <span class="n">ncat</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span><span class="p">)</span>
+        <span class="c1"># Setting all plotting variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">npops</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_npops</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_geodist</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ncat</span> <span class="o">=</span> <span class="n">ncat</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="o">=</span> <span class="n">geovar_obj</span><span class="o">.</span><span class="n">pops</span>
 
-  <span class="k">def</span> <span class="nf">filter_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_freq</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span> <span class="n">rare</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Filter geovar data for easier plotting by removing</span>
-<span class="sd">       some lower-frequency categories</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_geodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">rare</span><span class="p">:</span>
-      <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span> <span class="o">&lt;</span> <span class="n">max_freq</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
-      <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span> <span class="o">&gt;=</span> <span class="n">max_freq</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="c1"># TODO : have this create a new variable and not reset</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist_alt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">geodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_geodist</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span><span class="p">)</span>
-    <span class="c1"># sort to try to order based on frequency (high to low)</span>
-    <span class="n">sorted_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span><span class="p">[</span><span class="n">sorted_idx</span><span class="p">]</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">geodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geodist</span><span class="p">[</span><span class="n">sorted_idx</span><span class="p">]</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span><span class="p">[</span><span class="n">sorted_idx</span><span class="p">]</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist_alt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist_alt</span><span class="p">[</span><span class="n">sorted_idx</span><span class="p">]</span>
+    <span class="k">def</span> <span class="nf">filter_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">max_freq</span><span class="o">=</span><span class="mf">0.005</span><span class="p">,</span> <span class="n">rare</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Filter geovar data for easier plotting by removing some lower-frequency categories.&quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_geodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">rare</span><span class="p">:</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span> <span class="o">&lt;</span> <span class="n">max_freq</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span> <span class="o">&gt;=</span> <span class="n">max_freq</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="mi">0</span>
+        <span class="c1"># TODO : have this create a new variable and not reset</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist_alt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_geodist</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span><span class="p">)</span>
+        <span class="c1"># sort to try to order based on frequency (high to low)</span>
+        <span class="n">sorted_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span><span class="p">[</span><span class="n">sorted_idx</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">geodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">geodist</span><span class="p">[</span><span class="n">sorted_idx</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span><span class="p">[</span><span class="n">sorted_idx</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist_alt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist_alt</span><span class="p">[</span><span class="n">sorted_idx</span><span class="p">]</span>
 
-  <span class="k">def</span> <span class="nf">add_cmap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_cmap</span><span class="o">=</span><span class="s1">&#39;Blues&#39;</span><span class="p">,</span>
-                <span class="n">str_labels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;U&#39;</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">],</span>
-                <span class="n">lbl_colors</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;white&#39;</span><span class="p">]):</span>
-    <span class="sd">&quot;&quot;&quot; Create a colormap object to use &quot;&quot;&quot;</span>
-    <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ncat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">str_labels</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">lbl_colors</span><span class="p">))</span>
-    <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">str_labels</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ncat</span><span class="p">)</span>
-    <span class="c1"># Generating a discrete mapping</span>
-    <span class="n">base</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="n">base_cmap</span><span class="p">)</span>
-    <span class="n">color_list</span> <span class="o">=</span> <span class="n">base</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ncat</span><span class="p">))</span>
-    <span class="n">cmap_name</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ncat</span><span class="p">)</span>
-    <span class="n">test_cmap</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">cmap_name</span><span class="p">,</span> <span class="n">color_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ncat</span><span class="p">)</span>
-    <span class="c1"># normalizing to 1</span>
-    <span class="n">norm</span> <span class="o">=</span> <span class="n">mpl</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ncat</span><span class="p">)</span>
-    <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">mpl</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">rgb2hex</span><span class="p">(</span><span class="n">test_cmap</span><span class="p">(</span><span class="n">norm</span><span class="p">(</span><span class="n">i</span><span class="p">)))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ncat</span><span class="p">)]</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">colors</span> <span class="o">=</span> <span class="n">colors</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">str_labels</span> <span class="o">=</span> <span class="n">str_labels</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">lbl_colors</span> <span class="o">=</span> <span class="n">lbl_colors</span>
+    <span class="k">def</span> <span class="nf">sort_geodist</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Sort the geovar codes according to abundance.&quot;&quot;&quot;</span>
+        <span class="n">sorted_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span><span class="p">[</span><span class="n">sorted_idx</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span><span class="p">[</span><span class="n">sorted_idx</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_geodist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_geodist</span><span class="p">[</span><span class="n">sorted_idx</span><span class="p">]</span>
 
-  <span class="k">def</span> <span class="nf">set_colors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colors</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Add custom hex colors for GeoVar plot </span>
-<span class="sd">       Args:</span>
-<span class="sd">           colors (:obj:`list`): list of hexcodes for defining colors</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ncat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">colors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">))</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">colors</span> <span class="o">=</span> <span class="n">colors</span>
+    <span class="k">def</span> <span class="nf">add_cmap</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">base_cmap</span><span class="o">=</span><span class="s2">&quot;Blues&quot;</span><span class="p">,</span>
+        <span class="n">str_labels</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;U&quot;</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">],</span>
+        <span class="n">lbl_colors</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="s2">&quot;white&quot;</span><span class="p">],</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create a colormap object to use.&quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">ncat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">str_labels</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">lbl_colors</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">str_labels</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">ncat</span>
+        <span class="c1"># Generating a discrete mapping</span>
+        <span class="n">base</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="n">base_cmap</span><span class="p">)</span>
+        <span class="n">color_list</span> <span class="o">=</span> <span class="n">base</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ncat</span><span class="p">))</span>
+        <span class="n">cmap_name</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ncat</span><span class="p">)</span>
+        <span class="n">test_cmap</span> <span class="o">=</span> <span class="n">base</span><span class="o">.</span><span class="n">from_list</span><span class="p">(</span><span class="n">cmap_name</span><span class="p">,</span> <span class="n">color_list</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ncat</span><span class="p">)</span>
+        <span class="c1"># normalizing to 1</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">mpl</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ncat</span><span class="p">)</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">mpl</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">rgb2hex</span><span class="p">(</span><span class="n">test_cmap</span><span class="p">(</span><span class="n">norm</span><span class="p">(</span><span class="n">i</span><span class="p">)))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ncat</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">colors</span> <span class="o">=</span> <span class="n">colors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">str_labels</span> <span class="o">=</span> <span class="n">str_labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lbl_colors</span> <span class="o">=</span> <span class="n">lbl_colors</span>
 
-  <span class="k">def</span> <span class="nf">add_poplabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">popfile</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Add population labels from a file for GeoVar plot </span>
-<span class="sd">       Args:</span>
-<span class="sd">           popfile (:obj:`string`): path to population list file with one file per line</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">npops</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ncat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="c1"># Reading the appropriate population file</span>
-    <span class="n">pops</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">popfile</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">pops</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">npops</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="o">=</span> <span class="n">pops</span>
+    <span class="k">def</span> <span class="nf">set_colors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">colors</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add custom hex colors for GeoVar plot.</span>
 
-  <span class="k">def</span> <span class="nf">reorder_pops</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_poplist</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Reordering populations within a GeoVar instance </span>
-<span class="sd">      Args:</span>
-<span class="sd">        new_poplist (:obj:`list`): list of population names but reordered</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">assert</span><span class="p">(</span><span class="n">new_poplist</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">poplist</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
-    <span class="n">new_pop_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="o">==</span> <span class="n">i</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">new_poplist</span><span class="p">])</span>
-    <span class="n">acc</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
-        <span class="n">acc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_geodist</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">new_pop_idx</span><span class="p">]))</span>
-    <span class="n">new_geodist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">acc</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">orig_geodist</span> <span class="o">=</span> <span class="n">new_geodist</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="o">=</span> <span class="n">new_poplist</span>
+<span class="sd">        Args:</span>
+<span class="sd">            colors (:obj:`list`): list of hexcodes for defining colors</span>
 
-  <span class="k">def</span> <span class="nf">add_poplabels_manual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">poplist</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Add list of population labels manually </span>
-<span class="sd">      Args:</span>
-<span class="sd">        poplist (:obj:`list`): list of population names for the GeoVar plot</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">npops</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ncat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">poplist</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">npops</span><span class="p">)</span>
-    <span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="o">=</span> <span class="n">poplist</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">ncat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">colors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">colors</span> <span class="o">=</span> <span class="n">colors</span>
 
-  <span class="k">def</span> <span class="nf">plot_geovar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generate a GeoVar plot on a matplotlib axis </span>
-<span class="sd">       Args:</span>
-<span class="sd">        ax (:obj:`matplotlib.axes`): plotting axis from matplotlib</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Starting assertions to make sure input is alright</span>
-    <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">npops</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ncat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">colors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">str_labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">lbl_colors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="k">assert</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="c1"># Setting up the codes here</span>
-    <span class="n">x_limits</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()</span>
-    <span class="n">xbar_pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x_limits</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x_limits</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">num</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">npops</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="n">xpts_shifted</span> <span class="o">=</span> <span class="p">(</span><span class="n">xbar_pts</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">xbar_pts</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">/</span><span class="mf">2.0</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">xpts_shifted</span><span class="p">)</span>
-    <span class="c1"># setting up the vertical lines</span>
-    <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xbar_pts</span><span class="p">:</span>
-      <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bar_color</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">line_weight</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">);</span>
+    <span class="k">def</span> <span class="nf">add_poplabels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">popfile</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add population labels from a file for GeoVar plot.</span>
 
-    <span class="c1"># changing the border color</span>
-    <span class="k">for</span> <span class="n">spine</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-      <span class="n">spine</span><span class="o">.</span><span class="n">set_edgecolor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">border_color</span><span class="p">);</span>
+<span class="sd">        Args:</span>
+<span class="sd">            popfile (:obj:`string`): path to population list file with one file per line.</span>
 
-    <span class="c1"># Plotting the horizontal bars in this case</span>
-    <span class="n">ylims</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()</span>
-    <span class="n">y_pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">ylims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">ylims</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">n_y</span> <span class="o">=</span> <span class="n">y_pts</span><span class="o">.</span><span class="n">size</span>
-    <span class="n">cur_y</span> <span class="o">=</span> <span class="n">ylims</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">nsnps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_y</span><span class="p">):</span>
-      <span class="n">y</span> <span class="o">=</span> <span class="n">y_pts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-      <span class="n">y_dist</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">cur_y</span>
-      <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bar_color</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">line_weight</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">);</span>
-      <span class="n">cur_code</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">geodist</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-      <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">npops</span><span class="p">):</span>
-        <span class="c1"># Defining the current category</span>
-        <span class="n">cur_cat</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cur_code</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
-        <span class="c1"># Drawing in the rectangle</span>
-        <span class="n">cur_xy</span> <span class="o">=</span> <span class="n">xbar_pts</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">cur_y</span>
-        <span class="n">rect</span> <span class="o">=</span> <span class="n">patches</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">(</span><span class="n">xy</span> <span class="o">=</span> <span class="n">cur_xy</span><span class="p">,</span>
-                                 <span class="n">width</span><span class="o">=</span><span class="p">(</span><span class="n">xbar_pts</span><span class="p">[</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">cur_xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
-                                 <span class="n">height</span><span class="o">=</span><span class="n">y_dist</span><span class="p">,</span>
-                                 <span class="n">facecolor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="n">cur_cat</span><span class="p">]);</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">rect</span><span class="p">);</span>
-        <span class="c1"># Drawing in the text</span>
-        <span class="n">y_frac</span> <span class="o">=</span> <span class="n">y_dist</span><span class="o">/</span><span class="p">(</span><span class="n">ylims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">ylims</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-        <span class="n">fontscale</span> <span class="o">=</span> <span class="mf">1.0</span>
-        <span class="n">freq_thresh</span> <span class="o">=</span> <span class="mf">0.06</span>
-        <span class="k">if</span> <span class="n">y_frac</span> <span class="o">&lt;</span> <span class="n">freq_thresh</span><span class="p">:</span>
-          <span class="n">fontscale</span> <span class="o">=</span> <span class="n">y_frac</span><span class="o">*</span><span class="n">fontscale</span><span class="o">/</span><span class="n">freq_thresh</span>
-        <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">xpts_shifted</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
-                <span class="n">y</span><span class="o">=</span><span class="p">(</span><span class="n">cur_y</span> <span class="o">+</span> <span class="n">y_dist</span><span class="o">/</span><span class="mf">2.0</span><span class="p">),</span>
-                <span class="n">ha</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">h_orient</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">v_orient</span><span class="p">,</span>
-                <span class="n">s</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">str_labels</span><span class="p">[</span><span class="n">cur_cat</span><span class="p">],</span>
-                <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lbl_colors</span><span class="p">[</span><span class="n">cur_cat</span><span class="p">],</span>
-                <span class="n">fontsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span><span class="o">*</span><span class="n">fontscale</span><span class="p">);</span>
-      <span class="n">cur_y</span> <span class="o">=</span> <span class="n">y</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ylims</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">poplist</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Cumulative fraction of variants&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">);</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">nsnps</span><span class="p">,</span> <span class="n">y_pts</span><span class="p">)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">geodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">npops</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">ncat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="c1"># Reading the appropriate population file</span>
+        <span class="n">pops</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">popfile</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">pops</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">npops</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="o">=</span> <span class="n">pops</span>
 
-  <span class="k">def</span> <span class="nf">plot_percentages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Generate a cumulative percentage plot   </span>
-<span class="sd">       Args:</span>
-<span class="sd">        ax (:obj:`matplotlib.axes`): plotting axis from matplotlib</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">ns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span>
-    <span class="n">fracs</span> <span class="o">=</span> <span class="n">ns</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">ns</span><span class="p">)</span>
-    <span class="n">cum_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fgeodist</span><span class="p">)</span>
-    <span class="c1"># Setting the border here</span>
-    <span class="k">for</span> <span class="n">spine</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
-      <span class="n">spine</span><span class="o">.</span><span class="n">set_edgecolor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">border_color</span><span class="p">);</span>
-    <span class="n">prev</span> <span class="o">=</span> <span class="mf">0.0</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cum_frac</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
-      <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">cum_frac</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">lw</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bar_color</span><span class="p">)</span>
-      <span class="c1"># Get the midpoint </span>
-      <span class="n">ydist</span> <span class="o">=</span> <span class="p">(</span><span class="n">cum_frac</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">prev</span><span class="p">)</span><span class="o">/</span><span class="mf">2.</span>
-      <span class="n">fontscale</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span><span class="o">*</span><span class="n">fracs</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-      <span class="n">nstr</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:,}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ns</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-      <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">prev</span><span class="o">+</span><span class="n">ydist</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39; </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%d%%</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">nstr</span><span class="p">,</span><span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist_alt</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="p">)),</span> <span class="n">va</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span><span class="o">*</span><span class="n">fontscale</span><span class="p">)</span>
-      <span class="n">prev</span> <span class="o">=</span> <span class="n">cum_frac</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span></div>
+    <span class="k">def</span> <span class="nf">reorder_pops</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_poplist</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reordering populations within a GeoVar instance.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            new_poplist (:obj:`list`): list of population names but reordered.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">new_poplist</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">poplist</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">new_pop_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="o">==</span> <span class="n">i</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">new_poplist</span><span class="p">])</span>
+        <span class="n">acc</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+            <span class="n">acc</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_geodist</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">new_pop_idx</span><span class="p">]))</span>
+        <span class="n">new_geodist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">acc</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">orig_geodist</span> <span class="o">=</span> <span class="n">new_geodist</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="o">=</span> <span class="n">new_poplist</span>
+
+    <span class="k">def</span> <span class="nf">add_poplabels_manual</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">poplist</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add list of population labels manually.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            poplist (:obj:`list`): list of population names for the GeoVar plot.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">geodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">npops</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">ncat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">poplist</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">npops</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="o">=</span> <span class="n">poplist</span>
+
+    <span class="c1"># def plot_geovar(self, ax):</span>
+    <span class="c1">#     &quot;&quot;&quot;Generate a GeoVar plot on a matplotlib axis.</span>
+
+    <span class="c1">#     Args:</span>
+    <span class="c1">#         ax (:obj:`matplotlib.axes`): plotting axis from matplotlib.</span>
+
+    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#     # Starting assertions to make sure input is alright</span>
+    <span class="c1">#     assert self.geodist is not None</span>
+    <span class="c1">#     assert self.ngeodist is not None</span>
+    <span class="c1">#     assert self.npops is not None</span>
+    <span class="c1">#     assert self.poplist is not None</span>
+    <span class="c1">#     assert self.ncat is not None</span>
+    <span class="c1">#     assert self.colors is not None</span>
+    <span class="c1">#     assert self.str_labels is not None</span>
+    <span class="c1">#     assert self.lbl_colors is not None</span>
+    <span class="c1">#     assert self.poplist is not None</span>
+    <span class="c1">#     # Setting up the codes here</span>
+    <span class="c1">#     x_limits = ax.get_xlim()</span>
+    <span class="c1">#     xbar_pts = np.linspace(x_limits[0], x_limits[1], num=self.npops + 1)</span>
+    <span class="c1">#     xpts_shifted = (xbar_pts[1:] + xbar_pts[:-1]) / 2.0</span>
+    <span class="c1">#     ax.set_xticks(xpts_shifted)</span>
+    <span class="c1">#     # setting up the vertical lines</span>
+    <span class="c1">#     for x in xbar_pts:</span>
+    <span class="c1">#         ax.axvline(x=x, color=self.bar_color, lw=self.line_weight, alpha=self.alpha)</span>
+
+    <span class="c1">#     # changing the border color</span>
+    <span class="c1">#     for spine in ax.spines.values():</span>
+    <span class="c1">#         spine.set_edgecolor(self.border_color)</span>
+
+    <span class="c1">#     # Plotting the horizontal bars in this case</span>
+    <span class="c1">#     ylims = ax.get_ylim()</span>
+    <span class="c1">#     y_pts = np.cumsum(self.fgeodist) / (ylims[1] - ylims[0])</span>
+    <span class="c1">#     n_y = y_pts.size</span>
+    <span class="c1">#     cur_y = ylims[0]</span>
+    <span class="c1">#     nsnps = np.sum(self.orig_ngeodist)</span>
+    <span class="c1">#     for i in range(n_y):</span>
+    <span class="c1">#         y = y_pts[i]</span>
+    <span class="c1">#         y_dist = y - cur_y</span>
+    <span class="c1">#         ax.axhline(y=y, color=self.bar_color, lw=self.line_weight, alpha=self.alpha)</span>
+    <span class="c1">#         cur_code = list(self.geodist[i])</span>
+    <span class="c1">#         for j in range(self.npops):</span>
+    <span class="c1">#             # Defining the current category</span>
+    <span class="c1">#             cur_cat = int(cur_code[j])</span>
+    <span class="c1">#             # Drawing in the rectangle</span>
+    <span class="c1">#             cur_xy = xbar_pts[j], cur_y</span>
+    <span class="c1">#             rect = patches.Rectangle(</span>
+    <span class="c1">#                 xy=cur_xy,</span>
+    <span class="c1">#                 width=(xbar_pts[j + 1] - cur_xy[0]),</span>
+    <span class="c1">#                 height=y_dist,</span>
+    <span class="c1">#                 facecolor=self.colors[cur_cat],</span>
+    <span class="c1">#             )</span>
+    <span class="c1">#             ax.add_patch(rect)</span>
+    <span class="c1">#             # Drawing in the text</span>
+    <span class="c1">#             y_frac = y_dist / (ylims[1] - ylims[0])</span>
+    <span class="c1">#             fontscale = 1.0</span>
+    <span class="c1">#             freq_thresh = 0.06</span>
+    <span class="c1">#             if y_frac &lt; freq_thresh:</span>
+    <span class="c1">#                 fontscale = y_frac * fontscale / freq_thresh</span>
+    <span class="c1">#             ax.text(</span>
+    <span class="c1">#                 x=xpts_shifted[j],</span>
+    <span class="c1">#                 y=(cur_y + y_dist / 2.0),</span>
+    <span class="c1">#                 ha=self.h_orient,</span>
+    <span class="c1">#                 va=self.v_orient,</span>
+    <span class="c1">#                 s=self.str_labels[cur_cat],</span>
+    <span class="c1">#                 color=self.lbl_colors[cur_cat],</span>
+    <span class="c1">#                 fontsize=self.fontsize * fontscale,</span>
+    <span class="c1">#             )</span>
+    <span class="c1">#         cur_y = y</span>
+    <span class="c1">#     ax.set_ylim(ylims)</span>
+    <span class="c1">#     ax.set_xticklabels(self.poplist, rotation=90)</span>
+    <span class="c1">#     ax.set_ylabel(&quot;Cumulative fraction of variants&quot;, fontsize=14)</span>
+    <span class="c1">#     return (ax, nsnps, y_pts)</span>
+
+    <span class="k">def</span> <span class="nf">plot_geovar</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">ax</span><span class="p">,</span>
+        <span class="n">pixel_thresh</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+        <span class="n">freq_thresh</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
+        <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+        <span class="n">superpops</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">superpop_lbls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Make a geovar plot on a particular axis.&quot;&quot;&quot;</span>
+        <span class="c1"># Starting assertions to make sure we can call this</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">geodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">ngeodist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">npops</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">ncat</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">colors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">str_labels</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">lbl_colors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">poplist</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="c1"># Getting the dimensions</span>
+        <span class="n">bbox</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_window_extent</span><span class="p">()</span>
+        <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">bbox</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">bbox</span><span class="o">.</span><span class="n">height</span>
+        <span class="n">width</span> <span class="o">*=</span> <span class="n">dpi</span>
+        <span class="n">height</span> <span class="o">*=</span> <span class="n">dpi</span>
+        <span class="c1"># Setting up the codes here</span>
+        <span class="n">x_limits</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()</span>
+        <span class="n">xbar_pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x_limits</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x_limits</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">num</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">npops</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">xpts_shifted</span> <span class="o">=</span> <span class="p">(</span><span class="n">xbar_pts</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">xbar_pts</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="mf">2.0</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">xpts_shifted</span><span class="p">)</span>
+        <span class="c1"># setting up the vertical lines</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xbar_pts</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bar_color</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">line_weight</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">superpops</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">superpops</span><span class="p">:</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">xbar_pts</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+
+        <span class="c1"># changing the border color</span>
+        <span class="k">for</span> <span class="n">spine</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">spine</span><span class="o">.</span><span class="n">set_edgecolor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">border_color</span><span class="p">)</span>
+
+        <span class="c1"># Plotting the horizontal bars in this case</span>
+        <span class="n">ylims</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()</span>
+        <span class="n">y_pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span><span class="p">)</span>
+        <span class="n">cur_y</span> <span class="o">=</span> <span class="n">ylims</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">nsnps</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">y_pts</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">y_pts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">y_dist</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">cur_y</span>
+            <span class="n">cur_code</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_geodist</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">npops</span><span class="p">):</span>
+                <span class="c1"># Defining the current category</span>
+                <span class="n">cur_cat</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">cur_code</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+                <span class="c1"># Drawing in the rectangle</span>
+                <span class="n">cur_xy</span> <span class="o">=</span> <span class="n">xbar_pts</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">cur_y</span>
+                <span class="n">rect</span> <span class="o">=</span> <span class="n">patches</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">(</span>
+                    <span class="n">xy</span><span class="o">=</span><span class="n">cur_xy</span><span class="p">,</span>
+                    <span class="n">width</span><span class="o">=</span><span class="p">(</span><span class="n">xbar_pts</span><span class="p">[</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">cur_xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                    <span class="n">height</span><span class="o">=</span><span class="n">y_dist</span><span class="p">,</span>
+                    <span class="n">facecolor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">colors</span><span class="p">[</span><span class="n">cur_cat</span><span class="p">],</span>
+                <span class="p">)</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+                <span class="c1"># Drawing in the text</span>
+                <span class="n">y_frac</span> <span class="o">=</span> <span class="n">y_dist</span> <span class="o">/</span> <span class="p">(</span><span class="n">ylims</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">ylims</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">fontscale</span> <span class="o">=</span> <span class="mf">1.0</span>
+                <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span>
+                <span class="k">if</span> <span class="n">y_frac</span> <span class="o">&lt;</span> <span class="n">freq_thresh</span><span class="p">:</span>
+                    <span class="n">fontscale</span> <span class="o">=</span> <span class="n">y_frac</span> <span class="o">/</span> <span class="n">freq_thresh</span>
+                    <span class="n">alpha</span> <span class="o">=</span> <span class="n">y_frac</span> <span class="o">/</span> <span class="n">freq_thresh</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+                    <span class="n">x</span><span class="o">=</span><span class="n">xpts_shifted</span><span class="p">[</span><span class="n">j</span><span class="p">],</span>
+                    <span class="n">y</span><span class="o">=</span><span class="p">(</span><span class="n">cur_y</span> <span class="o">+</span> <span class="n">y_dist</span> <span class="o">/</span> <span class="mf">2.0</span><span class="p">),</span>
+                    <span class="n">ha</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">h_orient</span><span class="p">,</span>
+                    <span class="n">va</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">v_orient</span><span class="p">,</span>
+                    <span class="n">s</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">str_labels</span><span class="p">[</span><span class="n">cur_cat</span><span class="p">],</span>
+                    <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lbl_colors</span><span class="p">[</span><span class="n">cur_cat</span><span class="p">],</span>
+                    <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span>
+                    <span class="n">fontsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">*</span> <span class="n">fontscale</span><span class="p">,</span>
+                <span class="p">)</span>
+
+            <span class="n">cur_y</span> <span class="o">=</span> <span class="n">y</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">height</span> <span class="o">&lt;</span> <span class="n">pixel_thresh</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">bar_color</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">line_weight</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">cur_y</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">:</span>
+            <span class="n">rect</span> <span class="o">=</span> <span class="n">patches</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">(</span>
+                <span class="n">xy</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">cur_y</span><span class="p">],</span> <span class="n">width</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">cur_y</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span>
+            <span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">ylims</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Cumulative fraction of variants&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">nsnps</span><span class="p">,</span> <span class="n">y_pts</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">plot_percentages</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">pixel_thresh</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">freq_thresh</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">100</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Generate a plot with the percentages.&quot;&quot;&quot;</span>
+        <span class="n">bbox</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">get_window_extent</span><span class="p">()</span>
+        <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">bbox</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="n">bbox</span><span class="o">.</span><span class="n">height</span>
+        <span class="n">width</span> <span class="o">*=</span> <span class="n">dpi</span>
+        <span class="n">height</span> <span class="o">*=</span> <span class="n">dpi</span>
+        <span class="n">ns</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_ngeodist</span>
+        <span class="n">fracs</span> <span class="o">=</span> <span class="n">ns</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">ns</span><span class="p">)</span>
+        <span class="n">cum_frac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span><span class="p">)</span>
+        <span class="c1"># Setting the border here</span>
+        <span class="k">for</span> <span class="n">spine</span> <span class="ow">in</span> <span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">spine</span><span class="o">.</span><span class="n">set_edgecolor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">border_color</span><span class="p">)</span>
+        <span class="n">prev</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cum_frac</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+            <span class="c1"># Get the midpoint</span>
+            <span class="n">ydist</span> <span class="o">=</span> <span class="p">(</span><span class="n">cum_frac</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">prev</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+            <span class="n">fontscale</span> <span class="o">=</span> <span class="mf">1.0</span>
+            <span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span>
+            <span class="k">if</span> <span class="n">fracs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">freq_thresh</span><span class="p">:</span>
+                <span class="n">fontscale</span> <span class="o">=</span> <span class="n">fracs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">freq_thresh</span>
+                <span class="n">alpha</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">fracs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">freq_thresh</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">height</span> <span class="o">&gt;</span> <span class="n">pixel_thresh</span><span class="p">:</span>
+                <span class="n">nstr</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:,}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ns</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+                    <span class="n">x</span><span class="o">=</span><span class="mf">1.025</span><span class="p">,</span>
+                    <span class="n">y</span><span class="o">=</span><span class="n">prev</span> <span class="o">+</span> <span class="n">ydist</span><span class="p">,</span>
+                    <span class="n">s</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2"> (</span><span class="si">%d%%</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">nstr</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)),</span>
+                    <span class="n">va</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">v_orient</span><span class="p">,</span>
+                    <span class="n">fontsize</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">*</span> <span class="n">fontscale</span><span class="p">,</span>
+                    <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span>
+                    <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="n">prev</span> <span class="o">=</span> <span class="n">cum_frac</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">orig_fgeodist</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">height</span> <span class="o">&lt;</span> <span class="n">pixel_thresh</span><span class="p">:</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="n">prev</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">:</span>
+            <span class="n">rect</span> <span class="o">=</span> <span class="n">patches</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">(</span>
+                <span class="n">xy</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">cum_frac</span><span class="p">[</span><span class="n">i</span><span class="p">]],</span>
+                <span class="n">width</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span>
+                <span class="n">height</span><span class="o">=</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">-</span> <span class="n">cum_frac</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span>
+                <span class="n">facecolor</span><span class="o">=</span><span class="s2">&quot;grey&quot;</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">rect</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">ax</span></div>
 
 
-
-<span class="k">def</span> <span class="nf">plot_multiple_geovar</span><span class="p">(</span><span class="n">geovar_obj_list</span><span class="p">,</span> <span class="n">subsets</span><span class="p">,</span> <span class="n">xsize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ysize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">hwidth</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">top_buff</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">bot_buff</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">left_buff</span> <span class="o">=</span> <span class="mf">0.75</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Cumulative fraction of variants&#39;</span><span class="p">,</span> <span class="n">superpops</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">superpop_lbls</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">      Function to plot a list of geodist objects </span>
-<span class="sd">      NOTE : this is a preliminary function currently </span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">geovar_obj_list</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">subsets</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">plot_multiple_geovar</span><span class="p">(</span>
+    <span class="n">geovar_obj_list</span><span class="p">,</span>
+    <span class="n">subsets</span><span class="p">,</span>
+    <span class="n">xsize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ysize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">hwidth</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">top_buff</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">bot_buff</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">left_buff</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span>
+    <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Cumulative fraction of variants&quot;</span><span class="p">,</span>
+    <span class="n">superpops</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">superpop_lbls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plot multiple GeoVar objects on a shared axis.&quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">geovar_obj_list</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">subsets</span><span class="p">)</span>
     <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">geovar_obj_list</span><span class="p">)</span>
 
-    <span class="n">fig_width</span> <span class="o">=</span> <span class="n">left_buff</span> <span class="o">+</span> <span class="n">xsize</span><span class="o">*</span><span class="n">n</span> <span class="o">+</span> <span class="n">hwidth</span><span class="o">*</span><span class="n">n</span>
+    <span class="n">fig_width</span> <span class="o">=</span> <span class="n">left_buff</span> <span class="o">+</span> <span class="n">xsize</span> <span class="o">*</span> <span class="n">n</span> <span class="o">+</span> <span class="n">hwidth</span> <span class="o">*</span> <span class="n">n</span>
     <span class="n">fig_height</span> <span class="o">=</span> <span class="n">bot_buff</span> <span class="o">+</span> <span class="n">ysize</span> <span class="o">+</span> <span class="n">top_buff</span>
 
     <span class="c1"># start the figure</span>
-    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">fig_width</span><span class="p">,</span><span class="n">fig_height</span><span class="p">))</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">fig_width</span><span class="p">,</span> <span class="n">fig_height</span><span class="p">))</span>
 
     <span class="c1"># Setting the proportional arguments</span>
     <span class="n">left_start</span> <span class="o">=</span> <span class="n">left_buff</span> <span class="o">/</span> <span class="n">fig_width</span>
-    <span class="n">left_increment</span> <span class="o">=</span> <span class="p">(</span><span class="n">fig_width</span> <span class="o">-</span> <span class="n">left_buff</span><span class="p">)</span><span class="o">/</span><span class="n">fig_width</span> <span class="o">/</span> <span class="n">n</span>
-    <span class="n">bot_prop</span> <span class="o">=</span> <span class="n">bot_buff</span><span class="o">/</span><span class="n">fig_height</span>
-    <span class="n">w_prop</span> <span class="o">=</span> <span class="n">left_increment</span><span class="o">-</span><span class="p">(</span><span class="n">hwidth</span><span class="o">/</span><span class="n">fig_width</span><span class="p">)</span>
-    <span class="n">top_prop</span> <span class="o">=</span> <span class="n">ysize</span><span class="o">/</span><span class="n">fig_height</span>
+    <span class="n">left_increment</span> <span class="o">=</span> <span class="p">(</span><span class="n">fig_width</span> <span class="o">-</span> <span class="n">left_buff</span><span class="p">)</span> <span class="o">/</span> <span class="n">fig_width</span> <span class="o">/</span> <span class="n">n</span>
+    <span class="n">bot_prop</span> <span class="o">=</span> <span class="n">bot_buff</span> <span class="o">/</span> <span class="n">fig_height</span>
+    <span class="n">w_prop</span> <span class="o">=</span> <span class="n">left_increment</span> <span class="o">-</span> <span class="p">(</span><span class="n">hwidth</span> <span class="o">/</span> <span class="n">fig_width</span><span class="p">)</span>
+    <span class="n">top_prop</span> <span class="o">=</span> <span class="n">ysize</span> <span class="o">/</span> <span class="n">fig_height</span>
 
-    <span class="c1"># Setting all the </span>
-    <span class="n">axs</span> <span class="o">=</span> <span class="p">[</span><span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="n">left_start</span> <span class="o">+</span> <span class="n">i</span><span class="o">*</span><span class="n">left_increment</span><span class="p">,</span> <span class="n">bot_prop</span><span class="p">,</span> <span class="n">w_prop</span><span class="p">,</span> <span class="n">top_prop</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
-    <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]];</span>
+    <span class="c1"># Setting all the</span>
+    <span class="n">axs</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="n">left_start</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">left_increment</span><span class="p">,</span> <span class="n">bot_prop</span><span class="p">,</span> <span class="n">w_prop</span><span class="p">,</span> <span class="n">top_prop</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="p">]</span>
+    <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
         <span class="n">subset</span> <span class="o">=</span> <span class="n">subsets</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
         <span class="n">cur_geovar</span> <span class="o">=</span> <span class="n">geovar_obj_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-        <span class="n">_</span><span class="p">,</span> <span class="n">nsnps</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">cur_geovar</span><span class="o">.</span><span class="n">plot_geodist</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">superpops</span><span class="o">=</span><span class="n">superpops</span><span class="p">,</span> <span class="n">superpop_lbls</span><span class="o">=</span><span class="n">superpop_lbls</span><span class="p">)</span>
-        <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">cur_geovar</span><span class="o">.</span><span class="n">poplist</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">nsnps</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">cur_geovar</span><span class="o">.</span><span class="n">plot_geodist</span><span class="p">(</span>
+            <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">superpops</span><span class="o">=</span><span class="n">superpops</span><span class="p">,</span> <span class="n">superpop_lbls</span><span class="o">=</span><span class="n">superpop_lbls</span>
+        <span class="p">)</span>
+        <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span>
+            <span class="n">cur_geovar</span><span class="o">.</span><span class="n">poplist</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="n">cur_geovar</span><span class="o">.</span><span class="n">orig_missing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
-          <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">cur_geovar</span><span class="o">.</span><span class="n">orig_ngeodist</span><span class="p">)</span> <span class="o">+</span> <span class="n">cur_geovar</span><span class="o">.</span><span class="n">orig_missing</span>
-          <span class="n">nstr</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:,}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-          <span class="n">nmiss_str</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:,}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cur_geovar</span><span class="o">.</span><span class="n">orig_missing</span><span class="p">)</span>
-          <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="se">\n</span><span class="s1"> $S$ = </span><span class="si">%s</span><span class="se">\n</span><span class="s1">$S_u$ = </span><span class="si">%s</span><span class="s1"> (</span><span class="si">%d%%</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">subset</span><span class="p">,</span> <span class="n">nstr</span><span class="p">,</span> <span class="n">nmiss_str</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">cur_geovar</span><span class="o">.</span><span class="n">orig_missing</span><span class="o">/</span><span class="n">n</span><span class="o">*</span><span class="mi">100</span><span class="p">)),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">cur_geovar</span><span class="o">.</span><span class="n">orig_ngeodist</span><span class="p">)</span> <span class="o">+</span> <span class="n">cur_geovar</span><span class="o">.</span><span class="n">orig_missing</span>
+            <span class="n">nstr</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:,}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+            <span class="n">nmiss_str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:,}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cur_geovar</span><span class="o">.</span><span class="n">orig_missing</span><span class="p">)</span>
+            <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span>
+                <span class="s2">&quot;</span><span class="si">%s</span><span class="se">\n</span><span class="s2"> $S$ = </span><span class="si">%s</span><span class="se">\n</span><span class="s2">$S_u$ = </span><span class="si">%s</span><span class="s2"> (</span><span class="si">%d%%</span><span class="s2">)&quot;</span>
+                <span class="o">%</span> <span class="p">(</span><span class="n">subset</span><span class="p">,</span> <span class="n">nstr</span><span class="p">,</span> <span class="n">nmiss_str</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">cur_geovar</span><span class="o">.</span><span class="n">orig_missing</span> <span class="o">/</span> <span class="n">n</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)),</span>
+                <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+            <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-          <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">cur_geovar</span><span class="o">.</span><span class="n">orig_ngeodist</span><span class="p">)</span>
-          <span class="n">nstr</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:,}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
-          <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%s</span><span class="se">\n</span><span class="s1"> S = </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">subset</span><span class="p">,</span><span class="n">nstr</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">cur_geovar</span><span class="o">.</span><span class="n">orig_ngeodist</span><span class="p">)</span>
+            <span class="n">nstr</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:,}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+            <span class="n">axs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="se">\n</span><span class="s2"> S = </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">subset</span><span class="p">,</span> <span class="n">nstr</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
     <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span><span class="p">)</span>
 
-<span class="k">def</span> <span class="nf">plot_geodist_w_percentages</span><span class="p">(</span><span class="n">geovar_obj</span><span class="p">,</span> <span class="n">subset</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s1">&#39;Cumulative fraction of variants&#39;</span><span class="p">,</span> <span class="n">xsize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ysize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">hwidth</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">top_buff</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">bot_buff</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">left_buff</span> <span class="o">=</span> <span class="mf">0.75</span><span class="p">,</span> <span class="n">superpops</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">superpop_lbls</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">      Function to plot a list of geodist objects </span>
-<span class="sd">      NOTE : this is a preliminary function currently </span>
-<span class="sd">    &quot;&quot;&quot;</span>
+
+<span class="k">def</span> <span class="nf">plot_geovar_w_percentages</span><span class="p">(</span>
+    <span class="n">geovar_obj</span><span class="p">,</span>
+    <span class="n">subset</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+    <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Cumulative fraction of variants&quot;</span><span class="p">,</span>
+    <span class="n">xsize</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">ysize</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">hwidth</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">top_buff</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">bot_buff</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="n">left_buff</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span>
+    <span class="n">superpops</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">superpop_lbls</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plot geovar plot with percentages.&quot;&quot;&quot;</span>
     <span class="n">n</span> <span class="o">=</span> <span class="mi">2</span>
 
-    <span class="n">fig_width</span> <span class="o">=</span> <span class="n">left_buff</span> <span class="o">+</span> <span class="n">xsize</span><span class="o">*</span><span class="n">n</span> <span class="o">+</span> <span class="n">hwidth</span><span class="o">*</span><span class="n">n</span>
+    <span class="n">fig_width</span> <span class="o">=</span> <span class="n">left_buff</span> <span class="o">+</span> <span class="n">xsize</span> <span class="o">*</span> <span class="n">n</span> <span class="o">+</span> <span class="n">hwidth</span> <span class="o">*</span> <span class="n">n</span>
     <span class="n">fig_height</span> <span class="o">=</span> <span class="n">bot_buff</span> <span class="o">+</span> <span class="n">ysize</span> <span class="o">+</span> <span class="n">top_buff</span>
 
     <span class="c1"># start the figure</span>
-    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">fig_width</span><span class="p">,</span><span class="n">fig_height</span><span class="p">))</span>
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">constrained_layout</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">fig_width</span><span class="p">,</span> <span class="n">fig_height</span><span class="p">))</span>
 
     <span class="c1"># Setting the proportional arguments</span>
     <span class="n">left_start</span> <span class="o">=</span> <span class="n">left_buff</span> <span class="o">/</span> <span class="n">fig_width</span>
-    <span class="n">left_increment</span> <span class="o">=</span> <span class="p">(</span><span class="n">fig_width</span> <span class="o">-</span> <span class="n">left_buff</span><span class="p">)</span><span class="o">/</span><span class="n">fig_width</span> <span class="o">/</span> <span class="n">n</span>
-    <span class="n">bot_prop</span> <span class="o">=</span> <span class="n">bot_buff</span><span class="o">/</span><span class="n">fig_height</span>
-    <span class="n">w_prop</span> <span class="o">=</span> <span class="n">left_increment</span><span class="o">-</span><span class="p">(</span><span class="n">hwidth</span><span class="o">/</span><span class="n">fig_width</span><span class="p">)</span>
-    <span class="n">top_prop</span> <span class="o">=</span> <span class="n">ysize</span><span class="o">/</span><span class="n">fig_height</span>
+    <span class="n">left_increment</span> <span class="o">=</span> <span class="p">(</span><span class="n">fig_width</span> <span class="o">-</span> <span class="n">left_buff</span><span class="p">)</span> <span class="o">/</span> <span class="n">fig_width</span> <span class="o">/</span> <span class="n">n</span>
+    <span class="n">bot_prop</span> <span class="o">=</span> <span class="n">bot_buff</span> <span class="o">/</span> <span class="n">fig_height</span>
+    <span class="n">w_prop</span> <span class="o">=</span> <span class="n">left_increment</span> <span class="o">-</span> <span class="p">(</span><span class="n">hwidth</span> <span class="o">/</span> <span class="n">fig_width</span><span class="p">)</span>
+    <span class="n">top_prop</span> <span class="o">=</span> <span class="n">ysize</span> <span class="o">/</span> <span class="n">fig_height</span>
 
-    <span class="c1"># Setting all the </span>
-    <span class="n">axs</span> <span class="o">=</span> <span class="p">[</span><span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="n">left_start</span> <span class="o">+</span> <span class="n">i</span><span class="o">*</span><span class="n">left_increment</span><span class="p">,</span> <span class="n">bot_prop</span><span class="p">,</span> <span class="n">w_prop</span><span class="p">,</span> <span class="n">top_prop</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
-    <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]];</span>
-
+    <span class="c1"># Setting all the</span>
+    <span class="n">axs</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">fig</span><span class="o">.</span><span class="n">add_axes</span><span class="p">([</span><span class="n">left_start</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">left_increment</span><span class="p">,</span> <span class="n">bot_prop</span><span class="p">,</span> <span class="n">w_prop</span><span class="p">,</span> <span class="n">top_prop</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="p">]</span>
+    <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">([])</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>
 
     <span class="n">geovar_obj</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">14</span>
-    <span class="n">_</span><span class="p">,</span> <span class="n">nsnps</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">geovar_obj</span><span class="o">.</span><span class="n">plot_geodist</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">superpops</span><span class="o">=</span><span class="n">superpops</span><span class="p">,</span> <span class="n">superpop_lbls</span><span class="o">=</span><span class="n">superpop_lbls</span><span class="p">)</span>
-    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">geovar_obj</span><span class="o">.</span><span class="n">poplist</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">nsnps</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">geovar_obj</span><span class="o">.</span><span class="n">plot_geodist</span><span class="p">(</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">superpops</span><span class="o">=</span><span class="n">superpops</span><span class="p">,</span> <span class="n">superpop_lbls</span><span class="o">=</span><span class="n">superpop_lbls</span>
+    <span class="p">)</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">geovar_obj</span><span class="o">.</span><span class="n">poplist</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">geovar_obj</span><span class="o">.</span><span class="n">orig_ngeodist</span><span class="p">)</span>
-    <span class="n">nstr</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:,}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">nstr</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{:,}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
     <span class="c1">#  Setting the title figures</span>
-    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="mf">1.0</span> <span class="o">+</span> <span class="p">(</span><span class="n">hwidth</span><span class="o">/</span><span class="n">fig_width</span><span class="p">),</span> <span class="mf">1.01</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="se">\n</span><span class="s1"> (S = </span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">subset</span><span class="p">,</span><span class="n">nstr</span><span class="p">),</span>
-                <span class="n">va</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-    <span class="n">geovar_obj</span><span class="o">.</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">text</span><span class="p">(</span>
+        <span class="mf">1.0</span> <span class="o">+</span> <span class="p">(</span><span class="n">hwidth</span> <span class="o">/</span> <span class="n">fig_width</span><span class="p">),</span>
+        <span class="mf">1.01</span><span class="p">,</span>
+        <span class="s2">&quot;</span><span class="si">%s</span><span class="se">\n</span><span class="s2"> (S = </span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">subset</span><span class="p">,</span> <span class="n">nstr</span><span class="p">),</span>
+        <span class="n">va</span><span class="o">=</span><span class="s2">&quot;bottom&quot;</span><span class="p">,</span>
+        <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span>
+        <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">geovar_obj</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="mi">12</span>
     <span class="n">geovar_obj</span><span class="o">.</span><span class="n">plot_percentages</span><span class="p">(</span><span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([]);</span>
+    <span class="n">axs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">([])</span>
     <span class="n">axs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">ylabel</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span><span class="p">)</span>
-
+    <span class="k">return</span> <span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">axs</span><span class="p">)</span>
 </pre></div>
 
           </div>

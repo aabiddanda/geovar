@@ -33,83 +33,95 @@
           <div class="body" role="main">
 
   <h1>Source code for geovar.utils</h1><div class="highlight"><pre>
-<span></span>
+<span></span><span class="sd">&quot;&quot;&quot;Utilities for file conversions for GeoVar.&quot;&quot;&quot;</span>
+
 <span class="kn">import</span> <span class="nn">allel</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+
+
+<div class="viewcode-block" id="flip_alleles"><a class="viewcode-back" href="../../geovar.html#geovar.utils.flip_alleles">[docs]</a><span class="k">def</span> <span class="nf">flip_alleles</span><span class="p">(</span><span class="n">acnt</span><span class="p">,</span> <span class="n">flip</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Flip alleles if based on being the minor allele.&quot;&quot;&quot;</span>
+    <span class="n">flipped</span> <span class="o">=</span> <span class="n">acnt</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">acnt</span><span class="p">)),</span> <span class="n">flip</span><span class="p">]</span> <span class="o">/</span> <span class="n">acnt</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">flipped</span></div>
+
 
 <div class="viewcode-block" id="vcf_to_freq_table"><a class="viewcode-back" href="../../geovar.html#geovar.utils.vcf_to_freq_table">[docs]</a><span class="k">def</span> <span class="nf">vcf_to_freq_table</span><span class="p">(</span><span class="n">vcf_file</span><span class="p">,</span> <span class="n">pop_panel</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">minor_allele</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Converts a VCF File to a frequency table to be used as input to a GeoVar object</span>
+    <span class="sd">&quot;&quot;&quot;Convert a VCF File to a frequency table to be used as input to a GeoVar object.</span>
 
-<span class="sd">       Args:</span>
-<span class="sd">        vcf_file (:obj:`string`): filepath to VCF file (can be bgzipped)</span>
-<span class="sd">        pop_panel (:obj:`string`): filepath to population panel file. </span>
-<span class="sd">            (Not all individuals from the VCF need to be defined in population panel)</span>
-<span class="sd">        outfile (:obj:`string`): file to write output allele frequency table to</span>
-<span class="sd">        minor_allele (:obj:`bool`): flag to indicate if we want to polarize to the minor allele</span>
+<span class="sd">    Args:</span>
+<span class="sd">        vcf_file (:obj:`string`): filepath to VCF file (can be bgzipped).</span>
+<span class="sd">        pop_panel (:obj:`string`): filepath to population panel file.</span>
+<span class="sd">        outfile (:obj:`string`): file to write output allele frequency table to.</span>
+<span class="sd">        minor_allele (:obj:`bool`): flag to indicate if we want to polarize to the minor allele.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># NOTE: we only assume that we have two columns in the file </span>
-    <span class="n">pop_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span><span class="n">pop_panel</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;\s&#39;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;sample&#39;</span><span class="p">,</span><span class="s1">&#39;pop&#39;</span><span class="p">],</span> <span class="n">engine</span><span class="o">=</span><span class="s1">&#39;python&#39;</span><span class="p">)</span>
-    <span class="n">pop_dict</span> <span class="o">=</span> <span class="n">pop_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;sample&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()[</span><span class="s1">&#39;pop&#39;</span><span class="p">]</span>
+    <span class="c1"># NOTE: we only assume that we have two columns in the file</span>
+    <span class="n">pop_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_table</span><span class="p">(</span>
+        <span class="n">pop_panel</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="sa">r</span><span class="s2">&quot;\s&quot;</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;sample&quot;</span><span class="p">,</span> <span class="s2">&quot;pop&quot;</span><span class="p">],</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;python&quot;</span>
+    <span class="p">)</span>
+    <span class="n">pop_dict</span> <span class="o">=</span> <span class="n">pop_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s2">&quot;sample&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()[</span><span class="s2">&quot;pop&quot;</span><span class="p">]</span>
     <span class="c1"># NOTE: we are assuming that we have only biallelic markers</span>
     <span class="n">vcf_data</span> <span class="o">=</span> <span class="n">allel</span><span class="o">.</span><span class="n">read_vcf</span><span class="p">(</span><span class="n">vcf_file</span><span class="p">,</span> <span class="n">alt_number</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">samples</span> <span class="o">=</span> <span class="n">vcf_data</span><span class="p">[</span><span class="s1">&#39;samples&#39;</span><span class="p">]</span>
-    <span class="n">chrom</span> <span class="o">=</span> <span class="n">vcf_data</span><span class="p">[</span><span class="s1">&#39;variants/CHROM&#39;</span><span class="p">]</span>
-    <span class="n">pos</span> <span class="o">=</span> <span class="n">vcf_data</span><span class="p">[</span><span class="s1">&#39;variants/POS&#39;</span><span class="p">]</span>
-    <span class="n">ref_alleles</span> <span class="o">=</span> <span class="n">vcf_data</span><span class="p">[</span><span class="s1">&#39;variants/REF&#39;</span><span class="p">]</span>
-    <span class="n">alt_alleles</span> <span class="o">=</span> <span class="n">vcf_data</span><span class="p">[</span><span class="s1">&#39;variants/ALT&#39;</span><span class="p">]</span>
-    <span class="c1"># Generating the population dictionary </span>
+    <span class="n">samples</span> <span class="o">=</span> <span class="n">vcf_data</span><span class="p">[</span><span class="s2">&quot;samples&quot;</span><span class="p">]</span>
+    <span class="n">chrom</span> <span class="o">=</span> <span class="n">vcf_data</span><span class="p">[</span><span class="s2">&quot;variants/CHROM&quot;</span><span class="p">]</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">vcf_data</span><span class="p">[</span><span class="s2">&quot;variants/POS&quot;</span><span class="p">]</span>
+    <span class="n">ref_alleles</span> <span class="o">=</span> <span class="n">vcf_data</span><span class="p">[</span><span class="s2">&quot;variants/REF&quot;</span><span class="p">]</span>
+    <span class="n">alt_alleles</span> <span class="o">=</span> <span class="n">vcf_data</span><span class="p">[</span><span class="s2">&quot;variants/ALT&quot;</span><span class="p">]</span>
+    <span class="c1"># Generating the population dictionary</span>
     <span class="n">unique_pops</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">([</span><span class="n">pop_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pop_dict</span><span class="p">])</span>
     <span class="n">pop_vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">pop_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">])</span>
     <span class="n">pop_idx_dict</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">unique_pops</span><span class="p">:</span>
         <span class="n">pop_idx_dict</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">pop_vector</span> <span class="o">==</span> <span class="n">p</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="c1"># Calculating the Alternative Allele Frequency</span>
-    <span class="n">gt</span> <span class="o">=</span> <span class="n">allel</span><span class="o">.</span><span class="n">GenotypeArray</span><span class="p">(</span><span class="n">vcf_data</span><span class="p">[</span><span class="s1">&#39;calldata/GT&#39;</span><span class="p">])</span>
-    <span class="c1"># Calculating the total allele frequency </span>
+    <span class="n">gt</span> <span class="o">=</span> <span class="n">allel</span><span class="o">.</span><span class="n">GenotypeArray</span><span class="p">(</span><span class="n">vcf_data</span><span class="p">[</span><span class="s2">&quot;calldata/GT&quot;</span><span class="p">])</span>
+    <span class="c1"># Calculating the total allele frequency</span>
     <span class="n">tot_ac_cnt</span> <span class="o">=</span> <span class="n">gt</span><span class="o">.</span><span class="n">count_alleles</span><span class="p">()</span>
-    <span class="n">alt_freq</span> <span class="o">=</span> <span class="n">tot_ac_cnt</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">tot_ac_cnt</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    <span class="n">global_ac</span> <span class="o">=</span> <span class="n">tot_ac_cnt</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">alt_freq</span> <span class="o">=</span> <span class="n">tot_ac_cnt</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">tot_ac_cnt</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">global_ac</span> <span class="o">=</span> <span class="n">tot_ac_cnt</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
     <span class="n">global_af</span> <span class="o">=</span> <span class="n">alt_freq</span>
     <span class="n">flip_af</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alt_freq</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">minor_allele</span><span class="p">:</span>
-        <span class="n">flip_af</span> <span class="o">=</span> <span class="p">(</span><span class="n">alt_freq</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">)</span>
-    <span class="c1"># Generate the allele freqquency and allele count vectors </span>
+        <span class="n">flip_af</span> <span class="o">=</span> <span class="n">alt_freq</span> <span class="o">&gt;</span> <span class="mf">0.5</span>
+    <span class="c1"># Generate the allele freqquency and allele count vectors</span>
     <span class="n">flip_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">flip_af</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">flip_idx</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">flip_idx</span><span class="p">:</span>
-            <span class="n">global_ac</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tot_ac_cnt</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
-            <span class="n">global_af</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">-</span> <span class="n">global_af</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-            <span class="c1"># Swap the alleles here ... </span>
+            <span class="n">global_ac</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">tot_ac_cnt</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="n">global_af</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">global_af</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="c1"># Swap the alleles here ...</span>
             <span class="n">cur_ref</span> <span class="o">=</span> <span class="n">ref_alleles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="n">ref_alleles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">alt_alleles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="n">alt_alleles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cur_ref</span>
-    <span class="c1"># Generate ALT AF per subpopulation </span>
+    <span class="c1"># Generate ALT AF per subpopulation</span>
     <span class="n">allel_cnt_subpops</span> <span class="o">=</span> <span class="n">gt</span><span class="o">.</span><span class="n">count_alleles_subpops</span><span class="p">(</span><span class="n">pop_idx_dict</span><span class="p">)</span>
     <span class="n">flip_allele</span> <span class="o">=</span> <span class="o">~</span><span class="n">flip_af</span>
     <span class="n">flip_allele</span> <span class="o">=</span> <span class="n">flip_allele</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">int8</span><span class="p">)</span>
-    <span class="n">f</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">acnt</span><span class="p">,</span> <span class="n">flip</span><span class="p">:</span> <span class="p">(</span><span class="n">acnt</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">acnt</span><span class="p">)),</span><span class="n">flip</span><span class="p">]</span><span class="o">/</span><span class="n">acnt</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-    <span class="c1"># Setting up the final data frame</span>
-    <span class="n">af_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">f</span><span class="p">(</span><span class="n">allel_cnt_subpops</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">flip_allele</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">allel_cnt_subpops</span><span class="p">}</span>
-    <span class="n">af_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">af_dict</span><span class="p">)</span>
-    <span class="c1"># Inserting all of the columns that are needed for the allele frequency </span>
-    <span class="n">af_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;CHR&#39;</span><span class="p">,</span> <span class="n">chrom</span><span class="p">)</span>
-    <span class="n">af_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;SNP&#39;</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
-    <span class="n">af_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;A1&#39;</span><span class="p">,</span> <span class="n">ref_alleles</span><span class="p">)</span>
-    <span class="n">af_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;A2&#39;</span><span class="p">,</span> <span class="n">alt_alleles</span><span class="p">)</span>
-    <span class="n">af_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;MAC&#39;</span><span class="p">,</span> <span class="n">global_ac</span><span class="p">)</span>
-    <span class="n">af_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;MAF&#39;</span><span class="p">,</span> <span class="n">global_af</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">outfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">af_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">af_df</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="sep_freq_mat_pops"><a class="viewcode-back" href="../../geovar.html#geovar.utils.sep_freq_mat_pops">[docs]</a><span class="k">def</span> <span class="nf">sep_freq_mat_pops</span><span class="p">(</span><span class="n">af_df</span><span class="p">,</span> <span class="n">known_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;CHR&#39;</span><span class="p">,</span><span class="s1">&#39;SNP&#39;</span><span class="p">,</span><span class="s1">&#39;A1&#39;</span><span class="p">,</span><span class="s1">&#39;A2&#39;</span><span class="p">,</span><span class="s1">&#39;MAC&#39;</span><span class="p">,</span><span class="s1">&#39;MAF&#39;</span><span class="p">]):</span>
-    <span class="sd">&quot;&quot;&quot;Convert an allele frequency data frame to a frequency array</span>
-<span class="sd">       </span>
-<span class="sd">       Args:</span>
-<span class="sd">        af_df (:obj:`pandas.DataFrame`): allele frequency data frame</span>
-<span class="sd">        known_cols (:obj:`list`): list of columns to exclude from being a population</span>
+    <span class="c1"># Setting up the final data frame</span>
+    <span class="n">af_dict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">i</span><span class="p">:</span> <span class="n">flip_alleles</span><span class="p">(</span><span class="n">allel_cnt_subpops</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">flip_allele</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">allel_cnt_subpops</span>
+    <span class="p">}</span>
+    <span class="n">af_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">af_dict</span><span class="p">)</span>
+    <span class="c1"># Inserting all of the columns that are needed for the allele frequency</span>
+    <span class="n">af_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;CHR&quot;</span><span class="p">,</span> <span class="n">chrom</span><span class="p">)</span>
+    <span class="n">af_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;SNP&quot;</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span>
+    <span class="n">af_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;A1&quot;</span><span class="p">,</span> <span class="n">ref_alleles</span><span class="p">)</span>
+    <span class="n">af_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;A2&quot;</span><span class="p">,</span> <span class="n">alt_alleles</span><span class="p">)</span>
+    <span class="n">af_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;MAC&quot;</span><span class="p">,</span> <span class="n">global_ac</span><span class="p">)</span>
+    <span class="n">af_df</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;MAF&quot;</span><span class="p">,</span> <span class="n">global_af</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">outfile</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">af_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">outfile</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">af_df</span></div>
+
+
+<div class="viewcode-block" id="sep_freq_mat_pops"><a class="viewcode-back" href="../../geovar.html#geovar.utils.sep_freq_mat_pops">[docs]</a><span class="k">def</span> <span class="nf">sep_freq_mat_pops</span><span class="p">(</span><span class="n">af_df</span><span class="p">,</span> <span class="n">known_cols</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;CHR&quot;</span><span class="p">,</span> <span class="s2">&quot;SNP&quot;</span><span class="p">,</span> <span class="s2">&quot;A1&quot;</span><span class="p">,</span> <span class="s2">&quot;A2&quot;</span><span class="p">,</span> <span class="s2">&quot;MAC&quot;</span><span class="p">,</span> <span class="s2">&quot;MAF&quot;</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;Convert an allele frequency data frame to a frequency array.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        af_df (:obj:`pandas.DataFrame`): allele frequency data frame.</span>
+<span class="sd">        known_cols (:obj:`list`): list of columns to exclude from being a population.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Get columns that are not known</span>
@@ -118,7 +130,7 @@
     <span class="c1"># Generate frequency matrix and the population names</span>
     <span class="n">freq_mat</span> <span class="o">=</span> <span class="n">af_df</span><span class="p">[</span><span class="n">af_df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">idx</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
     <span class="n">pop_names</span> <span class="o">=</span> <span class="n">af_df</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-    <span class="k">return</span><span class="p">(</span><span class="n">pop_names</span><span class="p">,</span> <span class="n">freq_mat</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="p">(</span><span class="n">pop_names</span><span class="p">,</span> <span class="n">freq_mat</span><span class="p">)</span></div>
 </pre></div>
 
           </div>

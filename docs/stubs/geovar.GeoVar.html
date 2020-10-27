@@ -39,13 +39,17 @@
 <dl class="py class">
 <dt id="geovar.GeoVar">
 <em class="property">class </em><code class="sig-prename descclassname">geovar.</code><code class="sig-name descname">GeoVar</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bins</span><span class="o">=</span><span class="default_value">[0, 0, 0, 0.05, 0.05, 1.0]</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geovar/binning.html#GeoVar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#geovar.GeoVar" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
+<dd><p>GeoVar object that performs binning of allele frequencies.</p>
+<dl class="py method">
 <dt id="geovar.GeoVar.__init__">
 <code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">bins</span><span class="o">=</span><span class="default_value">[0, 0, 0, 0.05, 0.05, 1.0]</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geovar/binning.html#GeoVar.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#geovar.GeoVar.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Object to perform binning of allele frequencies</p>
+<dd><p>Object to perform binning of allele frequencies.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>bins</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>) – list of tuples containing allele frequency categories</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bins</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.9)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a>) – list of tuples</p></li>
+<li><p><strong>allele frequency categories.</strong> (<em>containing</em>) – </p></li>
+</ul>
 </dd>
 </dl>
 </dd></dl>
@@ -58,22 +62,22 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#geovar.GeoVar.__init__" title="geovar.GeoVar.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([bins])</p></td>
-<td><p>Object to perform binning of allele frequencies</p></td>
+<td><p>Object to perform binning of allele frequencies.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_freq_mat</span></code>(freq_mat_file)</p></td>
-<td><p>Adding an allele frequency table (see example notebook for format)</p></td>
+<td><p>Adding an allele frequency table (see example notebook for format).</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">count_geovar_codes</span></code>()</p></td>
-<td><p>Compute the unique geovar-codes within the dataset and their counts and returns numpy arrays with unique geo</p></td>
+<td><p>Count the number of unique GeoVar codes in a dataset.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">generate_bins</span></code>([bins])</p></td>
-<td><p>Define new bins for each allele frequency categorization</p></td>
+<td><p>Define new bins for each allele frequency categorization.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">geovar_binning</span></code>()</p></td>
-<td><p>Compute the <code class="docutils literal notranslate"><span class="pre">geovar</span></code>-codes based on the binning scheme for each variant across each populations.</p></td>
+<td><p>Compute the GeoVar codes for each variant across each population.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">geovar_codes_streaming</span></code>(freq_mat_file)</p></td>
-<td><p>A streaming version of the geovar code generation algorithm</p></td>
+<td><p>Version of GeoVar code generation algorithm that streams through file to avoid memory overflow.</p></td>
 </tr>
 </tbody>
 </table>

@@ -39,10 +39,11 @@
 <dl class="py class">
 <dt id="geovar.GeoVarPlot">
 <em class="property">class </em><code class="sig-prename descclassname">geovar.</code><code class="sig-name descname">GeoVarPlot</code><a class="reference internal" href="../_modules/geovar/viz.html#GeoVarPlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#geovar.GeoVarPlot" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
+<dd><p>Class for a GeoVar plot.</p>
+<dl class="py method">
 <dt id="geovar.GeoVarPlot.__init__">
 <code class="sig-name descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/geovar/viz.html#GeoVarPlot.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#geovar.GeoVarPlot.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initializing plotting object</p>
+<dd><p>Initialize plotting object with default fields.</p>
 </dd></dl>
 
 <p class="rubric">Methods</p>
@@ -53,40 +54,43 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#geovar.GeoVarPlot.__init__" title="geovar.GeoVarPlot.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>()</p></td>
-<td><p>Initializing plotting object</p></td>
+<td><p>Initialize plotting object with default fields.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_cmap</span></code>([base_cmap, str_labels, lbl_colors])</p></td>
-<td><p>Create a colormap object to use</p></td>
+<td><p>Create a colormap object to use.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_data_geovar</span></code>(geovar_obj)</p></td>
-<td><p>Add in data directly from a GeoVar object</p></td>
+<td><p>Add in data directly from a GeoVar object.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_data_jsfs</span></code>(jsfs)</p></td>
-<td><p>Add data from a joint SFS via numpy</p></td>
+<td><p>Add data from a joint SFS via numpy.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_poplabels</span></code>(popfile)</p></td>
-<td><p>Add population labels from a file for GeoVar plot :param popfile: path to population list file with one file per line :type popfile: <a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">string</span></code></a></p></td>
+<td><p>Add population labels from a file for GeoVar plot.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_poplabels_manual</span></code>(poplist)</p></td>
-<td><p>Add list of population labels manually :param poplist: list of population names for the GeoVar plot :type poplist: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a></p></td>
+<td><p>Add list of population labels manually.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_text_data</span></code>(inputfile[, filt_unobserved])</p></td>
-<td><p>Add/replace data for a GeoDistPlot object</p></td>
+<td><p>Add/replace data for a GeoDistPlot object.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter_data</span></code>([max_freq, rare])</p></td>
-<td><p>Filter geovar data for easier plotting by removing some lower-frequency categories</p></td>
+<td><p>Filter geovar data for easier plotting by removing some lower-frequency categories.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_geovar</span></code>(ax)</p></td>
-<td><p>Generate a GeoVar plot on a matplotlib axis :param ax: plotting axis from matplotlib :type ax: <code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.axes</span></code></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_geovar</span></code>(ax[, pixel_thresh, freq_thresh, …])</p></td>
+<td><p>Make a geovar plot on a particular axis.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_percentages</span></code>(ax)</p></td>
-<td><p>Generate a cumulative percentage plot :param ax: plotting axis from matplotlib :type ax: <code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.axes</span></code></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_percentages</span></code>(ax[, pixel_thresh, …])</p></td>
+<td><p>Generate a plot with the percentages.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">reorder_pops</span></code>(new_poplist)</p></td>
-<td><p>Reordering populations within a GeoVar instance :param new_poplist: list of population names but reordered :type new_poplist: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a></p></td>
+<td><p>Reordering populations within a GeoVar instance.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_colors</span></code>(colors)</p></td>
-<td><p>Add custom hex colors for GeoVar plot :param colors: list of hexcodes for defining colors :type colors: <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">list</span></code></a></p></td>
+<td><p>Add custom hex colors for GeoVar plot.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort_geodist</span></code>()</p></td>
+<td><p>Sort the geovar codes according to abundance.</p></td>
 </tr>
 </tbody>
 </table>
