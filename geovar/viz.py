@@ -161,6 +161,13 @@ class GeoVarPlot(object):
         self.fgeodist = self.fgeodist[sorted_idx]
         self.orig_fgeodist_alt = self.orig_fgeodist_alt[sorted_idx]
 
+    def sort_geodist(self):
+        """Sort the geovar codes according to abundance."""
+        sorted_idx = np.argsort(self.orig_fgeodist)[::-1]
+        self.orig_fgeodist = self.orig_fgeodist[sorted_idx]
+        self.orig_ngeodist = self.orig_ngeodist[sorted_idx]
+        self.orig_geodist = self.orig_geodist[sorted_idx]
+
     def add_cmap(
         self,
         base_cmap="Blues",
@@ -241,14 +248,91 @@ class GeoVarPlot(object):
         assert len(poplist) == self.npops
         self.poplist = poplist
 
-    def plot_geovar(self, ax):
-        """Generate a GeoVar plot on a matplotlib axis.
+    # def plot_geovar(self, ax):
+    #     """Generate a GeoVar plot on a matplotlib axis.
 
-        Args:
-            ax (:obj:`matplotlib.axes`): plotting axis from matplotlib.
+    #     Args:
+    #         ax (:obj:`matplotlib.axes`): plotting axis from matplotlib.
 
-        """
-        # Starting assertions to make sure input is alright
+    #     """
+    #     # Starting assertions to make sure input is alright
+    #     assert self.geodist is not None
+    #     assert self.ngeodist is not None
+    #     assert self.npops is not None
+    #     assert self.poplist is not None
+    #     assert self.ncat is not None
+    #     assert self.colors is not None
+    #     assert self.str_labels is not None
+    #     assert self.lbl_colors is not None
+    #     assert self.poplist is not None
+    #     # Setting up the codes here
+    #     x_limits = ax.get_xlim()
+    #     xbar_pts = np.linspace(x_limits[0], x_limits[1], num=self.npops + 1)
+    #     xpts_shifted = (xbar_pts[1:] + xbar_pts[:-1]) / 2.0
+    #     ax.set_xticks(xpts_shifted)
+    #     # setting up the vertical lines
+    #     for x in xbar_pts:
+    #         ax.axvline(x=x, color=self.bar_color, lw=self.line_weight, alpha=self.alpha)
+
+    #     # changing the border color
+    #     for spine in ax.spines.values():
+    #         spine.set_edgecolor(self.border_color)
+
+    #     # Plotting the horizontal bars in this case
+    #     ylims = ax.get_ylim()
+    #     y_pts = np.cumsum(self.fgeodist) / (ylims[1] - ylims[0])
+    #     n_y = y_pts.size
+    #     cur_y = ylims[0]
+    #     nsnps = np.sum(self.orig_ngeodist)
+    #     for i in range(n_y):
+    #         y = y_pts[i]
+    #         y_dist = y - cur_y
+    #         ax.axhline(y=y, color=self.bar_color, lw=self.line_weight, alpha=self.alpha)
+    #         cur_code = list(self.geodist[i])
+    #         for j in range(self.npops):
+    #             # Defining the current category
+    #             cur_cat = int(cur_code[j])
+    #             # Drawing in the rectangle
+    #             cur_xy = xbar_pts[j], cur_y
+    #             rect = patches.Rectangle(
+    #                 xy=cur_xy,
+    #                 width=(xbar_pts[j + 1] - cur_xy[0]),
+    #                 height=y_dist,
+    #                 facecolor=self.colors[cur_cat],
+    #             )
+    #             ax.add_patch(rect)
+    #             # Drawing in the text
+    #             y_frac = y_dist / (ylims[1] - ylims[0])
+    #             fontscale = 1.0
+    #             freq_thresh = 0.06
+    #             if y_frac < freq_thresh:
+    #                 fontscale = y_frac * fontscale / freq_thresh
+    #             ax.text(
+    #                 x=xpts_shifted[j],
+    #                 y=(cur_y + y_dist / 2.0),
+    #                 ha=self.h_orient,
+    #                 va=self.v_orient,
+    #                 s=self.str_labels[cur_cat],
+    #                 color=self.lbl_colors[cur_cat],
+    #                 fontsize=self.fontsize * fontscale,
+    #             )
+    #         cur_y = y
+    #     ax.set_ylim(ylims)
+    #     ax.set_xticklabels(self.poplist, rotation=90)
+    #     ax.set_ylabel("Cumulative fraction of variants", fontsize=14)
+    #     return (ax, nsnps, y_pts)
+
+    def plot_geovar(
+        self,
+        ax,
+        pixel_thresh=3,
+        freq_thresh=0.05,
+        dpi=100,
+        superpops=None,
+        superpop_lbls=None,
+    ):
+        """Make a geovar plot on a particular axis."""
+        # Starting assertions to make sure we can call this
         assert self.geodist is not None
         assert self.ngeodist is not None
         assert self.npops is not None
@@ -258,6 +342,11 @@ class GeoVarPlot(object):
         assert self.str_labels is not None
         assert self.lbl_colors is not None
         assert self.poplist is not None
+        # Getting the dimensions
+        bbox = ax.get_window_extent()
+        width, height = bbox.width, bbox.height
+        width *= dpi
+        height *= dpi
         # Setting up the codes here
         x_limits = ax.get_xlim()
         xbar_pts = np.linspace(x_limits[0], x_limits[1], num=self.npops + 1)
@@ -267,21 +356,23 @@ class GeoVarPlot(object):
         for x in xbar_pts:
             ax.axvline(x=x, color=self.bar_color, lw=self.line_weight, alpha=self.alpha)
 
+        if superpops is not None:
+            for i in superpops:
+                ax.axvline(x=xbar_pts[i], color="gray", lw=1.0)
+
         # changing the border color
         for spine in ax.spines.values():
             spine.set_edgecolor(self.border_color)
 
         # Plotting the horizontal bars in this case
         ylims = ax.get_ylim()
-        y_pts = np.cumsum(self.fgeodist) / (ylims[1] - ylims[0])
-        n_y = y_pts.size
+        y_pts = np.cumsum(self.orig_fgeodist)
         cur_y = ylims[0]
         nsnps = np.sum(self.orig_ngeodist)
-        for i in range(n_y):
+        for i in range(y_pts.size):
             y = y_pts[i]
             y_dist = y - cur_y
-            ax.axhline(y=y, color=self.bar_color, lw=self.line_weight, alpha=self.alpha)
-            cur_code = list(self.geodist[i])
+            cur_code = list(self.orig_geodist[i])
             for j in range(self.npops):
                 # Defining the current category
                 cur_cat = int(cur_code[j])
@@ -297,9 +388,10 @@ class GeoVarPlot(object):
                 # Drawing in the text
                 y_frac = y_dist / (ylims[1] - ylims[0])
                 fontscale = 1.0
-                freq_thresh = 0.06
+                alpha = 1.0
                 if y_frac < freq_thresh:
-                    fontscale = y_frac * fontscale / freq_thresh
+                    fontscale = y_frac / freq_thresh
+                    alpha = y_frac / freq_thresh
                 ax.text(
                     x=xpts_shifted[j],
                     y=(cur_y + y_dist / 2.0),
@@ -307,44 +399,67 @@ class GeoVarPlot(object):
                     va=self.v_orient,
                     s=self.str_labels[cur_cat],
                     color=self.lbl_colors[cur_cat],
+                    alpha=alpha,
                     fontsize=self.fontsize * fontscale,
                 )
+
             cur_y = y
+            if self.orig_fgeodist[i] * height < pixel_thresh:
+                break
+            ax.axhline(y=y, color=self.bar_color, lw=self.line_weight, alpha=self.alpha)
+        if cur_y < 1.0:
+            rect = patches.Rectangle(
+                xy=[0, cur_y], width=1.0, height=(1.0 - cur_y), facecolor="grey"
+            )
+            ax.add_patch(rect)
         ax.set_ylim(ylims)
-        ax.set_xticklabels(self.poplist, rotation=90)
         ax.set_ylabel("Cumulative fraction of variants", fontsize=14)
         return (ax, nsnps, y_pts)
 
-    def plot_percentages(self, ax):
-        """Generate a cumulative percentage plot.
-
-        Args:
-            ax (:obj:`matplotlib.axes`): plotting axis from matplotlib.
-
-        """
-        ns = self.ngeodist
+    def plot_percentages(self, ax, pixel_thresh=3, freq_thresh=0.05, dpi=100):
+        """Generate a plot with the percentages."""
+        bbox = ax.get_window_extent()
+        width, height = bbox.width, bbox.height
+        width *= dpi
+        height *= dpi
+        ns = self.orig_ngeodist
         fracs = ns / np.sum(ns)
-        cum_frac = np.cumsum(self.fgeodist)
+        cum_frac = np.cumsum(self.orig_fgeodist)
         # Setting the border here
         for spine in ax.spines.values():
             spine.set_edgecolor(self.border_color)
         prev = 0.0
         for i in range(cum_frac.size):
-            ax.axhline(cum_frac[i], lw=0.5, color=self.bar_color)
             # Get the midpoint
             ydist = (cum_frac[i] - prev) / 2.0
-            fontscale = min(1.0, self.fontsize * fracs[i])
-            nstr = "{:,}".format(ns[i])
-            ax.text(
-                x=0.01,
-                y=prev + ydist,
-                s=" %s (%d%%)" % (nstr, round(self.orig_fgeodist_alt[i] * 100)),
-                va="center",
-                fontsize=self.fontsize * fontscale,
-            )
+            fontscale = 1.0
+            alpha = 1.0
+            if fracs[i] < freq_thresh:
+                fontscale = fracs[i] / freq_thresh
+                alpha = min(1.0, 20 * fracs[i] / freq_thresh)
+            if self.orig_fgeodist[i] * height > pixel_thresh:
+                nstr = "{:,}".format(ns[i])
+                ax.text(
+                    x=1.025,
+                    y=prev + ydist,
+                    s="%s (%d%%)" % (nstr, round(self.orig_fgeodist[i] * 100)),
+                    va=self.v_orient,
+                    fontsize=self.fontsize * fontscale,
+                    alpha=alpha,
+                    ha="left",
+                )
             prev = cum_frac[i]
+            if self.orig_fgeodist[i] * height < pixel_thresh:
+                break
+        if prev < 1.0:
+            rect = patches.Rectangle(
+                xy=[0, cum_frac[i]],
+                width=1.0,
+                height=(1.0 - cum_frac[i]),
+                facecolor="grey",
+            )
+            ax.add_patch(rect)
         ax.set_ylim(0, 1)
-        ax.set_xticks([])
         return ax
 
 

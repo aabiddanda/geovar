@@ -4,7 +4,7 @@
 
 `geovar` is a python package to visualize joint allele frequency spectrum data.
 
-The geovar software was developed by Arjun Biddanda, with contributions from Daniel P. Rice and john Novembre.
+The geovar software was developed by Arjun Biddanda, with contributions from Daniel P. Rice and John Novembre.
 
 ## Setup & Installation
 

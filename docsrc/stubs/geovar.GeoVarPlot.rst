@@ -25,3 +25,4 @@
       ~GeoVarPlot.plot_percentages
       ~GeoVarPlot.reorder_pops
       ~GeoVarPlot.set_colors
+      ~GeoVarPlot.sort_geodist
