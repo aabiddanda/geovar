@@ -24,15 +24,17 @@ pip install .
 
 ## Tutorial
 
-If you are interested in a working tutorial of the `geovar` library, please either look at the static version under the "Tutorial" section of our documetation. For a more engaging and interactive experience, please take a look at the `mybinder` link at the top of this README.
+If you are interested in a working tutorial of the `geovar` library, please either look at the static version under the "Tutorial" section of our documetation [here](https://aabiddanda.github.io/geovar/notebooks/getting-started.html).
 
+For a more engaging experience, please click the `Launch Binder` link at the top of this README, which offers an interactive tutorial in a `jupyter` notebook. 
 
 ## Citation 
 
 If you use `geovar` in your publication, we kindly ask that you cite the following manuscript:
 
 ```
-Arjun Biddanda, Daniel P Rice, John Novembre. *A variant-centric perspective on geographic patterns of human allele frequency variation.* (eLife) 2020. 
+Arjun Biddanda, Daniel P Rice, John Novembre. 
+*A variant-centric perspective on geographic patterns of human allele frequency variation.* (eLife) 2020. 
 ```
 
 You can also find an open-access version of the paper [here](https://elifesciences.org/articles/60107#metrics).
