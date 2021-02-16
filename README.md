@@ -2,7 +2,9 @@
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/aabiddanda/geovar/master?filepath=docsrc%2Fnotebooks%2Fgetting-started.ipynb)
 
-`geovar` is a python package to visualize joint allele frequency spectrum data.
+`geovar` is a python package to visualize joint allele frequency spectrum data. 
+
+You can find a webpage introducing the software (with installation instructions, a tutorial, and API documentation) at the following url: https://aabiddanda.github.io/geovar/
 
 The geovar software was developed by Arjun Biddanda, with contributions from Daniel P. Rice and John Novembre.
 
@@ -24,7 +26,7 @@ pip install .
 
 ## Tutorial
 
-If you are interested in a working tutorial of the `geovar` library, please either look at the static version under the "Tutorial" section of our documetation [here](https://aabiddanda.github.io/geovar/notebooks/getting-started.html).
+If you are interested in a working tutorial of the `geovar` library, please either look at the static version under the "Tutorial" section of our documetation [here](https://aabiddanda.github.io/geovar/notebooks/getting-started.html). 
 
 For a more engaging experience, please click the `Launch Binder` link at the top of this README, which offers an interactive tutorial in a `jupyter` notebook. 
 
