@@ -469,7 +469,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<div class="nboutput nblast docutils container">
+<div class="nboutput docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
@@ -479,6 +479,15 @@ number of variants: 5000
 number of pops: 5
 pops: AFR,AMR,EAS,EUR,SAS
 allele freq bins: (0, 0),(0, 0.05),(0.05, 1.0)
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/Users/aabiddanda/.pyenv/versions/3.7.5/lib/python3.7/site-packages/geovar/binning.py:46: ParserWarning: Falling back to the &#39;python&#39; engine because the &#39;c&#39; engine does not support regex separators (separators &gt; 1 char and different from &#39;\s+&#39; are interpreted as regex); you can avoid this warning by specifying engine=&#39;python&#39;.
+  af_df = pd.read_table(freq_mat_file, sep=r&#34;\s&#34;)
 </pre></div></div>
 </div>
 </div>
@@ -521,7 +530,8 @@ allele freq bins: (0, 0),(0, 0.05),(0.05, 1.0)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_getting-started_11_0.svg" src="../_images/notebooks_getting-started_11_0.svg" /></div>
+<img alt="../_images/notebooks_getting-started_11_0.png" src="../_images/notebooks_getting-started_11_0.png" />
+</div>
 </div>
 <p>If we want the percentages next to each value, we can run the following:</p>
 <div class="nbinput docutils container">
@@ -545,7 +555,8 @@ allele freq bins: (0, 0),(0, 0.05),(0.05, 1.0)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_getting-started_13_0.svg" src="../_images/notebooks_getting-started_13_0.svg" /></div>
+<img alt="../_images/notebooks_getting-started_13_0.png" src="../_images/notebooks_getting-started_13_0.png" />
+</div>
 </div>
 </div>
 <div class="section" id="Changing-the-Binning">
@@ -603,7 +614,8 @@ allele freq bins: (0, 0),(0, 0.05),(0.05, 1.0)
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_getting-started_17_0.svg" src="../_images/notebooks_getting-started_17_0.svg" /></div>
+<img alt="../_images/notebooks_getting-started_17_0.png" src="../_images/notebooks_getting-started_17_0.png" />
+</div>
 </div>
 <p>As you can see the “L” category does not appear till the 7th category here, but it does allow for other ways to break down the frequency categories and further exploration.</p>
 </div>
@@ -687,7 +699,8 @@ gzcat <span class="nv">$1</span> <span class="p">|</span> head -n5
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_getting-started_23_0.svg" src="../_images/notebooks_getting-started_23_0.svg" /></div>
+<img alt="../_images/notebooks_getting-started_23_0.png" src="../_images/notebooks_getting-started_23_0.png" />
+</div>
 </div>
 </div>
 </div>
