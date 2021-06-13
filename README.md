@@ -2,6 +2,12 @@
 
 [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/aabiddanda/geovar/master?filepath=docsrc%2Fnotebooks%2Fgetting-started.ipynb)
 
+[![Ubuntu](https://github.com/aabiddanda/geovar/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/aabiddanda/geovar/actions/workflows/ubuntu.yml)
+
+[![Windows](https://github.com/aabiddanda/geovar/actions/workflows/windows.yml/badge.svg)](https://github.com/aabiddanda/geovar/actions/workflows/windows.yml)
+
+[![macOS](https://github.com/aabiddanda/geovar/actions/workflows/macos.yml/badge.svg)](https://github.com/aabiddanda/geovar/actions/workflows/macos.yml)
+
 `geovar` is a python package to visualize joint allele frequency spectrum data.
 
 You can find a webpage introducing the software (with installation instructions, a tutorial, and API documentation) at the following url: https://aabiddanda.github.io/geovar/
