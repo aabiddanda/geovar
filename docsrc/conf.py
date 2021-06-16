@@ -116,7 +116,7 @@ nbsphinx_prolog = r"""
 .. only:: html
     .. role:: raw-html(raw)
         :format: html
-    __ https://github.com/jhmarcus/feems/blob
+    __ https://github.com/aabiddanda/geovar/blob
         {{ env.config.release }}/{{ docname }}
 """
 
