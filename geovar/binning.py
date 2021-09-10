@@ -3,7 +3,7 @@
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
-from .utils import sep_freq_mat_pops
+from utils import sep_freq_mat_pops
 
 
 class GeoVar(object):
@@ -19,6 +19,7 @@ class GeoVar(object):
         """
         assert np.all(np.array(bins) <= 1.0)
         assert np.all(np.array(bins) >= 0.0)
+        assert len(bins) > 0
         self.bins = bins
         self.freq_mat = None
         self.n_variants = None
