@@ -3,7 +3,7 @@
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
-from utils import sep_freq_mat_pops
+from .utils import sep_freq_mat_pops
 
 
 class GeoVar(object):

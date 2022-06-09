@@ -2,3 +2,4 @@ sandbox/*
 geovar/data/*.csv
 docsrc/_build/*
 .hypothesis/
+*.egg-info/
