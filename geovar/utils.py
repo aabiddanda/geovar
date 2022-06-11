@@ -1,6 +1,7 @@
 """Utilities for file conversions for GeoVar."""
 
 import allel
+from pathlib import Path
 import pandas as pd
 import numpy as np
 
@@ -11,6 +12,25 @@ def flip_alleles(acnt, flip=False):
     assert acnt.ndim == 2
     flipped = acnt[np.arange(len(acnt)), flip] / acnt.sum(axis=1)
     return flipped
+
+
+def read_pop_panel(pop_panel_file):
+    """Read in a population panel file."""
+    pop_panel_file_path = Path(pop_panel_file)
+    if not pop_panel_file_path.is_file():
+        raise ValueError(f"{pop_panel_file} is not a file!")
+    else:
+        if pop_panel_file_path.suffix == "csv":
+            pop_df = pd.read_csv(pop_panel_file_path, usecols=["sample", "pop"])
+        elif pop_panel_file_path.suffix == "tsv":
+            pop_df = pd.read_csv(
+                pop_panel_file_path, sep="\t", usecols=["sample", "pop"]
+            )
+        else:
+            pop_df = pd.read_csv(
+                pop_panel_file_path, sep=r"\s+", usecols=["sample", "pop"]
+            )
+        return pop_df
 
 
 def vcf_to_freq_table(vcf_file, pop_panel, outfile=None, minor_allele=True):
@@ -71,7 +91,7 @@ def vcf_to_freq_table(vcf_file, pop_panel, outfile=None, minor_allele=True):
         i: flip_alleles(allel_cnt_subpops[i], flip_allele) for i in allel_cnt_subpops
     }
     af_df = pd.DataFrame(af_dict)
-    # Inserting all of the columns that are needed for the allele frequency
+    # Inserting all of the columns for allele frequencies
     af_df.insert(0, "CHR", chrom)
     af_df.insert(1, "SNP", pos)
     af_df.insert(2, "A1", ref_alleles)
