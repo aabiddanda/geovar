@@ -7,7 +7,7 @@ import numpy as np
 
 def flip_alleles(acnt, flip=False):
     """Flip alleles if based on being the minor allele."""
-    assert np.all(acnt >= 0.0)
+    assert np.all(acnt >= 0)
     assert acnt.ndim == 2
     flipped = acnt[np.arange(len(acnt)), flip] / acnt.sum(axis=1)
     return flipped

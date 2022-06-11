@@ -4,10 +4,20 @@ from geovar.binning import GeoVar
 import pytest
 
 
-def test_bin_boundaries():
+@pytest.fixture
+def bins_less_than_zero():
+    """Bins that are below zero."""
+    return [(-1, 0), (0, 1)]
+
+
+@pytest.fixture
+def bins_greater_than_one():
+    """Bins that are greater than one."""
+    return [(0, 0.5), (0.5, 1.1)]
+
+
+def test_bin_boundaries(bins_less_than_zero, bins_greater_than_one):
     """Testing the bin boundaries."""
-    bins_less_than_zero = [(-1, 0), (0, 1)]
-    bins_greater_than_one = [(0, 0), (0, 2)]
     with pytest.raises(AssertionError):
         GeoVar(bins=bins_less_than_zero)
     with pytest.raises(AssertionError):
