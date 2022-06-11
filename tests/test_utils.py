@@ -48,7 +48,38 @@ def test_sep_freq_mat_pops(af_test_df, expected_pops=["POP1", "POP2"]):
 
 
 def test_sep_freq_mat_dropped(af_test_df_drop, expected_pops=["POP1", "POP2"]):
-    """Separate frequency matrix of populations."""
+    """Separate frequency matrix of populations with a dropped column."""
     (pops, _) = utils.sep_freq_mat_pops(af_test_df_drop)
     for p in expected_pops:
         assert p in pops
+
+
+@pytest.fixture
+def pop_panel_df():
+    df = pd.DataFrame({"sample": ["A1", "B1"], "pop": ["A", "A"]})
+    return df
+
+
+@pytest.fixture
+def pop_panel_bad_name(pop_panel_df):
+    rename_df = pop_panel_df.rename(columns={"pop": "xxx"})
+    return rename_df
+
+
+@pytest.fixture(scope="session")
+def create_pop_panel_csv(tmp_path_factory, pop_panel_df):
+    fn = tmp_path_factory.mktemp("data") / "pop_panel.csv"
+    pop_panel_df.to_csv(fn, index=False)
+    return fn
+
+
+@pytest.fixture(scope="session")
+def create_pop_panel_tsv(tmp_path_factory, pop_panel_df):
+    fn = tmp_path_factory.mktemp("data") / "pop_panel.tsv"
+    pop_panel_df.to_csv(fn, sep="\t", index=False)
+    return fn
+
+
+@pytest.fixture(scope="session")
+def create_pop_panel_txt(tmp_path_factory, pop_panel_df):
+    pass
