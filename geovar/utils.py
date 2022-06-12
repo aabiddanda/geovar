@@ -20,9 +20,9 @@ def read_pop_panel(pop_panel_file):
     if not pop_panel_file_path.is_file():
         raise ValueError(f"{pop_panel_file} is not a file!")
     else:
-        if pop_panel_file_path.suffix == "csv":
+        if pop_panel_file_path.suffix == ".csv":
             pop_df = pd.read_csv(pop_panel_file_path, usecols=["sample", "pop"])
-        elif pop_panel_file_path.suffix == "tsv":
+        elif pop_panel_file_path.suffix == ".tsv":
             pop_df = pd.read_csv(
                 pop_panel_file_path, sep="\t", usecols=["sample", "pop"]
             )

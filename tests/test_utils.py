@@ -56,30 +56,62 @@ def test_sep_freq_mat_dropped(af_test_df_drop, expected_pops=["POP1", "POP2"]):
 
 @pytest.fixture
 def pop_panel_df():
+    """Populate population panel dataframe."""
     df = pd.DataFrame({"sample": ["A1", "B1"], "pop": ["A", "A"]})
     return df
 
 
 @pytest.fixture
-def pop_panel_bad_name(pop_panel_df):
+def pop_panel_rename(pop_panel_df):
+    """Rename a population panel badly."""
     rename_df = pop_panel_df.rename(columns={"pop": "xxx"})
     return rename_df
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture()
 def create_pop_panel_csv(tmp_path_factory, pop_panel_df):
+    """Create a population panel as a CSV."""
     fn = tmp_path_factory.mktemp("data") / "pop_panel.csv"
     pop_panel_df.to_csv(fn, index=False)
     return fn
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture()
 def create_pop_panel_tsv(tmp_path_factory, pop_panel_df):
+    """Create a population panel as a TSV."""
     fn = tmp_path_factory.mktemp("data") / "pop_panel.tsv"
     pop_panel_df.to_csv(fn, sep="\t", index=False)
     return fn
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture
 def create_pop_panel_txt(tmp_path_factory, pop_panel_df):
-    pass
+    """Create a population panel as a TXT File."""
+    fn = tmp_path_factory.mktemp("data") / "pop_panel.txt"
+    pop_panel_df.to_csv(fn, sep=" ", index=False)
+    return fn
+
+
+@pytest.fixture()
+def create_pop_panel_csv_bad(tmp_path_factory, pop_panel_rename):
+    """Create a population panel as a CSV."""
+    fn = tmp_path_factory.mktemp("data") / "pop_panel.bad.csv"
+    pop_panel_rename.to_csv(fn, index=False)
+    return fn
+
+
+def test_read_pop_panel(
+    pop_panel_df, create_pop_panel_csv, create_pop_panel_tsv, create_pop_panel_txt
+):
+    """Testing the reading of each population panel format."""
+    test_files = [create_pop_panel_csv, create_pop_panel_tsv, create_pop_panel_txt]
+    for f in test_files:
+        df = utils.read_pop_panel(f)
+        pd.testing.assert_frame_equal(df, pop_panel_df)
+
+
+# def test_read_bad_pop_panel(pop_panel_rename, create_pop_panel_csv):
+# """Testing that population panels must include both samples and pops columns."""
+# fn = create_pop_panel_csv(pop_panel_rename)
+# with pytest.raises(Exception):
+# utils.read_pop_panel(fn)
