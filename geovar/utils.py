@@ -1,6 +1,7 @@
 """Utilities for file conversions for GeoVar."""
 
 import allel
+import warnings
 from pathlib import Path
 import pandas as pd
 import numpy as np
@@ -31,6 +32,23 @@ def read_pop_panel(pop_panel_file):
                 pop_panel_file_path, sep=r"\s+", usecols=["sample", "pop"]
             )
         return pop_df
+
+
+def verify_sample_indices(pop_df, samples):
+    """Generate the sample indices."""
+    pop_dict = pop_df.set_index(["sample"]).to_dict()["pop"]
+    unique_pops = np.unique([pop_dict[i] for i in pop_dict])
+    pop_vector = np.repeat(np.nan, samples.size)
+    for i, s in enumerate(samples):
+        try:
+            pop_vector[i] = pop_dict[s]
+        except KeyError:
+            warnings.warn(f"Sample {s} does not have a population label!", UserWarning)
+    pop_vector = np.array(pop_vector)
+    pop_idx_dict = {}
+    for p in unique_pops:
+        pop_idx_dict[p] = np.where(pop_vector == p)[0]
+    return unique_pops, pop_idx_dict, pop_dict
 
 
 def vcf_to_freq_table(vcf_file, pop_panel, outfile=None, minor_allele=True):
