@@ -36,9 +36,11 @@ def read_pop_panel(pop_panel_file):
 
 def verify_sample_indices(pop_df, samples):
     """Generate the sample indices."""
+    if type(samples) == list:
+        samples = np.asarray(samples, dtype=str)
     pop_dict = pop_df.set_index(["sample"]).to_dict()["pop"]
     unique_pops = np.unique([pop_dict[i] for i in pop_dict])
-    pop_vector = np.repeat(np.nan, samples.size)
+    pop_vector = np.repeat("", samples.size)
     for i, s in enumerate(samples):
         try:
             pop_vector[i] = pop_dict[s]

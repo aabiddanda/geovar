@@ -110,8 +110,27 @@ def test_read_pop_panel(
         pd.testing.assert_frame_equal(df, pop_panel_df)
 
 
-# def test_read_bad_pop_panel(pop_panel_rename, create_pop_panel_csv):
-# """Testing that population panels must include both samples and pops columns."""
-# fn = create_pop_panel_csv(pop_panel_rename)
-# with pytest.raises(Exception):
-# utils.read_pop_panel(fn)
+def test_read_bad_pop_panel(create_pop_panel_csv_bad):
+    """Testing that population panels must include both samples and pops columns."""
+    with pytest.raises(Exception):
+        utils.read_pop_panel(create_pop_panel_csv_bad)
+
+
+@pytest.fixture
+def pop_panel_multi_pop_df():
+    """Populate population panel dataframe."""
+    df = pd.DataFrame({"sample": ["A1", "B1", "C1", "D1"], "pop": ["A", "A", "B", "B"]})
+    return df
+
+
+@pytest.mark.filterwarnings("error")
+def test_verify_pops(pop_panel_multi_pop_df):
+    """Test that population verification for samples in VCFs works properly."""
+    samples_correct = ["A1", "B1", "C1", "D1"]
+    samples_subset = ["A1", "C1"]
+    samples_excess = ["A1", "E1"]
+    utils.verify_sample_indices(pop_panel_multi_pop_df, samples_correct)
+    utils.verify_sample_indices(pop_panel_multi_pop_df, samples_subset)
+    # This treats warnings as exceptions here...
+    with pytest.raises(Exception):
+        utils.verify_sample_indices(pop_panel_multi_pop_df, samples_excess)
