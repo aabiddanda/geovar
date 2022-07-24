@@ -1,18 +1,8 @@
 """Testing I/O routines for geovar input."""
 
 import geovar.utils as utils
-from hypothesis import given, strategies as st
-from hypothesis.extra.numpy import arrays
-import numpy as np
 import pandas as pd
 import pytest
-
-
-@given(a=arrays(np.int32, 1, elements=st.integers(-10000, 0)))
-def test_negative_allele(a):
-    """Testing the flipping of allele frequencies."""
-    with pytest.raises(AssertionError):
-        utils.flip_alleles(a)
 
 
 @pytest.fixture

@@ -110,11 +110,9 @@ def vcf_to_freq_table(vcf_file, pop_df, outfile=None, minor_allele=True, **kwarg
 
     allele_cnt_subpops = np.array(allele_cnt_subpops)
     global_af = alt_freq
-    flip_af = np.repeat(True, alt_freq.size)
+    flip_af = np.repeat(False, alt_freq.size)
     if minor_allele:
         flip_af = alt_freq > 0.5
-    flip_allele = ~flip_af
-    flip_allele = flip_allele.astype(np.int8)
     flip_idx = np.where(flip_af)[0]
     if flip_idx.size > 0:
         for i in flip_idx:
