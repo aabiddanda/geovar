@@ -4,3 +4,4 @@ docsrc/_build/*
 .hypothesis/
 *.egg-info/
 *.coverage
+*.python-version

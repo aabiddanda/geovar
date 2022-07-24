@@ -8,36 +8,35 @@ from tqdm import tqdm
 from cyvcf2 import VCF
 
 
-def flip_alleles(afreq, flip=False):
-    """Flip alleles if based on being the minor allele."""
-    assert np.all(afreq >= 0.0)
-    assert np.all(afreq <= 1.0)
-    assert afreq.ndim == 1
-    flipped = 1.0 - afreq
-    return flipped
-
-
 def read_pop_panel(pop_panel_file):
-    """Read in a population panel file."""
+    """Read in a population panel file.
+
+    Args:
+        pop_panel_files (:obj: `string`): list of population
+    
+    """
     pop_panel_file_path = Path(pop_panel_file)
     if not pop_panel_file_path.is_file():
         raise ValueError(f"{pop_panel_file} is not a file!")
     else:
+        sep = " "
         if pop_panel_file_path.suffix == ".csv":
-            pop_df = pd.read_csv(pop_panel_file_path, usecols=["sample", "pop"])
+            sep = ","
         elif pop_panel_file_path.suffix == ".tsv":
-            pop_df = pd.read_csv(
-                pop_panel_file_path, sep="\t", usecols=["sample", "pop"]
-            )
-        else:
-            pop_df = pd.read_csv(
-                pop_panel_file_path, sep=r"\s+", usecols=["sample", "pop"]
-            )
+            sep = "\t"
+        pop_df = pd.read_csv(pop_panel_file_path, sep=sep, usecols=["sample", "pop"])
         return pop_df
 
 
 def verify_sample_indices(pop_df, samples):
-    """Generate the sample indices."""
+    r"""Generate the sample indices from a list of sample IDs stratified by population.
+
+    Args:
+        pop_df (:obj:`pandas.DataFrame`): population data frame in pandas format.\
+            Must have `pop` and `sample` columns available.
+        samples (:obj:`list`): list of sample IDs (strings) that are ready to be indexed.
+
+    """
     if type(samples) == list:
         samples = np.asarray(samples, dtype=str)
     pop_dict = pop_df.set_index(["sample"]).to_dict()["pop"]
