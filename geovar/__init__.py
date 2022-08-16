@@ -10,4 +10,4 @@ from .utils import vcf_to_freq_table, sep_freq_mat_pops
 
 __all__ = ["GeoVar", "GeoVarPlot", "vcf_to_freq_table", "sep_freq_mat_pops"]
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
