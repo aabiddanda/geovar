@@ -13,7 +13,7 @@ def read_pop_panel(pop_panel_file):
 
     Args:
         pop_panel_files (:obj: `string`): list of population
-    
+
     """
     pop_panel_file_path = Path(pop_panel_file)
     if not pop_panel_file_path.is_file():
