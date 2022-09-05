@@ -48,7 +48,7 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        pop_panel_files (:obj: `string`): list of population</span>
-<span class="sd">    </span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">pop_panel_file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">pop_panel_file</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">pop_panel_file_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
@@ -72,17 +72,20 @@
 <span class="sd">        samples (:obj:`list`): list of sample IDs (strings) that are ready to be indexed.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">assert</span> <span class="s2">&quot;sample&quot;</span> <span class="ow">in</span> <span class="n">pop_df</span><span class="o">.</span><span class="n">columns</span>
+    <span class="k">assert</span> <span class="s2">&quot;pop&quot;</span> <span class="ow">in</span> <span class="n">pop_df</span><span class="o">.</span><span class="n">columns</span>
     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">samples</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
         <span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
     <span class="n">pop_dict</span> <span class="o">=</span> <span class="n">pop_df</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s2">&quot;sample&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()[</span><span class="s2">&quot;pop&quot;</span><span class="p">]</span>
     <span class="n">unique_pops</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">([</span><span class="n">pop_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">pop_dict</span><span class="p">])</span>
-    <span class="n">pop_vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">samples</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">pop_vector</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">samples</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">pop_vector</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">pop_dict</span><span class="p">[</span><span class="n">s</span><span class="p">]</span>
+            <span class="n">pop_vector</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pop_dict</span><span class="p">[</span><span class="n">s</span><span class="p">])</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">pop_vector</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sample </span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s2"> does not have a population label!&quot;</span><span class="p">,</span> <span class="ne">UserWarning</span><span class="p">)</span>
-    <span class="n">pop_vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pop_vector</span><span class="p">)</span>
+    <span class="n">pop_vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">pop_vector</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
     <span class="n">pop_idx_dict</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">unique_pops</span><span class="p">:</span>
         <span class="n">pop_idx_dict</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">pop_vector</span> <span class="o">==</span> <span class="n">p</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
@@ -127,36 +130,43 @@
     <span class="n">alt_alleles</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">global_af</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">global_ac</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">global_n</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">alt_freq</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">allele_cnt_subpops</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">variant</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">vcf</span><span class="p">):</span>
         <span class="n">chrom</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">variant</span><span class="o">.</span><span class="n">CHROM</span><span class="p">)</span>
         <span class="n">pos</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">variant</span><span class="o">.</span><span class="n">POS</span><span class="p">)</span>
         <span class="n">ref_alleles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">variant</span><span class="o">.</span><span class="n">REF</span><span class="p">)</span>
-        <span class="n">alt_alleles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">variant</span><span class="o">.</span><span class="n">ALT</span><span class="p">)</span>
-        <span class="n">global_ac</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">variant</span><span class="o">.</span><span class="n">AC</span><span class="p">)</span>
+        <span class="c1"># NOTE: We only take the first alternative allele here ...</span>
+        <span class="n">alt_alleles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">variant</span><span class="o">.</span><span class="n">ALT</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="n">alt_freq</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">variant</span><span class="o">.</span><span class="n">aaf</span><span class="p">)</span>
-        <span class="n">cur_gt</span> <span class="o">=</span> <span class="n">variant</span><span class="o">.</span><span class="n">gt_types</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">pop_ac_cnt</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">cur_gt</span><span class="p">[</span><span class="n">pop_idx_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">pop_idx_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">size</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">unique_pops</span>
-        <span class="p">]</span>
+        <span class="n">global_ac</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">variant</span><span class="o">.</span><span class="n">num_het</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">variant</span><span class="o">.</span><span class="n">num_hom_alt</span><span class="p">)</span>
+        <span class="n">global_n</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">variant</span><span class="o">.</span><span class="n">num_called</span><span class="p">)</span>
+        <span class="n">cur_gt</span> <span class="o">=</span> <span class="n">variant</span><span class="o">.</span><span class="n">gt_types</span>
+        <span class="n">pop_ac_cnt</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">unique_pops</span><span class="p">:</span>
+            <span class="n">ac</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">cur_gt</span><span class="p">[</span><span class="n">pop_idx_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">==</span> <span class="n">vcf</span><span class="o">.</span><span class="n">HET</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span>
+                <span class="n">cur_gt</span><span class="p">[</span><span class="n">pop_idx_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">==</span> <span class="n">vcf</span><span class="o">.</span><span class="n">HOM_ALT</span>
+            <span class="p">)</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">cur_gt</span><span class="p">[</span><span class="n">pop_idx_dict</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">!=</span> <span class="n">vcf</span><span class="o">.</span><span class="n">UNKNOWN</span><span class="p">)</span>
+            <span class="n">pop_ac_cnt</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ac</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span><span class="p">))</span>
         <span class="n">allele_cnt_subpops</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pop_ac_cnt</span><span class="p">)</span>
-
+    <span class="n">alt_freq</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">alt_freq</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
     <span class="n">allele_cnt_subpops</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">allele_cnt_subpops</span><span class="p">)</span>
     <span class="n">global_af</span> <span class="o">=</span> <span class="n">alt_freq</span>
-    <span class="n">flip_af</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="n">alt_freq</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+    <span class="n">flip_af</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="kc">False</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">alt_freq</span><span class="p">))</span>
     <span class="k">if</span> <span class="n">minor_allele</span><span class="p">:</span>
         <span class="n">flip_af</span> <span class="o">=</span> <span class="n">alt_freq</span> <span class="o">&gt;</span> <span class="mf">0.5</span>
     <span class="n">flip_idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">flip_af</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">flip_idx</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">flip_idx</span><span class="p">:</span>
-            <span class="n">global_ac</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">vcf</span><span class="o">.</span><span class="n">samples</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="n">global_ac</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">global_ac</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">global_n</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">global_ac</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="n">global_af</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">global_af</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="c1"># Swap the alleles here ...</span>
             <span class="n">cur_ref</span> <span class="o">=</span> <span class="n">ref_alleles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="n">ref_alleles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">alt_alleles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
             <span class="n">alt_alleles</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cur_ref</span>
-            <span class="n">allele_cnt_subpops</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">allele_cnt_subpops</span>
+            <span class="n">allele_cnt_subpops</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">allele_cnt_subpops</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span>
     <span class="c1"># Setting up the final data frame</span>
     <span class="n">af_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">x</span><span class="p">:</span> <span class="n">allele_cnt_subpops</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">unique_pops</span><span class="p">)}</span>
     <span class="n">af_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">af_dict</span><span class="p">)</span>
