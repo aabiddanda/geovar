@@ -19,6 +19,7 @@ class GeoVar(object):
         """
         assert np.all(np.array(bins) <= 1.0)
         assert np.all(np.array(bins) >= 0.0)
+        assert len(bins) > 0
         self.bins = bins
         self.freq_mat = None
         self.n_variants = None

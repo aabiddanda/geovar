@@ -40,14 +40,17 @@
 <p class="rubric">Functions</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="../geovar.html#geovar.utils.flip_alleles" title="geovar.utils.flip_alleles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flip_alleles</span></code></a>(acnt[, flip])</p></td>
-<td><p>Flip alleles if based on being the minor allele.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../geovar.html#geovar.utils.read_pop_panel" title="geovar.utils.read_pop_panel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_pop_panel</span></code></a>(pop_panel_file)</p></td>
+<td><p>Read in a population panel file.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="../geovar.html#geovar.utils.sep_freq_mat_pops" title="geovar.utils.sep_freq_mat_pops"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sep_freq_mat_pops</span></code></a>(af_df[, known_cols])</p></td>
 <td><p>Convert an allele frequency data frame to a frequency array.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="../geovar.html#geovar.utils.vcf_to_freq_table" title="geovar.utils.vcf_to_freq_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vcf_to_freq_table</span></code></a>(vcf_file, pop_panel[, ...])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="../geovar.html#geovar.utils.vcf_to_freq_table" title="geovar.utils.vcf_to_freq_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">vcf_to_freq_table</span></code></a>(vcf_file, pop_df[, ...])</p></td>
 <td><p>Convert a VCF File to a frequency table to be used as input to a GeoVar object.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="../geovar.html#geovar.utils.verify_sample_indices" title="geovar.utils.verify_sample_indices"><code class="xref py py-obj docutils literal notranslate"><span class="pre">verify_sample_indices</span></code></a>(pop_df, samples)</p></td>
+<td><p>Generate the sample indices from a list of sample IDs stratified by population.</p></td>
 </tr>
 </tbody>
 </table>
