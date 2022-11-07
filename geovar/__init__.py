@@ -16,4 +16,4 @@ __all__ = [
     "read_pop_panel",
 ]
 
-__version__ = "1.0.0"
+__version__ = "1.0.1"

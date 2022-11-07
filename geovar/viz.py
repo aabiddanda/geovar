@@ -206,7 +206,7 @@ class GeoVarPlot(object):
         """Add population labels from a file for GeoVar plot.
 
         Args:
-            popfile (:obj:`string`): path to population list file with one file per line.
+            popfile (:obj:`string`): path to population list file with one population per line.
 
         """
         assert self.geodist is not None
