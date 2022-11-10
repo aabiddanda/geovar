@@ -365,7 +365,7 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-5000it [00:01, 2628.40it/s]
+5000it [00:02, 2059.90it/s]
 </pre></div></div>
 </div>
 <div class="nboutput nblast docutils container">
@@ -493,8 +493,6 @@ div.rendered_html tbody tr:hover {
 <span class="c1"># Adding in the frequency file (all of it)</span>
 <span class="n">geovar_test</span><span class="o">.</span><span class="n">add_freq_mat</span><span class="p">(</span><span class="n">freq_mat_file</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/test.freq.csv&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data_path</span><span class="p">))</span>
 
-<span class="c1"># geovar_test.add_freq_mat(freq_mat_file=&quot;../../geovar/data/test.freq.csv&quot;)</span>
-
 <span class="c1"># Generate a geovar binning with the binning we used in our paper</span>
 <span class="n">geovar_test</span><span class="o">.</span><span class="n">geovar_binning</span><span class="p">()</span>
 
@@ -540,10 +538,11 @@ allele freq bins: (0, 0),(0, 0.05),(0.05, 1.0)
 <span class="c1"># Filter to remove very rare categories (only to speed up plotting)</span>
 <span class="n">geovar_plot</span><span class="o">.</span><span class="n">filter_data</span><span class="p">()</span>
 
-<span class="c1"># Adding in a colormap</span>
+<span class="c1"># Adding in a colormap (see code for alternative ideas beyond default)</span>
 <span class="n">geovar_plot</span><span class="o">.</span><span class="n">add_cmap</span><span class="p">()</span>
 
-<span class="c1"># geovar_plot.reorder_pops([&#39;AFR&#39;,&#39;EUR&#39;,&#39;SAS&#39;,&#39;EAS&#39;,&#39;AMR&#39;])</span>
+<span class="c1"># Shifting order of regional groupings to reflect OOA-demography</span>
+<span class="n">geovar_plot</span><span class="o">.</span><span class="n">reorder_pops</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s1">&#39;AFR&#39;</span><span class="p">,</span><span class="s1">&#39;EUR&#39;</span><span class="p">,</span><span class="s1">&#39;SAS&#39;</span><span class="p">,</span><span class="s1">&#39;EAS&#39;</span><span class="p">,</span><span class="s1">&#39;AMR&#39;</span><span class="p">]))</span>
 </pre></div>
 </div>
 </div>
@@ -650,7 +649,7 @@ allele freq bins: (0, 0),(0, 0.05),(0.05, 1.0)
 <section id="Reading-in-from-GeoVar-Counts-Files">
 <h2>Reading in from GeoVar Counts Files<a class="headerlink" href="#Reading-in-from-GeoVar-Counts-Files" title="Permalink to this heading">¶</a></h2>
 <p>For some datasets like the ~92 million variants in the <a class="reference external" href="http://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/working/20190425_NYGC_GATK/">NYGC 1000 Genomes Project</a>, the full frequency table is too large to store in memory within a given jupyter notebook instance.</p>
-<p>In this case, we suggest processing the data in batches to create a geovar counts file, containing the numeric geovar code in the first column and the total count in the second column. We have included a file that we used in our analysis containing codes used in Figure 3B in <a class="reference external" href="https://www.biorxiv.org/content/10.1101/2020.07.01.182311v1">Biddanda et al 2020</a>.</p>
+<p>In this case, we suggest processing the data in batches to create a geovar counts file, containing the numeric geovar code in the first column and the total count in the second column. We have included a file that we used in our analysis containing codes used in Figure 3B in <a class="reference external" href="https://elifesciences.org/articles/60107">Biddanda et al 2020</a>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>

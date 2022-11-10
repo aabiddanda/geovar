@@ -70,7 +70,7 @@ def sep_freq_mat_pops(af_df, known_cols=["CHR", "SNP", "A1", "A2", "MAC", "MAF"]
     idx = ~np.isin(colnames, known_cols)
     # Generate frequency matrix and the population names
     freq_mat = af_df[af_df.columns[idx]].values
-    pop_names = af_df.columns[idx].tolist()
+    pop_names = af_df.columns[idx]
     return (pop_names, freq_mat)
 
 
