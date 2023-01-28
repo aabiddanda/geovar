@@ -3,6 +3,6 @@ geovar/data/*.csv
 docsrc/_build/*
 .hypothesis/
 *.egg-info/
-*.coverage
+*.coverage*
 *.python-version
 build/
