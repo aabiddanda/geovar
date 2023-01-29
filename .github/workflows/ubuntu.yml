@@ -36,7 +36,3 @@ jobs:
       - name: run tests
         run: |
           python -m pytest tests/
-
-      - name: run flake8
-        run: |
-          flake8
