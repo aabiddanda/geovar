@@ -3,30 +3,17 @@
 
 .. automodule:: geovar.utils
 
-   
-   
-   
 
-   
-   
+
+
+
+
+
    .. rubric:: Functions
 
    .. autosummary::
-   
+
       read_pop_panel
       sep_freq_mat_pops
       vcf_to_freq_table
       verify_sample_indices
-   
-   
-
-   
-   
-   
-
-   
-   
-   
-
-
-

@@ -86,7 +86,7 @@ def vcf_to_freq_table(vcf_file, pop_df, outfile=None, minor_allele=True, **kwarg
     """
     vcf_filepath = Path(vcf_file)
     if not vcf_filepath.is_file():
-        raise ValueError(f"{vcf_file} is not a valid VCF file!")
+        raise FileNotFoundError(f"{vcf_file} is not a valid VCF file!")
     vcf = VCF(vcf_filepath, **kwargs)
     unique_pops, pop_idx_dict, pop_dict = verify_sample_indices(pop_df, vcf.samples)
     chrom = []

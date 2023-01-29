@@ -3,6 +3,8 @@
 import numpy as np
 import pandas as pd
 from tqdm import tqdm
+from pathlib import Path
+import gzip
 from .utils import sep_freq_mat_pops
 
 
@@ -44,7 +46,7 @@ class GeoVar(object):
             (see example notebook for formatting).
 
         """
-        af_df = pd.read_table(freq_mat_file, sep=r"\s")
+        af_df = pd.read_table(freq_mat_file, sep=r"\s", engine="python")
         pops, freq_mat = sep_freq_mat_pops(af_df)
         self.pops = pops
         self.freq_mat = freq_mat
@@ -58,14 +60,16 @@ class GeoVar(object):
             bins (:obj:`list`): list of tuples specifying bins of allele frequency.
 
         """
-        assert np.all(np.array(bins) < 1.0)
-        b = 0.0
-        new_bins = []
-        for x in bins:
-            new_bins.append((b, x))
-            b = x
-        new_bins.append((b, 1.0))
-        self.bins = new_bins
+        assert np.all(np.array(bins) <= 1.0)
+        assert np.all(np.array(bins) >= 0.0)
+        min_val = 1.0
+        max_val = 0.0
+        for (start, end) in bins:
+            min_val = min(min_val, start)
+            max_val = max(max_val, end)
+        assert min_val >= 0
+        assert max_val <= 1
+        self.bins = bins
 
     def geovar_binning(self):
         """Compute the GeoVar codes for each variant across each population."""
@@ -91,25 +95,30 @@ class GeoVar(object):
         """Version of GeoVar code generation algorithm that streams through file to avoid memory overflow.
 
         Args:
-            freq_mat_file (:obj:`string`): filepath to
-            frequency table file (see example notebook for formatting).
+            freq_mat_file (:obj:`string`): filepath to a frequency table file (see example notebook for formatting).
 
         """
         assert self.bins is not None
+        freq_mat_fp = Path(freq_mat_file)
+        assert freq_mat_fp.is_file()
         geovar_codes = []
         # Setting up the testing bins
         test_bins = np.array([x[1] for x in self.bins])
-        with open(freq_mat_file, "r") as f:
-            header = f.readline()
-            # Take the population labels currently
-            pops = np.array(header.split()[6:])
-            self.pops = pops
-            for line in tqdm(f):
-                # Split after the 6th column ...
-                maf_vector = np.array(line.split()[6:]).astype(np.float64)
-                cur_geovar = np.digitize(maf_vector, test_bins, right=True)
-                cur_geovar_code = "".join([str(i) for i in cur_geovar])
-                geovar_codes.append(cur_geovar_code)
+        if ".gz" in freq_mat_fp.suffixes:
+            f = gzip.open(freq_mat_fp, "rt")
+        else:
+            f = open(freq_mat_fp, "r")
+        header = f.readline()
+        # Take the population labels currently
+        pops = np.array(header.split()[6:])
+        self.pops = pops
+        for line in tqdm(f):
+            # Split after the 6th column ...
+            maf_vector = np.array(line.split()[6:]).astype(np.float64)
+            cur_geovar = np.digitize(maf_vector, test_bins, right=True)
+            cur_geovar_code = "".join([str(i) for i in cur_geovar])
+            geovar_codes.append(cur_geovar_code)
+        f.close()
         # Setting the variables here
         self.geovar_codes = np.array(geovar_codes)
         self.n_variants = self.geovar_codes.size
