@@ -46,7 +46,7 @@ class GeoVar(object):
             (see example notebook for formatting).
 
         """
-        af_df = pd.read_table(freq_mat_file, sep=r"\s", engine='python')
+        af_df = pd.read_table(freq_mat_file, sep=r"\s", engine="python")
         pops, freq_mat = sep_freq_mat_pops(af_df)
         self.pops = pops
         self.freq_mat = freq_mat
@@ -64,7 +64,7 @@ class GeoVar(object):
         assert np.all(np.array(bins) >= 0.0)
         min_val = 1.0
         max_val = 0.0
-        for (start,end) in bins:
+        for (start, end) in bins:
             min_val = min(min_val, start)
             max_val = max(max_val, end)
         assert min_val >= 0
@@ -96,15 +96,15 @@ class GeoVar(object):
 
         Args:
             freq_mat_file (:obj:`string`): filepath to a frequency table file (see example notebook for formatting).
-        """
 
+        """
         assert self.bins is not None
         freq_mat_fp = Path(freq_mat_file)
         assert freq_mat_fp.is_file()
         geovar_codes = []
         # Setting up the testing bins
         test_bins = np.array([x[1] for x in self.bins])
-        if '.gz' in freq_mat_fp.suffixes:
+        if ".gz" in freq_mat_fp.suffixes:
             f = gzip.open(freq_mat_fp, "rt")
         else:
             f = open(freq_mat_fp, "r")

@@ -125,20 +125,23 @@ def test_verify_pops(pop_panel_multi_pop_df):
     with pytest.raises(Exception):
         utils.verify_sample_indices(pop_panel_multi_pop_df, samples_excess)
 
+
 @pytest.fixture
 def valid_vcf_file():
-    """A valid small VCF file shipped with the geovar project."""
-    return 'geovar/data/new_1kg_nygc.chr22.biallelic_snps.filt.n5000.vcf.gz'
+    """Small VCF file shipped with the geovar project."""
+    return "geovar/data/new_1kg_nygc.chr22.biallelic_snps.filt.n5000.vcf.gz"
+
 
 @pytest.fixture
 def valid_pop_panel():
-    """A valid"""
-    return 'geovar/data/integrated_call_samples_v3.20130502.1kg_superpops.panel'
+    """Corresponding population panel for VCF file."""
+    return "geovar/data/integrated_call_samples_v3.20130502.1kg_superpops.panel"
+
 
 @pytest.fixture
 def invalid_vcf_file():
-    """A VCF file that does not exist to test against."""
-    return 'geovar/data/new_1kg_nygc.chr21.biallelic_snps.vcf'
+    """VCF file that does not exist to test against."""
+    return "geovar/data/new_1kg_nygc.chr21.biallelic_snps.vcf"
 
 
 def test_vcf_to_freq_table_bad_file(invalid_vcf_file, valid_pop_panel):
@@ -149,8 +152,8 @@ def test_vcf_to_freq_table_bad_file(invalid_vcf_file, valid_pop_panel):
 
 
 def test_vcf_to_freq_table(valid_vcf_file, valid_pop_panel):
-    """XXX."""
+    """Test to take a VCF file to a frequency file."""
     pop_df = utils.read_pop_panel(valid_pop_panel)
     af_df = utils.vcf_to_freq_table(vcf_file=valid_vcf_file, pop_df=pop_df)
-    for col in ['CHR', 'SNP', 'A1', 'A2', 'MAC', 'MAF']:
+    for col in ["CHR", "SNP", "A1", "A2", "MAC", "MAF"]:
         assert col in af_df.columns

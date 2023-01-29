@@ -5,23 +5,24 @@ repos:
   rev: v2.4.0
   hooks:
   - id: trailing-whitespace
-    exclude: '^doc*/'
+    exclude: '^docs*/'
   - id: end-of-file-fixer
+    exclude: '^docs/'
   - id: check-yaml
   - id: check-added-large-files
     args: ['--maxkb=900']
 - repo: https://github.com/psf/black
-  rev: 19.3b0
+  rev: 22.12.0
   hooks:
   - id: black
-    exclude: '^doc*/'
+    exclude: '^docs*/'
 - repo: https://github.com/pycqa/pydocstyle
   rev: 4.0.0  # pick a git hash / tag to point to
   hooks:
   - id: pydocstyle
-    exclude: '^doc*/'
+    exclude: '^docs*/'
 - repo: https://github.com/pycqa/flake8
   rev: 3.7.9
   hooks:
   - id: flake8
-    exclude: '^doc*/'
+    exclude: '^docs*/'
